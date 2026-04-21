@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v4.0] - 2026-04-20
+
+### Added
+
+- **Multi-Agent Architecture** (`multi_agent.py`)
+  - `ResearchAgent` for literature/gaps
+  - `HypothesisAgent` for proposals
+  - `ExecutionAgent` for experiments
+  - `EvaluationAgent` for analysis
+  - `MemoryAgent` for storage
+  - `OrchestratorAgent` for coordination
+
+- **Sandboxed Execution** (`sandbox.py`)
+  - `Sandbox` class with resource limits
+  - `SafeRunner` with code validation
+  - Timeout and memory limits
+
+- **Checkpoint System** (`checkpoint.py`)
+  - `CheckpointManager` for state persistence
+  - Save/resume from interruption
+  - History tracking
+
+- **Monitor** (`monitor.py`)
+  - Real-time status display
+  - Event logging
+  - Statistics tracking
+
+- **Report Generation** (`report.py`)
+  - `Report` class for markdown
+  - Summary reports
+  - Comparison reports
+
+- **Fixed Issues**
+  - torch import failure with graceful fallback
+
+---
+
 ## [v3.1] - 2026-04-20
 
 ### Added
