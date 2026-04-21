@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v4.1] - 2026-04-20
+
+### Added
+- **CI/CD Pipeline** (`.github/workflows/ci.yml`)
+  - GitHub Actions workflow
+  - Test, build, publish jobs
+  
+- **Docker Support** (`Dockerfile`)
+  - Docker image with non-root user
+  - Production-ready configuration
+  
+- **Python Package** (`setup.py`, `requirements.txt`)
+  - Installable with `pip install -e .`
+  - Entry points for CLI
+  
+- **Test Coverage**
+  - 25 unit tests with pytest
+  - All tests passing
+
+### Removed
+- None
+
+### Fixed
+- None
+
+---
+
 ## [v4.0] - 2026-04-20
 
 ### Added

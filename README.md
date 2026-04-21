@@ -54,14 +54,21 @@ An autonomous research stack for continuously improving LLM training through aut
 ## Quick Start
 
 ```bash
+# Install
+pip install -e .
+
 # Configure
 export ANTHROPIC_API_KEY=sk-ant-...
 
 # Run autonomous loop
 python autonomous_loop.py --experiments 100
 
-# Generate report
-python report.py
+# Run tests
+pytest tests/
+
+# Or use Docker
+docker build -t autoresearch-stack .
+docker run --rm -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY autoresearch-stack
 ```
 
 ---
