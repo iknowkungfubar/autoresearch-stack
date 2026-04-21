@@ -2,13 +2,13 @@
 
 > Build and ship autonomous LLM training research systems
 
-**Status:** v6.0 (Production) | **License:** MIT
+**Status:** v5.2 (Production) | **License:** MIT
 
 An autonomous research stack for continuously improving LLM training through automated experimentation. Inspired by [Karpathy autorearch](https://github.com/karpathy/autoresearch), designed for single-GPU research labs.
 
 ---
 
-## What's Included (v6.0)
+## What's Included (v5.2)
 
 | Component | File | Description |
 |-----------|------|-------------|
@@ -30,6 +30,7 @@ An autonomous research stack for continuously improving LLM training through aut
 | Report | `report.py` | Markdown reports |
 | Figures | `figures.py` | Visualization (matplotlib) |
 | Stats | `stats.py` | Summary statistics |
+| Paper | `paper.py` | Research paper generation |
 | Daemon | `daemon.py` | Continuous operation |
 | Agent | `agent.md` | RALPH agent guardrails |
 | Instructions | `prompt.md` | Loop execution prompt |
@@ -46,6 +47,7 @@ An autonomous research stack for continuously improving LLM training through aut
 | v4.0 | Multi-agent, sandbox, checkpoint | Shipped |
 | v4.1 | CI/CD, Docker, tests | Shipped |
 | v5.0 | Reporting, figures, stats | Shipped |
+| v5.2 | Paper generation | Shipped |
 | v6.0 | Advanced autonomy, daemon mode | Shipped |
 | v7.0 | Self-modification, distribution | Planned |
 

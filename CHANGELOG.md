@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v5.2] - 2026-04-20
+
+### Added
+- **Paper Generation** (`paper.py`)
+  - `Paper` class for research paper drafting
+  - Full paper structure (Abstract, Introduction, Method, etc.)
+  - `generate_paper_from_experiments()` for data-driven papers
+  - Markdown and LaTeX output formats
+
+- **Citation Management** (`paper.py`)
+  - `Citation` class with BibTeX/LaTeX export
+  - Reference management
+
+- **Literature Review** (`paper.py`)
+  - Related work section templates
+  - Integration with experiment findings
+
+---
+
 ## [v6.0] - 2026-04-20
 
 ### Added

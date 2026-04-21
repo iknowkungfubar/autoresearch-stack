@@ -1,6 +1,6 @@
 # Improvements Roadmap
 
-> Current version: **v6.0** - Advanced Autonomy
+> Current version: **v5.2** - Paper Generation
 
 ---
 
@@ -59,11 +59,11 @@ The v4.0 stack includes all v3.1 components plus:
 - [x] Summary statistics
 - [x] Experiment comparisons
 
-### v5.2: Paper Generation (PLANNED)
+### v5.2: Paper Generation (COMPLETE)
 
-- [ ] Automated manuscript drafting
-- [ ] Literature review integration
-- [ ] Citation management
+- [x] Automated manuscript drafting
+- [x] Literature review integration
+- [x] Citation management
 - [ ] Peer-review simulation
 
 ---
@@ -103,6 +103,7 @@ The v4.0 stack includes all v3.1 components plus:
 | v4.0 | 2026-04-20 | Multi-agent, production |
 | v4.1 | 2026-04-20 | CI/CD, Docker, tests |
 | v5.0 | 2026-04-20 | Reporting, figures, stats |
+| v5.2 | 2026-04-20 | Paper generation |
 | v6.0 | 2026-04-20 | Advanced autonomy, daemon mode |
 
 ---
