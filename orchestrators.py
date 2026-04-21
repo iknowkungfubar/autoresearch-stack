@@ -14,10 +14,9 @@ Phase 7.1: Multi-Orchestrator Support.
 """
 
 import os
-import json
 import logging
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional, Callable, Union
+from typing import Dict, Any, List, Optional, Union
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -177,12 +176,12 @@ class CrewAIIntegrator(BaseOrchestrator):
     def _setup_crew(self):
         """Set up CrewAI crew."""
         try:
-            from crewai import Agent, Crew, Task, Process
-            from langchain_openai import ChatOpenAI
+            from crewai import Agent, Crew, Task, Process  # noqa: F401
+            from langchain_openai import ChatOpenAI  # noqa: F401
 
-            # Get LLM
-            llm = self.config.get("llm", "gpt-4o")
-            api_key = os.getenv("OPENAI_API_KEY")
+            # Get LLM config
+            _llm = self.config.get("llm", "gpt-4o")
+            _api_key = os.getenv("OPENAI_API_KEY")
 
             # Create agents
             researcher = Agent(
@@ -310,8 +309,8 @@ class LangChainIntegrator(BaseOrchestrator):
         """Lazy load LangChain client."""
         if self._client is None:
             try:
-                from langchain.chat_models import ChatOpenAI
-                from langchain.schema import HumanMessage
+                from langchain.chat_models import ChatOpenAI  # noqa: F401
+                from langchain.schema import HumanMessage  # noqa: F401
 
                 self._client = {
                     "chat": ChatOpenAI(
@@ -364,8 +363,8 @@ class LlamaIndexIntegrator(BaseOrchestrator):
         """Lazy load LlamaIndex client."""
         if self._client is None:
             try:
-                from llama_index import VectorStoreIndex, ServiceContext
-                from llama_index.llms import ChatMessage
+                from llama_index import VectorStoreIndex, ServiceContext  # noqa: F401
+                from llama_index.llms import ChatMessage  # noqa: F401
 
                 self._client = {
                     "index": None,  # Set after loading data
@@ -387,8 +386,6 @@ class LlamaIndexIntegrator(BaseOrchestrator):
             )
 
         try:
-            from llama_index import VectorStoreIndex
-
             # Query index
             index = self.config.get("index")
             if not index:

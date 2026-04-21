@@ -5,7 +5,6 @@ Phase 5: Production Hardening - Checkpoint for resume.
 """
 
 import json
-import os
 from pathlib import Path
 from typing import Dict, Any, Optional
 from dataclasses import dataclass, asdict, field

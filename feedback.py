@@ -9,8 +9,7 @@ Features:
 """
 
 import json
-import time
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, asdict
 from typing import Optional, List, Dict, Any
 from enum import Enum
 from pathlib import Path
@@ -112,7 +111,7 @@ class Feedback:
                         try:
                             data = json.loads(line)
                             self.experiments.append(Experiment(**data))
-                        except:
+                        except Exception:
                             pass
 
     def reward(self, val_bpb: float, score: float = 0.0) -> float:

@@ -4,7 +4,6 @@ Report generation - Markdown experiment reports.
 Phase 6: Reporting & Paper Generation.
 """
 
-import json
 from pathlib import Path
 from typing import Dict, Any, List, Optional, TYPE_CHECKING
 from datetime import datetime
@@ -340,6 +339,6 @@ if __name__ == "__main__":
 
     # Save
     report.save("experiment_report.md")
-    print(f"Report saved to experiment_report.md")
+    print("Report saved to experiment_report.md")
     print("\nReport content:")
     print(report.render()[:500] + "...")

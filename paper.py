@@ -4,7 +4,6 @@ Paper Generation - Automated research paper drafting.
 Phase 5.2: Paper Generation.
 """
 
-import json
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 from datetime import datetime
@@ -92,7 +91,7 @@ class Paper:
 
     def _add_abstract(self):
         """Add abstract section."""
-        abstract = f"""We present an autonomous research system capable of automatically
+        abstract = """We present an autonomous research system capable of automatically
 discovering and validating improvements to LLM training. Our approach combines
 multi-agent orchestration with bandit-based exploration to efficiently
 search the space of possible modifications. Through continuous experimentation,
@@ -386,7 +385,7 @@ This work was supported by compute donations."""
         lines.append("")
 
         # Date
-        lines.append(f"\\date{{\\today}}")
+        lines.append("\\date{\\today}")
         lines.append("")
         lines.append("\\maketitle")
         lines.append("")
@@ -428,8 +427,8 @@ def generate_paper_from_experiments(
     config = config or PaperConfig()
 
     # Calculate statistics
-    total = len(experiments)
-    kept = sum(1 for e in experiments if e.get("status") == "kept")
+    _total = len(experiments)
+    _kept = sum(1 for e in experiments if e.get("status") == "kept")
 
     # Extract best results
     kept_exps = [e for e in experiments if e.get("status") == "kept"]

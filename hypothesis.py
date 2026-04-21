@@ -320,7 +320,7 @@ Prioritize high-impact changes based on training dynamics.
         # Add memory context if available
         if memory_context:
             recent = memory_context[-5:]
-            user_prompt += f"\nRecent experiments:\n"
+            user_prompt += "\nRecent experiments:\n"
             for exp in recent:
                 user_prompt += f"- {exp.get('change', 'unknown')}: {exp.get('status', 'unknown')}\n"
 

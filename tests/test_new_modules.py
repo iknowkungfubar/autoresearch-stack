@@ -6,11 +6,6 @@ providers, and orchestrators.
 """
 
 import pytest
-import json
-import tempfile
-import os
-from pathlib import Path
-from unittest.mock import patch, MagicMock
 
 
 # Test figures module
@@ -19,7 +14,7 @@ class TestFigures:
 
     def test_figure_generator_init(self):
         """Test FigureGenerator initialization."""
-        from figures import FigureGenerator, FigureConfig
+        from figures import FigureGenerator
 
         gen = FigureGenerator()
         assert gen is not None
@@ -267,7 +262,7 @@ class TestProviders:
 
     def test_provider_factory_create(self):
         """Test ProviderFactory.create."""
-        from providers import LLMProviderFactory, ProviderType, AnthropicProvider
+        from providers import LLMProviderFactory, ProviderType
 
         # This should create provider without error
         provider = LLMProviderFactory.create(ProviderType.OPENAI)

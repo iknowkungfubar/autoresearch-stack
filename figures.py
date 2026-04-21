@@ -6,9 +6,14 @@ Phase 5.1: Figure Generation.
 
 import json
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
-from datetime import datetime
+from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
+
+# Optional numpy import
+try:
+    import numpy as np
+except ImportError:
+    np = None
 
 # Optional matplotlib import (graceful fallback)
 try:
@@ -27,7 +32,7 @@ except ImportError:
 
 # Optional seaborn for better styling
 try:
-    import seaborn as sns
+    import seaborn as sns  # noqa: F401
 
     SEABORN_AVAILABLE = True
 except ImportError:
@@ -211,7 +216,12 @@ class FigureGenerator:
 
         # Calculate means
         types = list(type_groups.keys())
-        means = [np.mean(type_groups[t]) for t in types]
+        means = [
+            float(sum(type_groups[t])) / len(type_groups[t])
+            if not np
+            else np.mean(type_groups[t])
+            for t in types
+        ]
 
         # Bar plot
         x_pos = range(len(types))
@@ -394,6 +404,6 @@ if __name__ == "__main__":
         gen = FigureGenerator()
         saved = gen.generate_all_figures(experiments, "figures", baseline=1.0)
 
-        print(f"Generated figures:")
+        print("Generated figures:")
         for name, path in saved.items():
             print(f"  {name}: {path}")

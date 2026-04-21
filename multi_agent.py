@@ -11,12 +11,10 @@ Roles:
 - Memory Agent: Track and retrieve past experiments
 """
 
-import json
 import time
 from typing import List, Dict, Optional, Any
 from dataclasses import dataclass, field
 from enum import Enum
-from collections import defaultdict
 
 
 class AgentRole(Enum):

@@ -6,11 +6,8 @@ Provides SQLite-backed experiment database with JSONL fallback.
 
 import json
 import sqlite3
-import os
 from pathlib import Path
-from typing import List, Optional, Dict, Any, Tuple
-from dataclasses import asdict
-from datetime import datetime
+from typing import List, Optional, Dict, Any
 from contextlib import contextmanager
 
 
@@ -317,7 +314,7 @@ class ExperimentJSONL:
                     if line.strip():
                         try:
                             self.experiments.append(json.loads(line))
-                        except:
+                        except Exception:
                             pass
 
     def append(self, experiment: Dict):

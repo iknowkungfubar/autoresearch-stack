@@ -10,29 +10,24 @@ It combines:
 - Feedback evaluation
 """
 
-import os
-import sys
-import json
 import time
 import argparse
-from pathlib import Path
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 # Import components
 from synthetic_data import (
     SyntheticGenerator,
-    generate_synthetic,
     model_in_the_loop_generate,
 )
 from data_intelligence import clean_corpus
-from curriculum import build_curriculum, create_scheduler, AdaptiveScheduler
-from feedback import Feedback, ExperimentStatus, FailureClassification
+from curriculum import build_curriculum, create_scheduler
+from feedback import Feedback, ExperimentStatus
 from storage import ExperimentDB
-from config import get_config, Config
-from memory import MemorySystem, what_been_tried
-from prioritization import PrioritizationSystem, get_prioritization
-from hypothesis import HypothesisGenerator, generate_hypothesis
+from config import get_config
+from memory import MemorySystem
+from prioritization import get_prioritization
+from hypothesis import HypothesisGenerator
 
 
 class AutonomousPipeline:
@@ -183,7 +178,6 @@ class AutonomousPipeline:
         Returns:
             Training results
         """
-        import torch
 
         start_time = time.time()
 
@@ -280,7 +274,7 @@ class AutonomousPipeline:
             print(
                 f"Result: val_bpb improved {baseline_val_bpb:.6f} → {val_bpb_after:.6f}"
             )
-            print(f"Status: KEPT")
+            print("Status: KEPT")
 
             if val_bpb_after < self.best_val_bpb:
                 self.best_val_bpb = val_bpb_after
@@ -289,7 +283,7 @@ class AutonomousPipeline:
             print(
                 f"Result: val_bpb did not improve {baseline_val_bpb:.6f} → {val_bpb_after:.6f}"
             )
-            print(f"Status: REVERTED")
+            print("Status: REVERTED")
 
         # Update database
         self.db.update_experiment(
@@ -320,7 +314,7 @@ class AutonomousPipeline:
         num_experiments = num_experiments or self.config.experiment.budget
 
         print(f"\n{'#' * 60}")
-        print(f"# AUTONOMOUS RESEARCH LOOP (v3.1)")
+        print("# AUTONOMOUS RESEARCH LOOP (v3.1)")
         print(f"{'#' * 60}")
         print(f"Max experiments: {num_experiments}")
         print(f"Time per experiment: {self.config.experiment.time_per_experiment}s")
@@ -330,7 +324,7 @@ class AutonomousPipeline:
         data = self.prepare_data(raw_texts)
 
         # Prepare curriculum
-        scheduler = self.prepare_curriculum(data)
+        _scheduler = self.prepare_curriculum(data)
 
         # Load memory from database
         self.memory.load_from_db()
@@ -398,7 +392,7 @@ class AutonomousPipeline:
         # Print summary
         stats = self.db.get_statistics()
         print(f"\n{'#' * 60}")
-        print(f"# EXPERIMENT SUMMARY")
+        print("# EXPERIMENT SUMMARY")
         print(f"{'#' * 60}")
         print(f"Total experiments: {stats['total_experiments']}")
         print(f"Kept: {stats['kept']}")
@@ -511,7 +505,7 @@ def main():
     print(f"\nPrepared {len(data)} training examples")
 
     # Show config
-    print(f"\nConfiguration:")
+    print("\nConfiguration:")
     print(f"  Experiments: {args.experiments or pipeline.config.experiment.budget}")
     print(f"  Time per exp: {pipeline.config.experiment.time_per_experiment}s")
     print(f"  Target val_bpb: {pipeline.config.experiment.val_target}")
@@ -521,7 +515,7 @@ def main():
         return
 
     # Prepare curriculum
-    scheduler = pipeline.prepare_curriculum(data)
+    _scheduler = pipeline.prepare_curriculum(data)
 
     # Run autonomous loop
     pipeline.run_autonomous_loop(texts, args.experiments)

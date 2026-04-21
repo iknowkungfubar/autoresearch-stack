@@ -10,9 +10,8 @@ Features:
 
 import random
 import math
-import bisect
-from typing import List, Dict, Optional, Callable, Any
-from dataclasses import dataclass, field
+from typing import List, Dict, Optional, Any
+from dataclasses import dataclass
 from enum import Enum
 
 
@@ -228,7 +227,7 @@ def compute_difficulty(text: str, metric: str = "length") -> float:
         return math.log1p(len(text))
     elif metric == "complexity":
         # Count sentence-like segments
-        sentences = text.count(".") + text.count("!") + text.count("?")
+        _sentences = text.count(".") + text.count("!") + text.count("?")
         # Count distinct word types
         words = text.split()
         diversity = len(set(words)) / max(len(words), 1)
@@ -285,7 +284,7 @@ def build_curriculum(
                 curriculum[stage_names[-1]].append(text)
     else:
         # Equal split
-        stage_size = n // stages
+        _stage_size = n // stages
 
         if stages == 3:
             curriculum = {

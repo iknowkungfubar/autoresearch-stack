@@ -5,10 +5,7 @@ Unit tests for core modules.
 """
 
 import pytest
-import json
-import tempfile
 import os
-from pathlib import Path
 
 
 # Test config
@@ -233,7 +230,7 @@ class TestPrioritization:
 
     def test_bandit_selector(self):
         """Test bandit selection."""
-        from prioritization import BanditSelector, Strategy
+        from prioritization import BanditSelector
 
         selector = BanditSelector(strategy="ucb1")
 
@@ -305,7 +302,7 @@ class TestCheckpoint:
 
     def test_checkpoint_manager(self, tmp_path):
         """Test checkpoint saving."""
-        from checkpoint import CheckpointManager, CheckpointStatus
+        from checkpoint import CheckpointManager
 
         mgr = CheckpointManager(str(tmp_path / "checkpoints"))
 

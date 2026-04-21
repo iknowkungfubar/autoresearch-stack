@@ -4,14 +4,11 @@ Sandbox execution for safe code running.
 Phase 5: Production Hardening - Safe execution with resource limits.
 """
 
-import os
 import sys
 import subprocess
-import resource
-import signal
 import tempfile
 import shutil
-from typing import Optional, Dict, Any, Tuple
+from typing import Optional, Tuple
 from dataclasses import dataclass
 from pathlib import Path
 

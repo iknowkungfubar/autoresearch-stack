@@ -10,14 +10,12 @@ Phase 7.1: Multi-Provider Support.
 """
 
 import os
-import json
 import time
 import logging
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional, Callable, Union
+from typing import Dict, Any, List, Optional, Union
 from dataclasses import dataclass, field
 from enum import Enum
-from pathlib import Path
 
 
 # Provider type enum
@@ -686,8 +684,8 @@ class GoogleVertexProvider(BaseLLMProvider):
         start = time.time()
 
         try:
-            from google.auth import default
-            from google.auth import load_credentials_from_file
+            from google.auth import default  # noqa: F401
+            from google.auth import load_credentials_from_file  # noqa: F401
             import vertexai
             from vertexai.generative_models import GenerativeModel
 
@@ -890,7 +888,7 @@ class OllamaProvider(BaseLLMProvider):
             response = requests.get(f"{self.base_url}/api/tags", timeout=10)
             data = response.json()
             return [m["name"] for m in data.get("models", [])]
-        except:
+        except Exception:
             return []
 
 
@@ -1031,7 +1029,7 @@ class LiteLLMProvider(BaseLLMProvider):
     def _get_client(self):
         """Lazy load LiteLLM client."""
         if self._client is None:
-            api_key = self.api_key or os.getenv("LITELLM_API_KEY")
+            _api_key = self.api_key or os.getenv("LITELLM_API_KEY")
             try:
                 from litellm import completion
 

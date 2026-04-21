@@ -263,7 +263,7 @@ Make each prompt specific and actionable."""
                 pass
 
         # Fallback: split by newlines
-        lines = [l.strip() for l in text.split("\n") if l.strip()]
+        lines = [line.strip() for line in text.split("\n") if line.strip()]
         return lines[:10]  # Return up to 10
 
     def _get_difficulty_list(self, difficulty: str) -> List[str]:
@@ -321,7 +321,7 @@ Output ONLY a JSON array of evolved prompts."""
                 return self._call_anthropic(system, user, len(prompts))
             elif self.provider == "openai":
                 return self._call_openai(system, user, len(prompts))
-        except:
+        except Exception:
             pass
 
         return prompts

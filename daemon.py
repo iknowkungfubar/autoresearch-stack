@@ -10,12 +10,11 @@ import time
 import signal
 import atexit
 import logging
-import subprocess
 import json
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Callable
-from datetime import datetime, timedelta
-from dataclasses import dataclass, field
+from datetime import datetime
+from dataclasses import dataclass
 from enum import Enum
 
 # PID file management
@@ -376,7 +375,7 @@ def run_daemon(
     elif start_command == "status":
         daemon.status()
     else:
-        print(f"Usage: python daemon.py [start|stop|restart|status]")
+        print("Usage: python daemon.py [start|stop|restart|status]")
 
 
 if __name__ == "__main__":

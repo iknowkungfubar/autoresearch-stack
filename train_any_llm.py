@@ -5,7 +5,6 @@ This module provides a minimal training abstraction.
 Torch is optional - if not available, training functions are stubs.
 """
 
-import sys
 
 # Try to import torch, but don't fail if not available
 try:

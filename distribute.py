@@ -4,10 +4,7 @@ Distribution - Multi-node execution and cloud deployment.
 Phase 6.2: Distribution.
 """
 
-import os
 import json
-import time
-from pathlib import Path
 from typing import Dict, Any, List, Optional
 from datetime import datetime
 from dataclasses import dataclass, field
@@ -371,7 +368,7 @@ def generate_docker_compose(num_workers: int = 3) -> str:
     for i in range(num_workers):
         services[f"worker-{i + 1}"] = {
             "image": "autoresearch:latest",
-            "environment": [f"ROLE=worker", "MASTER_HOST=master"],
+            "environment": ["ROLE=worker", "MASTER_HOST=master"],
         }
 
     return json.dumps({"services": services}, indent=2)

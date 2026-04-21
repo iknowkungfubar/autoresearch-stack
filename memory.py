@@ -8,13 +8,10 @@ Features:
 - "What has been tried" retrieval
 """
 
-import json
-import os
 import sqlite3
 from pathlib import Path
-from typing import List, Optional, Dict, Any, Tuple
+from typing import List, Optional, Dict, Any
 from dataclasses import dataclass, asdict
-from datetime import datetime
 from collections import defaultdict
 
 
@@ -144,7 +141,7 @@ class MemorySystem:
             # Create or get collection
             try:
                 self.collection = client.create_collection("experiments")
-            except:
+            except Exception:
                 self.collection = client.get_collection("experiments")
 
             self.use_chroma = True

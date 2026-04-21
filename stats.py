@@ -6,8 +6,7 @@ Phase 5.1: Summary Statistics.
 
 import json
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
-from datetime import datetime
+from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, field
 from collections import defaultdict
 
@@ -280,12 +279,12 @@ class SummaryStatistics:
         trend = self.get_trend_metrics()
 
         lines = [
-            f"=== Summary Statistics ===",
-            f"",
+            "=== Summary Statistics ===",
+            "",
             f"Total Experiments: {stats.total}",
             f"Kept: {stats.kept} ({stats.kept_rate:.1%})",
             f"Reverted: {stats.reverted}",
-            f"",
+            "",
         ]
 
         if stats.best_val_bpb is not None:
@@ -295,22 +294,22 @@ class SummaryStatistics:
                 lines.append(f"Std val_bpb: {stats.std_val_bpb:.4f}")
 
         if stats.improvement_pct is not None:
-            lines.append(f"")
+            lines.append("")
             lines.append(f"Improvement: {stats.improvement_pct:.2f}%")
 
         if convergence:
-            lines.append(f"")
+            lines.append("")
             lines.append(f"Converged: {convergence.get('converged', False)}")
 
         if trend:
-            lines.append(f"")
+            lines.append("")
             lines.append(
                 f"Recent Success Rate: {trend.get('recent_success_rate', 0):.1%}"
             )
 
         if stats.change_type_counts:
-            lines.append(f"")
-            lines.append(f"Change Types:")
+            lines.append("")
+            lines.append("Change Types:")
             for ctype, count in stats.change_type_counts.items():
                 success = stats.change_type_success.get(ctype, 0)
                 rate = success / count if count > 0 else 0

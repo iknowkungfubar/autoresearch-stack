@@ -4,10 +4,8 @@ Peer Review Simulation - Simulated peer review for research papers.
 Phase 5.2: Peer Review Simulation.
 """
 
-import json
 import random
-from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional
 from datetime import datetime
 from dataclasses import dataclass, field
 from enum import Enum
@@ -304,20 +302,20 @@ class PeerReviewSimulator:
         # Generate summary
         summaries = {
             ReviewVerdict.ACCEPT: [
-                f"This paper presents a strong contribution to the field. Accept.",
-                f"Excellent work with clear merit. Accept.",
+                "This paper presents a strong contribution to the field. Accept.",
+                "Excellent work with clear merit. Accept.",
             ],
             ReviewVerdict.MINOR_REVISION: [
-                f"A solid paper with Minor Revision requested.",
-                f"Good work, minor issues to address.",
+                "A solid paper with Minor Revision requested.",
+                "Good work, minor issues to address.",
             ],
             ReviewVerdict.MAJOR_REVISION: [
-                f"Major Revision required to address significant concerns.",
-                f"The paper has merit but needs substantial work.",
+                "Major Revision required to address significant concerns.",
+                "The paper has merit but needs substantial work.",
             ],
             ReviewVerdict.REJECT: [
-                f"Unfortunately, this paper cannot be accepted in current form.",
-                f"The paper does not meet the bar for publication.",
+                "Unfortunately, this paper cannot be accepted in current form.",
+                "The paper does not meet the bar for publication.",
             ],
         }
         summary = random.choice(summaries[verdict])
@@ -413,11 +411,11 @@ class PeerReviewSimulator:
     ) -> str:
         """Generate a formatted review report."""
         lines = [
-            f"# Peer Review Report",
-            f"",
+            "# Peer Review Report",
+            "",
             f"**Paper:** {paper_title}",
             f"**Date:** {datetime.now().strftime('%Y-%m-%d')}",
-            f"",
+            "",
             "---",
             "",
         ]
