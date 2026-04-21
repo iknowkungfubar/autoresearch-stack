@@ -1,6 +1,6 @@
 # Improvements Roadmap
 
-> Current version: **v5.0** - Reporting & Research Automation
+> Current version: **v6.0** - Advanced Autonomy
 
 ---
 
@@ -70,25 +70,25 @@ The v4.0 stack includes all v3.1 components plus:
 
 ## v6+: Advanced Autonomy
 
-### v6.1: Self-Modification
+### v6.1: Self-Modification (PLANNED)
 
 - [ ] Meta-loop for methodology evolution
 - [ ] Automatic prompt refinement
 - [ ] Self-improving code
 
-### v6.2: Distribution
+### v6.2: Distribution (PLANNED)
 
 - [ ] Multi-node execution
 - [ ] Cloud deployment (Docker, Kubernetes)
 - [ ] Resource management
 - [ ] Cost estimation
 
-### v6.3: Continuous Operation
+### v6.3: Continuous Operation (COMPLETE)
 
-- [ ] Daemon mode
-- [ ] Auto-restart on failure
-- [ ] Health checks
-- [ ] Background execution
+- [x] Daemon mode
+- [x] Auto-restart on failure
+- [x] Health checks
+- [x] Background execution
 
 ---
 
@@ -103,6 +103,7 @@ The v4.0 stack includes all v3.1 components plus:
 | v4.0 | 2026-04-20 | Multi-agent, production |
 | v4.1 | 2026-04-20 | CI/CD, Docker, tests |
 | v5.0 | 2026-04-20 | Reporting, figures, stats |
+| v6.0 | 2026-04-20 | Advanced autonomy, daemon mode |
 
 ---
 

@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v6.0] - 2026-04-20
+
+### Added
+- **Daemon Mode** (`daemon.py`)
+  - `Daemon` class for continuous background operation
+  - PID file management
+  - Graceful start/stop/restart
+  - Signal handling (SIGTERM, SIGINT, SIGHUP)
+
+- **Health Checks** (`daemon.py`)
+  - `HealthChecker` class for standalone checks
+  - Health status monitoring
+  - Error tracking and reporting
+
+- **Auto-Restart** (`daemon.py`)
+  - Automatic restart on failure
+  - Configurable restart attempts
+  - Cooldown period between restarts
+
+- **Background Execution** (`daemon.py`)
+  - Fork-based daemonization
+  - Session management
+  - Logging to file and console
+
+---
+
 ## [v5.0] - 2026-04-20
 
 ### Added
