@@ -1,6 +1,6 @@
 # Improvements Roadmap
 
-> Current version: **v4.0** - Production-ready autonomous research stack
+> Current version: **v5.0** - Reporting & Research Automation
 
 ---
 
@@ -52,14 +52,14 @@ The v4.0 stack includes all v3.1 components plus:
 
 ## v5.0: Reporting & Research Automation
 
-### v5.1: Reporting (IN PROGRESS)
+### v5.1: Reporting (COMPLETE)
 
 - [x] Markdown report generation
-- [ ] Figure generation from results
-- [ ] Summary statistics
+- [x] Figure generation from results
+- [x] Summary statistics
 - [x] Experiment comparisons
 
-### v5.2: Paper Generation
+### v5.2: Paper Generation (PLANNED)
 
 - [ ] Automated manuscript drafting
 - [ ] Literature review integration
@@ -101,7 +101,8 @@ The v4.0 stack includes all v3.1 components plus:
 | v3.0 | 2026-04-20 | LLM generation, config, DB |
 | v3.1 | 2026-04-20 | Memory, bandits, hypothesis |
 | v4.0 | 2026-04-20 | Multi-agent, production |
-| v5.0 | TBD | Reporting, paper generation |
+| v4.1 | 2026-04-20 | CI/CD, Docker, tests |
+| v5.0 | 2026-04-20 | Reporting, figures, stats |
 
 ---
 

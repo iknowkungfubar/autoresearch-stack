@@ -3,6 +3,10 @@
 numpy>=1.24.0
 pyyaml>=6.0
 
+# Optional: Visualization (install matplotlib/seaborn for figures)
+# matplotlib>=3.7.0
+# seaborn>=0.12.0
+
 # Optional: For vector store (install chromadb for enhanced memory)
 # chromadb>=0.4.0
 

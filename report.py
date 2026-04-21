@@ -6,9 +6,24 @@ Phase 6: Reporting & Paper Generation.
 
 import json
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, TYPE_CHECKING
 from datetime import datetime
 from dataclasses import dataclass
+
+# Optional imports for figures and statistics
+if TYPE_CHECKING:
+    from figures import FigureGenerator
+    from stats import SummaryStatistics
+else:
+    try:
+        from figures import FigureGenerator
+        from stats import SummaryStatistics
+
+        FIGURES_AVAILABLE = True
+    except ImportError:
+        FIGURES_AVAILABLE = False
+        FigureGenerator = None
+        SummaryStatistics = None
 
 
 @dataclass
@@ -214,6 +229,78 @@ def generate_comparison_report(
         report.add_section(name, section)
 
     return report
+
+
+def generate_full_report(
+    experiments: List[Dict],
+    output_dir: str = "output",
+    baseline: Optional[float] = None,
+    include_figures: bool = True,
+) -> Dict[str, str]:
+    """
+    Generate full report with statistics, figures, and markdown.
+
+    Args:
+        experiments: List of experiment dictionaries
+        output_dir: Output directory for files
+        baseline: Baseline metric for improvement calculation
+        include_figures: Whether to generate figure plots
+
+    Returns:
+        Dictionary mapping file names to paths
+    """
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    saved_files = {}
+
+    # 1. Generate summary statistics
+    if SummaryStatistics and baseline is not None:
+        stats = SummaryStatistics(experiments, baseline=baseline)
+        stats_json_path = output_path / "statistics.json"
+        stats.to_json(str(stats_json_path))
+        saved_files["statistics"] = str(stats_json_path)
+
+        # Add stats to markdown report
+        stats_summary = stats.summary_text()
+    else:
+        stats_summary = None
+
+    # 2. Generate markdown report
+    report = generate_summary_report(experiments)
+
+    # Add stats section if available
+    if stats_summary:
+        report.add_section("Statistics Summary", stats_summary)
+
+    # Add figures section
+    if include_figures and FigureGenerator:
+        try:
+            gen = FigureGenerator()
+            figure_paths = gen.generate_all_figures(
+                experiments,
+                str(output_path / "figures"),
+                baseline=baseline or 1.0,
+            )
+
+            # Add figure references to markdown
+            report.add_header("Figures")
+            for name, path in figure_paths.items():
+                rel_path = Path(path).relative_to(output_path)
+                report.add_section(
+                    name.replace("_", " ").title(),
+                    f"![{name}]({rel_path})",
+                )
+                saved_files[name] = path
+        except Exception as e:
+            print(f"Warning: Could not generate figures: {e}")
+
+    # Save markdown report
+    md_path = output_path / "report.md"
+    report.save(str(md_path))
+    saved_files["report"] = str(md_path)
+
+    return saved_files
 
 
 if __name__ == "__main__":

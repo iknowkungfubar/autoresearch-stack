@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v5.0] - 2026-04-20
+
+### Added
+- **Figure Generation** (`figures.py`)
+  - `FigureGenerator` class with matplotlib integration
+  - Learning curves, success rate, metric distributions
+  - Change type performance comparison
+  - Improvement timeline plots
+  - Graceful fallback when matplotlib unavailable
+
+- **Summary Statistics** (`stats.py`)
+  - `SummaryStatistics` class for experiment analysis
+  - Convergence metrics and trend analysis
+  - Change type breakdown
+  - JSON export with summary reports
+
+- **Integrated Reporting** (`report.py`)
+  - `generate_full_report()` combining stats, figures, markdown
+  - Full experiment analysis pipeline
+
+---
+
 ## [v4.1] - 2026-04-20
 
 ### Added
