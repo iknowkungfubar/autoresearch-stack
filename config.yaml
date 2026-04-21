@@ -53,11 +53,29 @@ memory:
 # API Configuration
 api:
   # API keys should be set via environment variables:
-  # ANTHROPIC_API_KEY
-  # OPENAI_API_KEY
+  # ANTHROPIC_API_KEY, OPENAI_API_KEY, OPENROUTER_API_KEY, etc.
   # Do not put API keys here!
   api_base: null         # Custom API base URL (optional)
   timeout: 60            # Request timeout (seconds)
+
+# LLM Provider Configuration
+llm:
+  provider: "auto"       # "auto", "anthropic", "openai", "openrouter", "zen",
+                        # "azure_openai", "google_vertex", "mistral",
+                        # "ollama", "vllm", "lmstudio", "llama_cpp", "litellm"
+  model: "claude-3-5-sonnet-20241022"  # Model name (provider-specific)
+  temperature: 0.7      # Generation temperature
+  max_tokens: 4096      # Max tokens in response
+  # For local inference (Ollama, vLLM, LMStudio, etc.)
+  base_url: "http://localhost:11434"  # Local server URL
+  # For Ollama models loaded
+  ollama_model: "llama3"
+
+# Orchestrator Configuration (for multi-agent)
+orchestrator:
+  type: "langchain"    # "langchain", "crewai", "autogen", "llama_index"
+  model: "gpt-4o"      # Model for agent reasoning
+  agents: []          # List of agent configs
 
 # Logging
 logging:
