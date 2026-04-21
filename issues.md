@@ -6,57 +6,35 @@ Documenting known issues, bugs, and technical debt in the autoresearch-stack.
 
 ## Critical Issues
 
-### 1. torch Import Failure
+### 1. torch Import Failure (WORKAROUND PROVIDED)
 
 **Issue:** `librocm_smi64.so.1: cannot open shared object file`
 
-**Severity:** HIGH
+**Severity:** MEDIUM (Workaround Provided)
 
-**Description:** Torch cannot be imported due to missing ROCm library (AMD GPU support library). This affects `train_any_llm.py` and any module that imports torch.
+**Description:** Torch cannot be imported due to missing ROCm library (AMD GPU). The `train_any_llm.py` now handles this gracefully with fallback.
 
 **Workaround:** 
-- Install ROCm libraries: `apt install rocm-libs`
-- Or use CPU-only PyTorch: `pip install torch --index-url https://download.pytorch.org/whl/cpu`
+- Already handled in v3.0 with `TORCH_AVAILABLE` check
+- Use CPU-only PyTorch: `pip install torch --index-url https://download.pytorch.org/whl/cpu`
 
-**Status:** OPEN
-
----
-
-## Medium Issues
-
-### 2. Documentation Version Mismatch
-
-**Issue:** `improvements.md` still shows v3.1 as incomplete
-
-**Severity:** MEDIUM
-
-**Description:** improvements.md marks v3.1 features as incomplete even though they're shipped.
-
-**Status:** NEEDS UPDATE
+**Status:** FIXED (graceful fallback)
 
 ---
 
-### 3. Missing Sandbox Execution
+## Resolved Issues (v4.0)
 
-**Issue:** No sandboxed code execution
+### 2. Documentation Version Mismatch → FIXED
 
-**Severity:** MEDIUM  
+**Status:** RESOLVED in v4.0
 
-**Description:** Phase 4 requires sandboxed subprocess execution but not yet implemented.
+### 3. Missing Sandbox Execution → FIXED
 
-**Status:** PLANNED (Phase 5)
+**Status:** RESOLVED - sandbox.py shipped in v4.0
 
----
+### 4. Missing Checkpoint System → FIXED
 
-### 4. Missing Checkpoint System
-
-**Issue:** No checkpoint/resume for interrupted experiments
-
-**Severity:** MEDIUM
-
-**Description:** Experiments cannot resume from interruption point.
-
-**Status:** PLANNED (Phase 5)
+**Status:** RESOLVED - checkpoint.py shipped in v4.0
 
 ---
 
@@ -64,25 +42,41 @@ Documenting known issues, bugs, and technical debt in the autoresearch-stack.
 
 ### 5. ChromaDB Not Available
 
-**Issue:** Uses SimpleVectorStore fallback
-
 **Severity:** LOW
 
-**Description:** Vector search uses simple keyword matching. Could benefit from ChromaDB.
+**Description:** Vector search uses simple keyword matching. Could benefit from ChromaDB with `pip install chromadb`.
 
-**Status:** DOCUMENTED
+**Status:** OPTIONAL ENHANCEMENT
 
 ---
 
 ### 6. train_any_llm Stub
 
-**Issue:** Minimal training abstraction
-
 **Severity:** LOW
 
-**Description:** train_any_llm.py is a minimal stub. Would benefit from proper LLM training integration.
+**Description:** Minimal placeholder for actual LLM training integration.
 
-**Status:** OK (by design - placeholder)
+**Status:** OK (by design - placeholder for future integration)
+
+---
+
+### 7. Missing Test Suite
+
+**Severity:** MEDIUM
+
+**Description:** No comprehensive test coverage for critical paths.
+
+**Status:** TECHNICAL DEBT
+
+---
+
+### 8. CI/CD Pipeline Missing
+
+**Severity:** MEDIUM
+
+**Description:** No automated pipeline for testing and deployment.
+
+**Status:** TECHNICAL DEBT
 
 ---
 
@@ -90,5 +84,19 @@ Documenting known issues, bugs, and technical debt in the autoresearch-stack.
 
 | Date | Issue | Status |
 |------|------|--------|
-| 2026-04-20 | torch import | OPEN |
+| 2026-04-20 | torch import | FIXED (graceful) |
 | 2026-04-20 | documentation mismatch | FIXED |
+| 2026-04-20 | sandbox missing | FIXED |
+| 2026-04-20 | checkpoint missing | FIXED |
+| 2026-04-20 | test suite | DEBT |
+| 2026-04-20 | CI/CD | DEBT |
+
+---
+
+## Backlog
+
+| Priority | Issue | Owner |
+|----------|-------|-------|
+| LOW | Add test coverage | SDET |
+| MEDIUM | Create CI/CD pipeline | DevOps |
+| LOW | ChromaDB integration | SWE |
