@@ -1,6 +1,6 @@
 # Improvements Roadmap
 
-> Current version: **v5.2** - Paper Generation
+> Current version: **v6.1** - Self-Modification
 
 ---
 
@@ -70,11 +70,11 @@ The v4.0 stack includes all v3.1 components plus:
 
 ## v6+: Advanced Autonomy
 
-### v6.1: Self-Modification (PLANNED)
+### v6.1: Self-Modification (COMPLETE)
 
-- [ ] Meta-loop for methodology evolution
-- [ ] Automatic prompt refinement
-- [ ] Self-improving code
+- [x] Meta-loop for methodology evolution
+- [x] Automatic prompt refinement
+- [x] Self-improving code
 
 ### v6.2: Distribution (PLANNED)
 
@@ -105,6 +105,7 @@ The v4.0 stack includes all v3.1 components plus:
 | v5.0 | 2026-04-20 | Reporting, figures, stats |
 | v5.2 | 2026-04-20 | Paper generation |
 | v6.0 | 2026-04-20 | Advanced autonomy, daemon mode |
+| v6.1 | 2026-04-20 | Self-modification, meta-loop |
 
 ---
 

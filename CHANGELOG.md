@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v6.1] - 2026-04-20
+
+### Added
+- **Meta-Loop** (`metaloop.py`)
+  - `MetaLoop` class for self-improvement
+  - Prompt evolution using LLM or heuristics
+  - Hyperparameter modification proposals
+  - Pattern analysis on successful modifications
+
+- **Prompt Refinement** (`metaloop.py`)
+  - `PromptTemplate` with versioning
+  - Automatic prompt improvement based on feedback
+  - Performance tracking per prompt version
+
+- **Self-Improving Code** (`metaloop.py`)
+  - Modification tracking and history
+  - Impact recording and analysis
+  - Convergence detection
+
+---
+
 ## [v5.2] - 2026-04-20
 
 ### Added
