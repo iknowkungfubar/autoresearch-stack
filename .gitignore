@@ -8,4 +8,8 @@ logs/
 *.egg-info/
 .DS_Store
 .env
+autoresearch.log
+modifications.json
+prompts.json
+htmlcov/
 
