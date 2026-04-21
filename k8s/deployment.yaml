@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoresearch
+  labels:
+    app: autoresearch
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: autoresearch
+  template:
+    metadata:
+      labels:
+        app: autoresearch
+    spec:
+      containers:
+      - name: autoresearch
+        image: autoresearch:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ROLE
+          value: "worker"
+        - name: MASTER_HOST
+          value: "autoresearch-master"
+        resources:
+          requests:
+            cpu: "2"
+            memory: "4Gi"
+          limits:
+            cpu: "4"
+            memory: "8Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autoresearch-master
+spec:
+  selector:
+    role: master
+  ports:
+  - port: 8000
+    targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autoresearch
+spec:
+  selector:
+    app: autoresearch
+  ports:
+  - port: 80
+    targetPort: 8000
+  type: LoadBalancer

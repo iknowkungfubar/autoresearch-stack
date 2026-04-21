@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v6.2] - 2026-04-20
+
+### Added
+- **Distribution System** (`distribute.py`)
+  - `Cluster` class for multi-node management
+  - `Node` class for individual nodes (master/worker)
+  - `ResourceManager` for allocation and load balancing
+  - `CostEstimator` for cloud cost calculations
+  - AWS, GCP, Azure instance pricing
+
+- **Kubernetes Deployment** (`k8s/deployment.yaml`)
+  - K8s Deployment manifest
+  - Service configuration
+  - GPU resource support
+
+- **Docker Compose** (`docker-compose.yml`)
+  - Local multi-node cluster
+  - Master + 3 workers
+  - Resource limits
+
+### Added
+- **Multi-Node Execution** (`distribute.py`)
+  - `DistributedExecutor` for task distribution
+  - Health monitoring
+  - Task queuing
+
+---
+
 ## [v6.1] - 2026-04-20
 
 ### Added

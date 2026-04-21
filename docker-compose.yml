@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  master:
+    image: autoresearch:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - ROLE=master
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+
+  worker-1:
+    image: autoresearch:latest
+    environment:
+      - ROLE=worker
+      - MASTER_HOST=master
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    depends_on:
+      - master
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+
+  worker-2:
+    image: autoresearch:latest
+    environment:
+      - ROLE=worker
+      - MASTER_HOST=master
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    depends_on:
+      - master
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+
+  worker-3:
+    image: autoresearch:latest
+    environment:
+      - ROLE=worker
+      - MASTER_HOST=master
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    depends_on:
+      - master
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+
+networks:
+  default:
+    name: autoresearch-network

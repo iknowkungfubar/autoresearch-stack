@@ -1,6 +1,6 @@
 # Improvements Roadmap
 
-> Current version: **v6.1** - Self-Modification
+> Current version: **v6.2** - Distribution
 
 ---
 
@@ -76,12 +76,12 @@ The v4.0 stack includes all v3.1 components plus:
 - [x] Automatic prompt refinement
 - [x] Self-improving code
 
-### v6.2: Distribution (PLANNED)
+### v6.2: Distribution (COMPLETE)
 
-- [ ] Multi-node execution
-- [ ] Cloud deployment (Docker, Kubernetes)
-- [ ] Resource management
-- [ ] Cost estimation
+- [x] Multi-node execution
+- [x] Cloud deployment (Docker, Kubernetes)
+- [x] Resource management
+- [x] Cost estimation
 
 ### v6.3: Continuous Operation (COMPLETE)
 
@@ -106,6 +106,7 @@ The v4.0 stack includes all v3.1 components plus:
 | v5.2 | 2026-04-20 | Paper generation |
 | v6.0 | 2026-04-20 | Advanced autonomy, daemon mode |
 | v6.1 | 2026-04-20 | Self-modification, meta-loop |
+| v6.2 | 2026-04-20 | Distribution, multi-node |
 
 ---
 
