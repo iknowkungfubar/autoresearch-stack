@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v7.2] - 2026-04-21
+
+### Fixed
+- **Lint Cleanup** — Resolved all 131 ruff violations
+  - Removed unused imports across 15+ modules
+  - Fixed bare `except:` clauses → `except Exception:`
+  - Fixed ambiguous variable names
+  - Fixed f-strings without placeholders
+  - Fixed multi-statement lines in `data_intelligence.py`
+
+- **SecOps Audit**
+  - Confirmed no hardcoded secrets (only placeholders in docs)
+  - Confirmed no dependency vulnerabilities (`pip-audit` clean)
+  - Verified `.gitignore` covers `.env`, `.db`, `checkpoints/`, `memory/`, `logs/`
+
+- **SDD Update** — Updated System Design Document from v4.0 to v7.0
+  - Reflected actual flat module structure
+  - Added v7.1 provider/orchestrator support documentation
+  - Added microservices evolution assessment (not pursued — single-GPU tool)
+  - Updated sprint backlog and quality gates
+
+### Added
+- **CI/CD Hardening** (`.github/workflows/ci.yml`)
+  - Separate lint, security, test, build, publish jobs
+  - Ruff enforcement (removed `--exit-zero`)
+  - `pip-audit` dependency vulnerability scanning
+  - Hardcoded secrets scanning step
+  - Coverage reporting with `pytest --cov`
+  - Docker image verification step
+
+- **Test Coverage Expansion** (`tests/test_hardening.py`)
+  - 51 new tests covering providers, orchestrators, daemon, distribute, metaloop, synthetic_data, config, data_intelligence, storage
+  - Total tests: 53 → 104
+
+---
+
 ## [v7.0] - 2026-04-21
 
 ### Added
