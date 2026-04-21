@@ -30,6 +30,9 @@ from curriculum import build_curriculum, create_scheduler, AdaptiveScheduler
 from feedback import Feedback, ExperimentStatus, FailureClassification
 from storage import ExperimentDB
 from config import get_config, Config
+from memory import MemorySystem, what_been_tried
+from prioritization import PrioritizationSystem, get_prioritization
+from hypothesis import HypothesisGenerator, generate_hypothesis
 
 
 class AutonomousPipeline:
@@ -54,6 +57,19 @@ class AutonomousPipeline:
 
         # Initialize storage
         self.db = ExperimentDB("./experiments.db")
+
+        # Initialize memory system (Phase 3.1)
+        self.memory = MemorySystem(db_path="./experiments.db")
+
+        # Initialize prioritization (Phase 3.1)
+        self.prioritization = get_prioritization(strategy="ucb1")
+
+        # Initialize hypothesis generator (Phase 3.1)
+        self.hypothesis_gen = HypothesisGenerator(
+            use_llm=self.config.synthetic.use_llm,
+            provider=self.config.synthetic.model_provider,
+            model=self.config.synthetic.model_name,
+        )
 
         # State
         self.experiment_count = 0
@@ -304,7 +320,7 @@ class AutonomousPipeline:
         num_experiments = num_experiments or self.config.experiment.budget
 
         print(f"\n{'#' * 60}")
-        print(f"# AUTONOMOUS RESEARCH LOOP")
+        print(f"# AUTONOMOUS RESEARCH LOOP (v3.1)")
         print(f"{'#' * 60}")
         print(f"Max experiments: {num_experiments}")
         print(f"Time per experiment: {self.config.experiment.time_per_experiment}s")
@@ -315,6 +331,12 @@ class AutonomousPipeline:
 
         # Prepare curriculum
         scheduler = self.prepare_curriculum(data)
+
+        # Load memory from database
+        self.memory.load_from_db()
+        print(
+            f"\nMemory loaded: {len(self.memory.vector_store.experiments)} experiments"
+        )
 
         # Get baseline
         baseline = self.feedback.get_baseline()
@@ -329,23 +351,44 @@ class AutonomousPipeline:
                 print(f"\nTarget val_bpb {self.config.experiment.val_target} achieved!")
                 break
 
-            # Propose a change (stub - would use LLM in real implementation)
-            changes = [
-                ("Increase learning rate by 10%", "lr *= 1.1", "optimization"),
-                ("Decrease learning rate by 10%", "lr *= 0.9", "optimization"),
-                ("Add dropout", "dropout = 0.1", "architecture"),
-                ("Increase warmup steps", "warmup_steps *= 2", "optimization"),
-                ("Adjust weight decay", "weight_decay *= 1.5", "optimization"),
-            ]
+            # Use memory to query what has been tried
+            what_tried = self.memory.get_what_been_tried("learning rate")
 
-            change = changes[i % len(changes)]
+            # Get suggestion from prioritization
+            suggestion = self.prioritization.suggest_next(baseline)
+
+            # Generate hypothesis
+            hypothesis_list = self.hypothesis_gen.generate(
+                n=1,
+                change_type=suggestion.get("category", "optimization"),
+                memory_context=what_tried,
+            )
+
+            if hypothesis_list:
+                hypothesis = hypothesis_list[0]
+                change_desc = hypothesis.description
+                change_code = hypothesis.code_diff
+                change_type = hypothesis.change_type
+            else:
+                # Fallback
+                change_desc = "Try learning rate adjustment"
+                change_code = "config.model.learning_rate *= 1.1"
+                change_type = "optimization"
 
             # Run experiment
             result = self.run_experiment(
-                change_description=change[0],
-                change_code=change[1],
-                change_type=change[2],
+                change_description=change_desc,
+                change_code=change_code,
+                change_type=change_type,
                 baseline_val_bpb=self.best_val_bpb,
+            )
+
+            # Record to prioritization system
+            self.prioritization.record_result(
+                change=change_desc,
+                change_type=change_type,
+                val_bpb_before=result["val_bpb_before"],
+                val_bpb_after=result["val_bpb_after"],
             )
 
             # Update baseline for next experiment

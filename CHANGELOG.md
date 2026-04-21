@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v3.1] - 2026-04-20
+
+### Added
+- **Memory System** (`memory.py`)
+  - `MemorySystem` class with vector store
+  - `SimpleVectorStore` fallback (ChromaDB optional)
+  - `what_been_tried()` query function
+  - Semantic search over experiments
+  - Pattern analysis
+
+- **Prioritization** (`prioritization.py`)
+  - `BanditSelector` with UCB1, epsilon-greedy, Thompson sampling
+  - `PrioritizationSystem` for experiment selection
+  - Automatic learning from experiment history
+  - Exploration vs exploitation balancing
+
+- **Hypothesis Generation** (`hypothesis.py`)
+  - `HypothesisGenerator` class
+  - LLM-powered hypothesis proposals (with API key)
+  - Rule-based fallback templates
+  - Analysis-based hypothesis generation
+
+- **Pipeline Updates** (`autonomous_loop.py`)
+  - Integrated memory, prioritization, hypothesis
+  - v3.1 banner in output
+  - Full pipeline with intelligent proposals
+
+---
+
 ## [v3.0] - 2026-04-20
 
 ### Added

@@ -2,7 +2,7 @@
 
 > Build and ship autonomous LLM training research systems
 
-**Status:** v3.0 (Enhanced) | **License:** MIT
+**Status:** v3.1 (Enhanced with Memory) | **License:** MIT
 
 An autonomous research stack for continuously improving LLM training through automated experimentation. Inspired by [Karpathy autorearch](https://github.com/karpathy/autoresearch), designed for single-GPU research labs.
 

@@ -6,20 +6,12 @@ This document outlines the planned improvements to evolve the stack from v2 to p
 
 ---
 
-## Current State (v3.0)
+## Current State (v3.1)
 
-The v3.0 stack includes all v2 components plus:
-- `data_intelligence.py` - Corpus cleaning and noise filtering
-- `synthetic_data.py` - LLM-powered generation with Evol-Instruct
-- `curriculum.py` - Adaptive scheduling with multiple strategies
-- `feedback.py` - val_bpb reward and experiment logging
-- `train_any_llm.py` - Training abstraction
-- `autonomous_loop.py` - Full pipeline orchestration
-- `config.py` - Environment-based configuration
-- `config.yaml` - Configuration template
-- `storage.py` - SQLite experiment database
-- `agent.md` - RALPH agent rules
-- `prompt.md` - Loop instructions
+The v3.1 stack includes all v3.0 components plus:
+- `memory.py` - Vector store with search
+- `prioritization.py` - Bandit-based experiment selection
+- `hypothesis.py` - LLM-driven hypothesis generation
 
 ---
 
