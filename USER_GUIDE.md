@@ -2,7 +2,7 @@
 
 > Complete guide to using the autonomous LLM training research system
 
-**Version:** 6.2 | **Status:** Production-Ready
+**Version:** 7.2 | **Status:** Production-Ready
 
 ---
 
@@ -48,7 +48,7 @@ That's it! Your first autonomous experiment loop is running.
 
 ### Requirements
 
-- Python 3.10+
+- Python 3.11+
 - Linux/macOS (Windows via WSL)
 - 8GB RAM minimum (16GB recommended)
 - GPU recommended for training
@@ -484,6 +484,8 @@ autoresearch-stack/
 ├── prioritization.py    # Bandits
 ├── hypothesis.py       # Hypothesis generation
 ├── multi_agent.py      # Agent system
+├── providers.py        # LLM provider integrations
+├── orchestrators.py    # Agentic framework integrations
 ├── sandbox.py          # Safe execution
 ├── checkpoint.py       # Persistence
 ├── monitor.py          # Display
@@ -494,6 +496,12 @@ autoresearch-stack/
 ├── paper.py            # Paper generation
 ├── peer_review.py      # Review simulation
 ├── distribute.py       # Distribution
+├── metaloop.py         # Self-modification
+├── data_intelligence.py # Corpus cleaning
+├── synthetic_data.py   # Synthetic generation
+├── curriculum.py       # Adaptive scheduling
+├── feedback.py         # Experiment logging
+├── train_any_llm.py    # Training abstraction
 │
 ├── k8s/                 # Kubernetes configs
 ├── docker-compose.yml   # Docker cluster
@@ -501,10 +509,15 @@ autoresearch-stack/
 ├── setup.py             # Package setup
 ├── requirements.txt     # Dependencies
 │
-├── tests/               # Test suite
+├── tests/               # Test suite (104 tests)
+│   ├── test_core.py
+│   ├── test_new_modules.py
+│   └── test_hardening.py
 ├── README.md            # Overview
 ├── CHANGELOG.md         # Version history
-└── USER_GUIDE.md        # This guide
+├── SDD.md               # System design doc
+├── USER_GUIDE.md        # This guide
+└── .github/workflows/   # CI/CD pipeline
 ```
 
 ---

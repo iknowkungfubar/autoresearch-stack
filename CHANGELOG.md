@@ -338,20 +338,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Planned (v3.1)
-- Memory system with ChromaDB vector store
-- Semantic search over experiments
-- Hypothesis generation
-
-### Planned (v3.2)
-- Multi-agent architecture
-- Specialized agents: Research, Hypothesis, Execution, Evaluation
-
-### Planned (v4.0)
-- Production hardening
-- Sandboxed execution
-- Checkpoint system
-
-### Planned (v5.0)
-- Reporting & visualization
-- Paper generation (AI Scientist-style)
+*No unreleased features. All previously planned features shipped through v7.2.*

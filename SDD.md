@@ -8,7 +8,7 @@
 
 The Autonomous Research Stack is a production-ready system for continuously improving LLM training through automated experimentation. It implements the "Autonomously Improve Itself" pattern from Karpathy's autorearch.
 
-**Current Status:** `STABLE` | `USABLE` | **53 tests passing**
+**Current Status:** `STABLE` | `USABLE` | **104 tests passing**
 
 ---
 
@@ -56,7 +56,7 @@ The system is implemented as a **Modular Monolith** with clear internal boundari
 | Storage | SQLite | experimentDB |
 | Vector Store | SimpleVectorStore (ChromaDB optional) | graceful fallback |
 | API | Anthropic/OpenAI/13+ providers | optional, lazy-loaded |
-| Testing | pytest | 53 tests |
+| Testing | pytest | 104 tests |
 | Linting | ruff | all checks passing |
 | Container | Docker + Docker Compose | multi-node cluster |
 | Orchestration | LangChain/CrewAI/AutoGen/LlamaIndex | optional integrations |
@@ -123,7 +123,8 @@ autoresearch-stack/
 │
 └── tests/
     ├── test_core.py          # Core module tests
-    └── test_new_modules.py   # v5.0+ module tests
+    ├── test_new_modules.py   # v5.0+ module tests
+    └── test_hardening.py     # v7.2 hardening tests (51 tests)
 ```
 
 ---
@@ -172,14 +173,14 @@ autoresearch-stack/
 - [x] `.gitignore` covers `.env`, `.db`, `checkpoints/`, `memory/`, `logs/`
 
 ### Quality Gate (QA) ✅
-- [x] All 53 tests passing
+- [x] All 104 tests passing
 - [x] All modules import without error
 - [x] `autonomous_loop.py --prepare-only` runs
 - [x] `ruff check .` passes with zero errors
 
 ### Documentation Gate ✅
 - [x] README reflects v7.0
-- [x] CHANGELOG updated through v7.0
+- [x] CHANGELOG updated through v7.2
 - [x] SDD reflects current architecture
 - [x] issues.md tracks active debt
 
@@ -205,16 +206,16 @@ autoresearch-stack/
 | Multi-provider support | DONE |
 | Multi-orchestrator support | DONE |
 
-### Sprint 7.2: Hardening (IN PROGRESS)
+### Sprint 7.2: Hardening (COMPLETE ✅)
 
 | Task | Priority | Status |
 |-----|----------|--------|
 | SDD update | HIGH | DONE |
 | Lint cleanup (ruff) | HIGH | DONE |
 | Security audit (SecOps) | HIGH | DONE |
-| CI/CD hardening | HIGH | IN PROGRESS |
-| Test coverage expansion | HIGH | IN PROGRESS |
-| Issues/changelog update | MEDIUM | PENDING |
+| CI/CD hardening | HIGH | DONE |
+| Test coverage expansion (51 new tests) | HIGH | DONE |
+| Issues/changelog update | MEDIUM | DONE |
 
 ---
 
@@ -223,7 +224,7 @@ autoresearch-stack/
 For any feature to be merged:
 
 - [x] **Code compiles**: `python -m py_compile *.py`
-- [x] **Tests pass**: `pytest tests/ -v` (53/53)
+- [x] **Tests pass**: `pytest tests/ -v` (104/104)
 - [x] **Lint passes**: `ruff check .` (0 errors)
 - [x] **Docs updated**: README, CHANGELOG, SDD current
 - [x] **No secrets**: No API keys in code
@@ -238,9 +239,9 @@ For any feature to be merged:
 | torch fallback | MEDIUM | FIXED (graceful) |
 | ChromaDB optional | LOW | OK (simple fallback) |
 | train_any_llm stub | LOW | OK (by design) |
-| CI/CD needs security scan | MEDIUM | IN PROGRESS |
-| Test coverage for providers/orchestrators | MEDIUM | IN PROGRESS |
-| `--exit-zero` in ruff CI | MEDIUM | IN PROGRESS |
+| CI/CD needs security scan | MEDIUM | FIXED (v7.2) |
+| Test coverage for providers/orchestrators | MEDIUM | FIXED (v7.2 — 51 new tests) |
+| `--exit-zero` in ruff CI | MEDIUM | FIXED (v7.2 — enforced) |
 
 See `issues.md` for full list.
 
@@ -263,4 +264,4 @@ Rationale:
 
 ---
 
-*Status: v7.0 Production Ready — Sprint 7.2 Hardening in progress*
+*Status: v7.0 Production Ready — Sprint 7.2 Hardening COMPLETE*

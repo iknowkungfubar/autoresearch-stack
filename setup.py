@@ -15,7 +15,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="autoresearch-stack",
-    version="4.0.0",
+    version="7.2.0",
     author="Autoresearch Team",
     author_email="turin@autoresearch.io",
     description="Autonomous LLM training research stack",

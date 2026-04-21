@@ -8,7 +8,7 @@ An autonomous research stack for continuously improving LLM training through aut
 
 ---
 
-## What's Included (v7.0)
+## What's Included (v7.2)
 
 | Component | File | Description |
 |-----------|------|-------------|
@@ -58,6 +58,8 @@ An autonomous research stack for continuously improving LLM training through aut
 | v6.1 | Self-modification, meta-loop | Shipped |
 | v6.2 | Distribution, multi-node, K8s | Shipped |
 | v7.0 | Production ready, peer-review, user guide | Shipped |
+| v7.1 | Multi-provider, multi-orchestrator support | Shipped |
+| v7.2 | Hardening: CI/CD, 104 tests, lint, security audit | Shipped |
 
 ---
 

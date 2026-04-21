@@ -1,17 +1,20 @@
 # Improvements Roadmap
 
-> Current version: **v7.1** - Multi-Provider Support
+> Current version: **v7.2** - Hardening Sprint (CI/CD, tests, lint)
 
 ---
 
-## Current State (v4.0)
+## Current State (v7.2)
 
-The v4.0 stack includes all v3.1 components plus:
-- `multi_agent.py` - Specialized agent system
-- `sandbox.py` - Safe code execution
-- `checkpoint.py` - State persistence
-- `monitor.py` - Real-time status display
-- `report.py` - Markdown report generation
+The v7.2 stack includes all v7.0 components plus hardening:
+- `providers.py` - 13+ LLM provider integrations
+- `orchestrators.py` - 6 agentic framework integrations
+- `peer_review.py` - Review simulation
+- `metaloop.py` - Self-modification
+- `daemon.py` - Continuous operation
+- `distribute.py` - Multi-node cluster
+- CI/CD pipeline with lint enforcement, security scan, coverage
+- 104 tests, 0 lint errors
 
 ---
 
@@ -109,6 +112,7 @@ The v4.0 stack includes all v3.1 components plus:
 | v6.2 | 2026-04-20 | Distribution, multi-node |
 | v7.0 | 2026-04-21 | Production ready (peer-review, user guide) |
 | v7.1 | 2026-04-21 | Multi-provider, multi-orchestrator support |
+| v7.2 | 2026-04-21 | Hardening: CI/CD, 104 tests, lint cleanup |
 
 ---
 
