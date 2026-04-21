@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v7.0] - 2026-04-21
+
+### Added
+- **Peer Review Simulation** (`peer_review.py`)
+  - `PeerReviewSimulator` class for paper review
+  - Multiple reviewer simulation with different profiles
+  - Review aspects: originality, technical quality, clarity, etc.
+  - Verdict generation: Accept, Minor Revision, Major Revision, Reject
+  - Consensus calculation and report generation
+
+- **User Guide** (`USER_GUIDE.md`)
+  - Comprehensive step-by-step instructions
+  - Quick start in 5 minutes
+  - Installation, configuration, usage guides
+  - Troubleshooting section
+  - Project structure overview
+
+---
+
 ## [v6.2] - 2026-04-20
 
 ### Added

@@ -1,6 +1,6 @@
 # Improvements Roadmap
 
-> Current version: **v6.2** - Distribution
+> Current version: **v7.0** - Production Ready
 
 ---
 
@@ -64,7 +64,7 @@ The v4.0 stack includes all v3.1 components plus:
 - [x] Automated manuscript drafting
 - [x] Literature review integration
 - [x] Citation management
-- [ ] Peer-review simulation
+- [x] Peer-review simulation
 
 ---
 
@@ -107,6 +107,7 @@ The v4.0 stack includes all v3.1 components plus:
 | v6.0 | 2026-04-20 | Advanced autonomy, daemon mode |
 | v6.1 | 2026-04-20 | Self-modification, meta-loop |
 | v6.2 | 2026-04-20 | Distribution, multi-node |
+| v7.0 | 2026-04-21 | Production ready (peer-review, user guide) |
 
 ---
 
