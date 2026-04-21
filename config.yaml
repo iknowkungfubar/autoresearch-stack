@@ -1,0 +1,73 @@
+# Autonomous Research Stack Configuration
+# --------------------------------------
+# This file defines the experiment configuration.
+# Environment variables override these values.
+# API keys should be set via environment variables, not here.
+
+# Experiment Settings
+experiment:
+  budget: 500              # Maximum number of experiments
+  time_per_experiment: 300 # Seconds per experiment (5 min)
+  val_target: 0.95         # Target val_bpb to achieve
+  max_retries: 3          # Max retries per experiment
+
+# Model Settings
+model:
+  size: "124M"            # Model size (e.g., "124M", "350M")
+  vocab_size: 32768       # Vocabulary size
+  n_layer: 12             # Number of layers
+  n_head: 8              # Number of attention heads
+  n_embd: 768            # Embedding dimension
+  sequence_len: 2048      # Maximum sequence length
+  learning_rate: 0.0001   # Learning rate
+  batch_size: 32          # Batch size
+  weight_decay: 0.01      # Weight decay
+  warmup_steps: 100       # Warmup steps
+
+# Synthetic Data Generation
+synthetic:
+  n_samples: 200          # Number of synthetic samples
+  n_model_samples: 10    # Model-in-the-loop samples
+  use_llm: false         # Use LLM for generation (requires API key)
+  model_provider: "anthropic"  # "anthropic" or "openai"
+  model_name: "claude-sonnet-4-20250514"
+  temperature: 0.9        # Generation temperature
+  quality_threshold: 0.8 # Quality filter threshold
+  difficulty_scaling: true  # Use Evol-Instruct scaling
+
+# Curriculum Learning
+curriculum:
+  enabled: true           # Enable curriculum learning
+  stages: 3              # Number of difficulty stages
+  difficulty_metric: "length"  # "length", "perplexity", "complexity", "hybrid"
+  adaptive: false        # Use adaptive scheduling
+  warmup_ratio: 0.1      # Warmup proportion (0.0-1.0)
+
+# Memory System
+memory:
+  enabled: false          # Enable vector memory
+  vector_store: "chroma"  # Vector store backend
+  persist_dir: "./memory" # Persistence directory
+  semantic_search: true   # Enable semantic search
+
+# API Configuration
+api:
+  # API keys should be set via environment variables:
+  # ANTHROPIC_API_KEY
+  # OPENAI_API_KEY
+  # Do not put API keys here!
+  api_base: null         # Custom API base URL (optional)
+  timeout: 60            # Request timeout (seconds)
+
+# Logging
+logging:
+  level: "INFO"           # Log level: DEBUG, INFO, WARNING, ERROR
+  format: "json"         # Log format: "json" or "text"
+  log_dir: "./logs"      # Log directory
+  experiment_log: "./experiments.jsonl"  # Experiment log file
+
+# Paths
+paths:
+  data_dir: "./data"     # Data directory
+  output_dir: "./output" # Output directory
+  checkpoint_dir: "./checkpoints"  # Checkpoint directory
