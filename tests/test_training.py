@@ -69,7 +69,6 @@ class TestNumpyDemoModel:
         from train_any_llm import NumpyDemoModel
 
         model = NumpyDemoModel(learning_rate=0.01)
-        original_w = float(model.w.item())
         model.load_state_dict({"w": 0.5, "b": 0.1, "lr": 0.001})
         assert float(model.w) == 0.5
         assert float(model.b) == 0.1
