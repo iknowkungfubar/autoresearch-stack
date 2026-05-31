@@ -17,7 +17,7 @@ try:
     NUMPY_AVAILABLE = True
 except ImportError:
     NUMPY_AVAILABLE = False
-    np = None
+    np = None  # type: ignore[assignment]
 
 try:
     from scipy import stats as scipy_stats
@@ -138,8 +138,8 @@ class SummaryStatistics:
                 stats.mean_time_seconds = sum(times) / len(times)
 
         # Change type breakdown
-        type_counts = defaultdict(int)
-        type_success = defaultdict(int)
+        type_counts: dict[str, int] = defaultdict(int)
+        type_success: dict[str, int] = defaultdict(int)
 
         for e in self.experiments:
             ctype = e.get("change_type", "unknown")

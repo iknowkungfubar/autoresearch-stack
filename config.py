@@ -11,7 +11,7 @@ import os
 import json
 import yaml
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Any
 from dataclasses import dataclass, field
 
 
@@ -172,7 +172,7 @@ class Config:
 
     def to_dict(self) -> dict:
         """Convert config to dictionary (hides API keys)."""
-        d = {}
+        d: dict[str, Any] = {}
         for section in [
             "experiment",
             "model",

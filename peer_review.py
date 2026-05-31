@@ -380,7 +380,7 @@ class PeerReviewSimulator:
             return {}
 
         # Count verdicts
-        verdicts = {}
+        verdicts: dict[str, int] = {}
         for r in reviews:
             v = r.verdict.value
             verdicts[v] = verdicts.get(v, 0) + 1

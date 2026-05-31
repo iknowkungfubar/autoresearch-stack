@@ -15,14 +15,21 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="autoresearch-stack",
-    version="7.2.0",
+    version="7.3.0",
     author="Autoresearch Team",
     author_email="turin@autoresearch.io",
-    description="Autonomous LLM training research stack",
+    description="Autonomous LLM training research stack - build and ship autonomous research systems",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/iknowkungfubar/autoresearch-stack",
-    packages=find_packages(),
+    packages=find_packages(include=["autoresearch", "autoresearch.*"]),
+    py_modules=[
+        "autonomous_loop", "config", "data_intelligence", "synthetic_data",
+        "curriculum", "feedback", "storage", "memory", "prioritization",
+        "hypothesis", "providers", "orchestrators", "sandbox", "checkpoint",
+        "monitor", "report", "figures", "stats", "paper", "peer_review",
+        "metaloop", "multi_agent", "distribute", "daemon", "train_any_llm",
+    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Science/Research",

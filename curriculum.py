@@ -47,7 +47,7 @@ class AdaptiveScheduler:
 
     def __init__(
         self,
-        curriculum: Dict[str, List[str]],
+        curriculum: Dict[str, List[str]] = {},
         strategy: str = "linear",
         warmup_ratio: float = 0.1,
         window_size: int = 50,
@@ -272,7 +272,7 @@ def build_curriculum(
     if custom_bins:
         # Use custom bins
         stage_names = ["easy", "medium", "hard"]
-        curriculum = {s: [] for s in stage_names[:stages]}
+        curriculum: dict[str, list[str]] = {s: [] for s in stage_names[:stages]}
 
         for text, score in scored:
             # Find appropriate bin

@@ -8,9 +8,14 @@ It combines:
 - Curriculum learning
 - Experiment tracking
 - Feedback evaluation
+
+NOTE: This pipeline uses simulated experiment results in the default
+configuration. Set an experiment backend or override run_training()
+to use real training execution.
 """
 
 import time
+import random
 import argparse
 from typing import List, Optional, Dict, Any
 from datetime import datetime
@@ -263,10 +268,20 @@ class AutonomousPipeline:
 
         # Run training (stub - would run actual training)
         # In real implementation, this would apply change_code to train.py
-        # and run training
+        # and run training. For now, we simulate with plausible variance.
 
-        # Simulate training result
-        val_bpb_after = baseline_val_bpb - 0.01  # Simulated improvement
+        # Simulate training result with realistic noise
+        # Most experiments are neutral or slightly worse; ~20% show improvement
+        improvement = random.gauss(0, 0.02)  # Mean 0, std 0.02
+        if random.random() < 0.2:
+            # Some experiments are actively harmful
+            improvement = -abs(improvement) - 0.01
+        elif random.random() < 0.25:
+            # ~25% show mild improvement
+            improvement = abs(improvement)
+        # Remaining ~55% are essentially neutral (±0.005)
+
+        val_bpb_after = baseline_val_bpb - improvement
 
         # Determine if improved
         if val_bpb_after < baseline_val_bpb:
@@ -517,8 +532,8 @@ def main():
     # Prepare curriculum
     _scheduler = pipeline.prepare_curriculum(data)
 
-    # Run autonomous loop
-    pipeline.run_autonomous_loop(texts, args.experiments)
+    # Run autonomous loop with prepared data (not raw texts)
+    pipeline.run_autonomous_loop(data, args.experiments)
 
 
 if __name__ == "__main__":

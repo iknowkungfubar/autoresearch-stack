@@ -5,6 +5,7 @@ Phase 6.1: Self-Modification.
 """
 
 import json
+import os
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 from datetime import datetime
@@ -214,7 +215,13 @@ class MetaLoop:
 
     def _evolve_with_llm(self, prompt: str, feedback: str) -> str:
         """Evolve prompt using LLM."""
-        client = Anthropic()
+        api_key = os.getenv("ANTHROPIC_API_KEY")
+        if not api_key:
+            raise ValueError(
+                "ANTHROPIC_API_KEY required for LLM prompt evolution. "
+                "Set the environment variable and try again."
+            )
+        client = Anthropic(api_key=api_key)
 
         system = """You are an expert at improving prompts for autonomous research agents.
 Given the current prompt and feedback, propose an improved version.
@@ -266,7 +273,7 @@ Provide the improved prompt:"""
             else:
                 new_value = current_value * 0.9
         else:
-            new_value = str(current_value)
+            new_value = str(current_value)  # type: ignore[assignment]
 
         mod = Modification(
             id=f"mod_{len(self.modifications) + 1}",
@@ -321,14 +328,13 @@ Provide the improved prompt:"""
             return {"patterns": [], "insights": []}
 
         # Group by type
-        by_type = {}
+        by_type: dict[str, list[float]] = {}
         for mod in successful:
             t = mod.type.value
             if t not in by_type:
                 by_type[t] = []
-            by_type[t].append(mod.actual_impact)
-
-        # Calculate average impact
+            if mod.actual_impact is not None:
+                by_type[t].append(mod.actual_impact)
         avg_impact = {}
         for t, impacts in by_type.items():
             avg_impact[t] = sum(impacts) / len(impacts)
@@ -367,8 +373,8 @@ Provide the improved prompt:"""
         if self.iteration > 1:
             prev_best = self.get_successful_modifications()
             if prev_best:
-                best_impact = max(m.actual_impact for m in prev_best)
-                if best_impact < self.config.min_improvement:
+                impacts = [m.actual_impact for m in prev_best if m.actual_impact is not None]
+                if not impacts or max(impacts) < self.config.min_improvement:
                     return {
                         "status": "converged",
                         "iteration": self.iteration,

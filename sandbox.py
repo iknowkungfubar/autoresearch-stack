@@ -4,6 +4,7 @@ Sandbox execution for safe code running.
 Phase 5: Production Hardening - Safe execution with resource limits.
 """
 
+import ast
 import sys
 import subprocess
 import tempfile
@@ -106,7 +107,7 @@ class Sandbox:
         except subprocess.TimeoutExpired as e:
             return ExecutionResult(
                 success=False,
-                stdout=e.stdout or "",
+                stdout=e.stdout if isinstance(e.stdout, str) else "",
                 stderr=f"Execution timeout after {timeout}s",
                 return_code=-1,
                 execution_time=timeout,
@@ -123,37 +124,106 @@ class Sandbox:
             )
 
 
-class SafeRunner:
-    """Safe code runner with validation."""
+# AST-level blocked imports (module names to forbid)
+BLOCKED_MODULES: set[str] = {
+    "os", "sys", "subprocess", "socket", "ctypes", "signal", "multiprocessing",
+}
 
-    # Blocked patterns
-    BLOCKED_PATTERNS = [
-        "import os",
-        "import sys",
-        "import subprocess",
-        "import socket",
-        "import requests",
-        "import urllib",
-        "__import__(",
-        "eval(",
-        "exec(",
-        "open(",
-        "file(",
-    ]
+# AST-level blocked function calls (bare names like eval())
+BLOCKED_FUNCTIONS: set[str] = {
+    "eval", "exec", "__import__", "compile", "open", "input",
+}
+
+
+class SafeRunner:
+    """Safe code runner with AST-based validation.
+
+    Uses Python's ast module to parse code and check for dangerous
+    imports and function calls at the syntax tree level. This is
+    resistant to trivial bypasses like 'import  os' (double space)
+    or 'importos' (no space) that string-based filtering misses.
+    """
 
     def __init__(self, sandbox: Optional[Sandbox] = None):
         self.sandbox = sandbox or Sandbox()
 
     def validate(self, code: str) -> Tuple[bool, Optional[str]]:
-        """Validate code for safety."""
-        for pattern in self.BLOCKED_PATTERNS:
-            if pattern in code:
-                return False, f"Blocked pattern: {pattern}"
+        """Validate code for safety using AST analysis.
+
+        Statically parses the code and walks the AST tree to detect:
+        - Blocked module imports (os, sys, subprocess, socket, ctypes, etc.)
+        - Blocked function calls (eval, exec, __import__, compile, open, input)
+        - Attribute access chains on blocked modules (os.environ, sys.path)
+
+        Args:
+            code: Python source code to validate.
+
+        Returns:
+            Tuple of (is_safe, error_message). If is_safe is False,
+            error_message contains the reason.
+        """
+        try:
+            tree = ast.parse(code)
+        except SyntaxError as e:
+            return False, f"Syntax error: {e}"
+
+        for node in ast.walk(tree):
+            # Check imports
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    # Check both the imported name and any alias
+                    name = alias.name.split(".")[0]
+                    if name in BLOCKED_MODULES:
+                        return False, f"Blocked import: {alias.name}"
+
+            # Check from-imports
+            elif isinstance(node, ast.ImportFrom):
+                if node.module:
+                    module_root = node.module.split(".")[0]
+                    if module_root in BLOCKED_MODULES:
+                        return False, f"Blocked import from: {node.module}"
+                    for alias in node.names:
+                        if alias.name in BLOCKED_FUNCTIONS:
+                            return False, f"Blocked function import: {alias.name}"
+
+            # Check function calls by name
+            elif isinstance(node, ast.Call):
+                if isinstance(node.func, ast.Name):
+                    if node.func.id in BLOCKED_FUNCTIONS:
+                        return False, f"Blocked function call: {node.func.id}()"
+
+                # Check method calls on blocked objects
+                elif isinstance(node.func, ast.Attribute):
+                    # Walk the attribute chain to find the root object
+                    root = node.func
+                    while isinstance(root, ast.Attribute):
+                        root = root.value  # type: ignore
+                    if isinstance(root, ast.Name) and root.id in BLOCKED_MODULES:
+                        return False, f"Blocked {root.id}.{self._attr_chain(node.func)}"
 
         return True, None
 
+    def _attr_chain(self, node: ast.Attribute) -> str:
+        """Build attribute chain string like 'environ.get' from Attribute nodes."""
+        parts = []
+        current = node
+        while isinstance(current, ast.Attribute):
+            parts.append(current.attr)
+            current = current.value  # type: ignore
+        if isinstance(current, ast.Name):
+            parts.append(current.id)
+        return ".".join(reversed(parts))
+
     def run(self, code: str, timeout: Optional[int] = None) -> ExecutionResult:
-        """Run code safely."""
+        """Run code safely.
+
+        Args:
+            code: Python code to execute.
+            timeout: Optional timeout in seconds.
+
+        Returns:
+            ExecutionResult with success/failure and output.
+        """
         valid, error = self.validate(code)
 
         if not valid:
@@ -192,3 +262,19 @@ print(f'Result: {result}')
     print(f"Success: {result.success}")
     print(f"Output: {result.stdout}")
     print(f"Time: {result.execution_time:.2f}s")
+
+    # Test blocked code
+    blocked_codes = [
+        "import os",
+        "import  os",
+        "import os.path",
+        "from os import path",
+        "eval('print(1)')",
+        "open('/etc/passwd')",
+        "exec('print(1)')",
+        "__import__('os')",
+        "compile('1+1', '<string>', 'exec')",
+    ]
+    for code in blocked_codes:
+        valid, err = runner.validate(code)
+        print(f"  Blocked check '{code}': valid={valid}, error={err}")

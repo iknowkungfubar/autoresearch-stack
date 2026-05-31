@@ -120,7 +120,7 @@ class SyntheticGenerator:
         difficulty: str,
     ) -> GenerationResult:
         """Generate using templates (no API needed)."""
-        prompts = []
+        prompts: list = []
 
         difficulty_list = self._get_difficulty_list(difficulty)
 
@@ -151,7 +151,7 @@ class SyntheticGenerator:
         quality_threshold: float,
     ) -> GenerationResult:
         """Generate using LLM API."""
-        prompts = []
+        prompts: list = []
 
         # Try each topic and difficulty
         batch_size = min(10, n)
@@ -377,7 +377,7 @@ def generate_synthetic(
 def model_in_the_loop_generate(
     model: Any = None,
     tokenizer: Any = None,
-    prompts: List[str] = None,
+    prompts: Optional[List[str]] = None,
     n_samples: int = 10,
 ) -> List[str]:
     """Generate data with model in the loop.

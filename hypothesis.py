@@ -264,22 +264,33 @@ class HypothesisGenerator:
         if change_type is None:
             change_type = random.choice(list(ChangeType._value2member_map_.keys()))
 
-        change_type_enum = ChangeType._value2member_map_.get(
-            change_type, ChangeType.OPTIMIZATION
-        )
+        # Convert string to ChangeType enum
+        try:
+            ct = ChangeType(change_type)
+        except ValueError:
+            ct = ChangeType.OPTIMIZATION
 
         if self.use_llm and self.api_key:
-            return self._generate_with_llm(n, change_type_enum, memory_context)
+            result = self._generate_with_llm(n, ct.value, memory_context)
         else:
-            return self._generate_templates(n, change_type_enum)
+            result = self._generate_templates(n, ct.value)
+
+        self.stats["total_generated"] += len(result)
+        return result
 
     def _generate_templates(
         self,
         n: int,
-        change_type: ChangeType,
+        change_type: str,
     ) -> List[Hypothesis]:
         """Generate from templates."""
-        category_dict = HYPOTHESIS_TEMPLATES.get(change_type, {})
+        # Convert string to ChangeType enum for dict lookup
+        try:
+            ct = ChangeType(change_type)
+        except ValueError:
+            ct = ChangeType.OPTIMIZATION
+
+        category_dict = HYPOTHESIS_TEMPLATES.get(ct, {})
 
         if not category_dict:
             # Fallback to optimization
@@ -304,7 +315,7 @@ class HypothesisGenerator:
     def _generate_with_llm(
         self,
         n: int,
-        change_type: ChangeType,
+        change_type: str,
         memory_context: Optional[List[Dict]],
     ) -> List[Hypothesis]:
         """Generate using LLM."""
@@ -313,7 +324,7 @@ class HypothesisGenerator:
 Generate experimental hypotheses that could improve val_bpb.
 Output ONLY a JSON array of objects with: change, description, change_type, expected_impact, reasoning"""
 
-        user_prompt = f"""Generate {n} hypotheses for {change_type.value}.
+        user_prompt = f"""Generate {n} hypotheses for {change_type}.
 Prioritize high-impact changes based on training dynamics.
 """
 
@@ -332,6 +343,9 @@ Prioritize high-impact changes based on training dynamics.
         except Exception as e:
             print(f"LLM generation failed: {e}")
             return self._generate_templates(n, change_type)
+
+        # Fallback for unknown providers
+        return self._generate_templates(n, change_type)
 
     def _call_anthropic(self, system: str, user: str, n: int) -> List[Hypothesis]:
         """Call Anthropic API."""
@@ -374,7 +388,7 @@ Prioritize high-impact changes based on training dynamics.
             pass
 
         # Fallback
-        return self._generate_templates(n, ChangeType.OPTIMIZATION)
+        return self._generate_templates(n, ChangeType.OPTIMIZATION.value)
 
     def _call_openai(self, system: str, user: str, n: int) -> List[Hypothesis]:
         """Call OpenAI API."""
@@ -417,7 +431,7 @@ Prioritize high-impact changes based on training dynamics.
         except json.JSONDecodeError:
             pass
 
-        return self._generate_templates(n, ChangeType.OPTIMIZATION)
+        return self._generate_templates(n, ChangeType.OPTIMIZATION.value)
 
     def generate_from_analysis(
         self,
@@ -463,7 +477,7 @@ Prioritize high-impact changes based on training dynamics.
             )
         else:
             # General optimization
-            return random.choice(self._generate_templates(1, ChangeType.OPTIMIZATION))
+            return random.choice(self._generate_templates(1, ChangeType.OPTIMIZATION.value))
 
 
 def generate_hypothesis(

@@ -12,6 +12,7 @@ Phase 7.1: Multi-Provider Support.
 import os
 import time
 import logging
+import requests
 from abc import ABC, abstractmethod
 from typing import Dict, Any, List, Optional, Union
 from dataclasses import dataclass, field
@@ -524,7 +525,6 @@ class ZenProvider(BaseLLMProvider):
         **kwargs,
     ) -> LLMResponse:
         """Generate completion."""
-        import requests
 
         start = time.time()
         api_key = self.api_key or os.getenv("ZEN_API_KEY")
@@ -840,7 +840,6 @@ class OllamaProvider(BaseLLMProvider):
         **kwargs,
     ) -> LLMResponse:
         """Generate completion."""
-        import requests
 
         start = time.time()
         base_url = self.base_url or "http://localhost:11434"
@@ -882,7 +881,6 @@ class OllamaProvider(BaseLLMProvider):
 
     def list_models(self) -> List[str]:
         """List available models."""
-        import requests
 
         try:
             response = requests.get(f"{self.base_url}/api/tags", timeout=10)
@@ -912,7 +910,6 @@ class LMStudioProvider(BaseLLMProvider):
         **kwargs,
     ) -> LLMResponse:
         """Generate completion."""
-        import requests
 
         start = time.time()
         base_url = self.base_url or "http://localhost:1234/v1"
@@ -975,7 +972,6 @@ class VLLMProvider(BaseLLMProvider):
         **kwargs,
     ) -> LLMResponse:
         """Generate completion."""
-        import requests
 
         start = time.time()
         base_url = self.base_url or "http://localhost:8000/v1"
@@ -1174,7 +1170,6 @@ class TextGenWebUIProvider(BaseLLMProvider):
         **kwargs,
     ) -> LLMResponse:
         """Generate completion."""
-        import requests
 
         start = time.time()
         base_url = self.base_url or "http://localhost:5000"

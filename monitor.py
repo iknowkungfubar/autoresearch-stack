@@ -204,7 +204,7 @@ class ProgressBar:
     def draw(self, current: int, total: int, prefix: str = ""):
         """Draw progress bar."""
         if total == 0:
-            percent = 0
+            percent: float = 0.0
         else:
             percent = current / total
 

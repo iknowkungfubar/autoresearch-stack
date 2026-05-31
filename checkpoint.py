@@ -269,6 +269,7 @@ if __name__ == "__main__":
 
     # Load checkpoint
     ckpt = mgr.load(ckpt_id)
+    assert ckpt is not None and ckpt.experiment_checkpoint is not None
     print(f"Loaded: val_bpb={ckpt.experiment_checkpoint.val_bpb}")
 
     # Save completion

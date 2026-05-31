@@ -62,7 +62,7 @@ class DaemonConfig:
     max_restart_attempts: int = 3
     restart_cooldown: int = 300  # seconds between restarts
     experiment_batch_size: int = 10
-    run_on_start: Callable = None  # Function to run on start
+    run_on_start: Optional[Callable] = None  # Function to run on start
     stop_on_failure: bool = True
 
 
@@ -196,7 +196,7 @@ class Daemon:
         self.logger.info(f"PID: {os.getpid()}")
 
         # Run on start if configured
-        if self.config.run_on_start:
+        if self.config.run_on_start is not None:
             try:
                 self.config.run_on_start()
             except Exception as e:

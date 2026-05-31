@@ -120,8 +120,8 @@ class ExperimentDB:
         notes: Optional[str] = None,
     ):
         """Update experiment with results."""
-        updates = []
-        values = []
+        updates: list[str] = []
+        values: list = []
 
         if val_bpb_after is not None:
             updates.append("val_bpb_after = ?")
@@ -184,7 +184,7 @@ class ExperimentDB:
     ) -> List[Dict]:
         """Get experiments with optional filtering."""
         query = "SELECT * FROM experiments"
-        params = []
+        params: list = []
 
         if status:
             query += " WHERE status = ?"

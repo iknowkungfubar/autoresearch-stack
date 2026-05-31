@@ -13,7 +13,7 @@ from dataclasses import dataclass
 try:
     import numpy as np
 except ImportError:
-    np = None
+    np = None  # type: ignore[assignment]
 
 # Optional matplotlib import (graceful fallback)
 try:
@@ -27,7 +27,7 @@ try:
 except ImportError:
     MATPLOTLIB_AVAILABLE = False
     mplt = None
-    plt = None
+    plt = None  # type: ignore[assignment]
 
 
 # Optional seaborn for better styling
@@ -287,7 +287,7 @@ class FigureGenerator:
 
     def save_figure(self, fig: object, path: str) -> str:
         """Save figure to file."""
-        fig.savefig(path, dpi=self.config.dpi)
+        fig.savefig(path, dpi=self.config.dpi)  # type: ignore[attr-defined]
         return path
 
     def generate_all_figures(

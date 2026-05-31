@@ -13,16 +13,18 @@ from dataclasses import dataclass
 if TYPE_CHECKING:
     from figures import FigureGenerator
     from stats import SummaryStatistics
+
+    FIGURES_AVAILABLE = True
 else:
     try:
-        from figures import FigureGenerator
-        from stats import SummaryStatistics
+        from figures import FigureGenerator  # noqa: F811
+        from stats import SummaryStatistics  # noqa: F811
 
         FIGURES_AVAILABLE = True
     except ImportError:
         FIGURES_AVAILABLE = False
-        FigureGenerator = None
-        SummaryStatistics = None
+        FigureGenerator = None  # type: ignore[assignment]
+        SummaryStatistics = None  # type: ignore[assignment]
 
 
 @dataclass
@@ -217,7 +219,7 @@ def generate_comparison_report(
     report.add_header("Experiment Comparison")
 
     # Compare each set
-    for name, experiments in zip(names, experiment_sets.keys()):
+    for name, experiments in zip(names, experiment_sets.values()):
         section = f"### {name}\n"
 
         total = len(experiments)
@@ -254,7 +256,7 @@ def generate_full_report(
     saved_files = {}
 
     # 1. Generate summary statistics
-    if SummaryStatistics and baseline is not None:
+    if FIGURES_AVAILABLE and baseline is not None:
         stats = SummaryStatistics(experiments, baseline=baseline)
         stats_json_path = output_path / "statistics.json"
         stats.to_json(str(stats_json_path))
@@ -273,7 +275,7 @@ def generate_full_report(
         report.add_section("Statistics Summary", stats_summary)
 
     # Add figures section
-    if include_figures and FigureGenerator:
+    if include_figures and FIGURES_AVAILABLE:
         try:
             gen = FigureGenerator()
             figure_paths = gen.generate_all_figures(

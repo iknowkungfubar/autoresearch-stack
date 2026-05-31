@@ -28,7 +28,7 @@ class ExperimentMemory:
     status: str
     failure_classification: Optional[str] = None
     failure_diagnosis: Optional[str] = None
-    tags: List[str] = None
+    tags: Optional[List[str]] = None
 
     def __post_init__(self):
         if self.tags is None:
@@ -115,7 +115,7 @@ class MemorySystem:
 
         # Try to use ChromaDB, fallback to simple
         self.use_chroma = False
-        self.vector_store = None
+        self.vector_store: "SimpleVectorStore" = SimpleVectorStore()  # Always initialize fallback first
         self._init_vector_store()
 
         # Statistics
@@ -127,6 +127,7 @@ class MemorySystem:
 
     def _init_vector_store(self):
         """Initialize vector store."""
+        # Always initialize with fallback first — handled in __init__
         try:
             import chromadb
             from chromadb.config import Settings
@@ -145,14 +146,11 @@ class MemorySystem:
                 self.collection = client.get_collection("experiments")
 
             self.use_chroma = True
-            self.vector_store = SimpleVectorStore()  # Backup
             print("Using ChromaDB vector store")
         except ImportError:
             print("ChromaDB not available, using simple vector store")
-            self.vector_store = SimpleVectorStore()
         except Exception as e:
             print(f"ChromaDB init failed: {e}, using simple store")
-            self.vector_store = SimpleVectorStore()
 
     def load_from_db(self):
         """Load experiments from SQLite database."""
