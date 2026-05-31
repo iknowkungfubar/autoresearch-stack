@@ -19,7 +19,7 @@ pytest>=7.0.0
 pytest-cov>=4.0.0
 
 # Linting
-ruff>=0.1.0
+ruff>=0.15.15
 
 # Type checking
 mypy>=1.0.0
