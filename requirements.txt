@@ -23,7 +23,7 @@ ruff>=0.1.0
 
 # Type checking
 mypy>=1.0.0
-types-requests>=2.28.0
+types-requests>=2.33.0.20260518
 
 # DevOps
 docker>=5.0.0
