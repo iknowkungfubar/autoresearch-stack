@@ -1,0 +1,6 @@
+include requirements.txt
+include README.md
+include CHANGELOG.md
+include LICENSE
+include config.yaml
+recursive-include autoresearch *.py
