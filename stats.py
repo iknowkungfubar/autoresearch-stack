@@ -20,7 +20,7 @@ except ImportError:
     np = None  # type: ignore[assignment]
 
 try:
-    from scipy import stats as scipy_stats
+    from scipy import stats as scipy_stats  # noqa: F401
 
     SCIPY_AVAILABLE = True
 except ImportError:

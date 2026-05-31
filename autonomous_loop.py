@@ -433,7 +433,6 @@ class AutonomousPipeline:
 
 def autonomous_pipeline(
     raw,
-    embed_fn=None,
     model=None,
     tokenizer=None,
     config_path: str = "config.yaml",
@@ -442,7 +441,6 @@ def autonomous_pipeline(
 
     Args:
         raw: Raw texts or path to text file
-        embed_fn: Embedding function (optional)
         model: Model for model-in-the-loop (optional)
         tokenizer: Tokenizer (optional)
         config_path: Path to config
