@@ -3,11 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0.0.html).
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0.html).
 
 ---
 
-## [v0.0.7.3] - 2026-05-31
+## [v0.7.3] - 2026-05-31
 
 ### Security
 - **sandbox.py** — Replaced trivially bypassable string-matching validation with AST-based analysis (closes 6 bypass vectors). Uses `ast.parse()` + `ast.walk()` to detect dangerous imports (`os`, `sys`, `subprocess`, `socket`), function calls (`eval`, `exec`, `__import__`, `compile`, `open`), and attribute chain access on blocked modules.
@@ -32,10 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ### Changed
 - **providers.py** — Moved 7 inline `import requests` to module level (avoids import overhead on every API call).
-- **Version bump** — v0.0.7.2 → v0.0.7.3
+- **Version bump** — v0.7.2 → v0.7.3
 - **Coverage** — Overall: 57% → 63%, autonomous_loop.py: 0% → 47%, providers.py: 34% → 48%
 
-## [v0.0.0.7.2] - 2026-04-21
+## [v0.7.2] - 2026-04-21
 
 ### Fixed
 - **Lint Cleanup** — Resolved all 131 ruff violations
@@ -71,7 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.7.0] - 2026-04-21
+## [v0.7.0] - 2026-04-21
 
 ### Added
 - **Peer Review Simulation** (`peer_review.py`)
@@ -90,7 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.6.2] - 2026-04-20
+## [v0.6.2] - 2026-04-20
 
 ### Added
 - **Distribution System** (`distribute.py`)
@@ -118,7 +118,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.6.1] - 2026-04-20
+## [v0.6.1] - 2026-04-20
 
 ### Added
 - **Meta-Loop** (`metaloop.py`)
@@ -139,7 +139,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.5.2] - 2026-04-20
+## [v0.5.2] - 2026-04-20
 
 ### Added
 - **Paper Generation** (`paper.py`)
@@ -158,7 +158,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.6.0] - 2026-04-20
+## [v0.6.0] - 2026-04-20
 
 ### Added
 - **Daemon Mode** (`daemon.py`)
@@ -184,7 +184,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.5.0] - 2026-04-20
+## [v0.5.0] - 2026-04-20
 
 ### Added
 - **Figure Generation** (`figures.py`)
@@ -206,7 +206,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.4.1] - 2026-04-20
+## [v0.4.1] - 2026-04-20
 
 ### Added
 - **CI/CD Pipeline** (`.github/workflows/ci.yml`)
@@ -233,7 +233,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.4.0] - 2026-04-20
+## [v0.4.0] - 2026-04-20
 
 ### Added
 
@@ -270,7 +270,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.3.1] - 2026-04-20
+## [v0.3.1] - 2026-04-20
 
 ### Added
 - **Memory System** (`memory.py`)
@@ -299,7 +299,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.3.0] - 2026-04-20
+## [v0.3.0] - 2026-04-20
 
 ### Added
 - **Configuration System** (`config.py`, `config.yaml`)
@@ -345,7 +345,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.2.0] - 2026-01
+## [v0.2.0] - 2026-01
 
 ### Added
 - Curriculum learning with easy/medium/hard staging
@@ -357,7 +357,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ---
 
-## [v0.0.1.0] - 2025
+## [v0.1.0] - 2025
 
 ### Added
 - Initial release with basic components
@@ -366,4 +366,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ## Unreleased
 
-*No unreleased features. All previously planned features shipped through v0.0.7.2.*
+*No unreleased features. All previously planned features shipped through v0.7.2.*

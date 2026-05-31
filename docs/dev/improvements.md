@@ -1,12 +1,12 @@
 # Improvements Roadmap
 
-> Current version: **v0.0.7.2** - Hardening Sprint (CI/CD, tests, lint)
+> Current version: **v0.7.2** - Hardening Sprint (CI/CD, tests, lint)
 
 ---
 
-## Current State (v0.0.7.2)
+## Current State (v0.7.2)
 
-The v0.0.7.2 stack includes all v0.7.0 components plus hardening:
+The v0.7.2 stack includes all v0.7.0 components plus hardening:
 - `providers.py` - 13+ LLM provider integrations
 - `orchestrators.py` - 6 agentic framework integrations
 - `peer_review.py` - Review simulation
@@ -112,7 +112,7 @@ The v0.0.7.2 stack includes all v0.7.0 components plus hardening:
 | v0.6.2 | 2026-04-20 | Distribution, multi-node |
 | v0.7.0 | 2026-04-21 | Production ready (peer-review, user guide) |
 | v0.7.1 | 2026-04-21 | Multi-provider, multi-orchestrator support |
-| v0.0.7.2 | 2026-04-21 | Hardening: CI/CD, 104 tests, lint cleanup |
+| v0.7.2 | 2026-04-21 | Hardening: CI/CD, 104 tests, lint cleanup |
 
 ---
 
