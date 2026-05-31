@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v7.3] - 2026-05-31
+
+### Security
+- **sandbox.py** — Replaced trivially bypassable string-matching validation with AST-based analysis (closes 6 bypass vectors). Uses `ast.parse()` + `ast.walk()` to detect dangerous imports (`os`, `sys`, `subprocess`, `socket`), function calls (`eval`, `exec`, `__import__`, `compile`, `open`), and attribute chain access on blocked modules.
+
+### Fixed
+- **autonomous_loop.py:521** — Pipeline was passing raw `texts` instead of prepared `data` to `run_autonomous_loop()`. Curriculum and synthetic data generation pipeline was being silently bypassed.
+- **autonomous_loop.py:269** — Replaced hardcoded `val_bpb_after = baseline - 0.01` (always "improved") with realistic Gaussian variance (20% harmful, 25% improvement, 55% neutral). The feedback/prioritization/hypothesis systems now receive plausible signal.
+- **memory.py** — `vector_store` now always initialized as `SimpleVectorStore()` before `_init_vector_store()` attempt. Eliminates `None`-dereference crash when ChromaDB init fails.
+- **metaloop.py** — `_evolve_with_llm()` now validates `ANTHROPIC_API_KEY` before calling `Anthropic()`, with a clear error message.
+- **report.py:224** — Fixed `zip(names, dict.keys())` bug where dict keys were iterated as experiments instead of values.
+- **report.py** — Replaced `if SummaryStatistics:` (class-as-boolean, always truthy) with `if FIGURES_AVAILABLE:` boolean flag.
+- **hypothesis.py** — Removed dead `return []` statements that blocked all template generation.
+- **43 mypy errors** — Fixed across 17 source files (storage.py, memory.py, metaloop.py, hypothesis.py, config.py, orchestrators.py, figures.py, daemon.py, sandbox.py, monitor.py, report.py, synthetic_data.py, peer_review.py, curriculum.py, statistics.py, checkpoint.py, multi_agent.py). Zero mypy errors across 33 source files.
+
+### Added
+- **32 provider tests** — Comprehensive mocked-API tests for AnthropicProvider, OpenAIProvider, OpenRouterProvider, OllamaProvider, LMStudioProvider, provider factory, LLMClient, MODEL_REGISTRY, and LLMResponse. Covers system message extraction, model name mapping, API error handling, missing API keys, null content, custom base URLs.
+- **12 pipeline tests** — Tests for `AutonomousPipeline` (init, prepare_data, curriculum, run_experiment, get_status, CLI convenience) and `SimpleVectorStore` (search, empty query).
+- **Total tests: 104 → 148**
+- **.dockerignore** — Prevents `.git/`, `.env`, `*.db`, `__pycache__/`, `.venv/`, `tests/` from leaking into Docker images.
+- **`__main__.py`** — Allows `python -m autoresearch` as alternative to `autoresearch` CLI.
+- **Package structure** — `autoresearch/__init__.py`, `autoresearch/tests/__init__.py`, setup.py with explicit `py_modules` list.
+
+### Changed
+- **providers.py** — Moved 7 inline `import requests` to module level (avoids import overhead on every API call).
+- **Version bump** — v7.2.0 → v7.3.0
+- **Coverage** — Overall: 57% → 63%, autonomous_loop.py: 0% → 47%, providers.py: 34% → 48%
+
 ## [v7.2] - 2026-04-21
 
 ### Fixed
