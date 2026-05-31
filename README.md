@@ -67,7 +67,7 @@ This runs a complete training loop using the numpy demo model, exercising the cu
 | `prioritization.py` | Bandit-based selection (UCB1, epsilon-greedy, Thompson) |
 | `hypothesis.py` | LLM-driven hypothesis generation with rule-based fallback |
 | `feedback.py` | Reward computation, failure classification (13 types) |
-| `mult_agent.py` | Multi-agent architecture (research, hypothesis, execution, evaluation) |
+| `multi_agent.py` | Multi-agent architecture (research, hypothesis, execution, evaluation) |
 
 ### Infrastructure
 | Module | What it does |

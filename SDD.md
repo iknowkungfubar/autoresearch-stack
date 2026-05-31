@@ -223,8 +223,8 @@ autoresearch-stack/
 
 For any feature to be merged:
 
-- [x] **Code compiles**: `python -m py_compile *.py`
-- [x] **Tests pass**: `pytest tests/ -v` (104/104)
+- [x] **Lint clean**: `ruff check .`
+- [x] **Tests pass**: `pytest tests/ -v` (148/148)
 - [x] **Lint passes**: `ruff check .` (0 errors)
 - [x] **Docs updated**: README, CHANGELOG, SDD current
 - [x] **No secrets**: No API keys in code

@@ -105,7 +105,7 @@ Types: `feat`, `fix`, `perf`, `refactor`, `test`, `docs`, `chore`
 
 1. Update version in `setup.py` and `autonomous_loop.py`
 2. Update `CHANGELOG.md`
-3. Tag: `git tag v7.x.x && git push --tags`
+3. Tag: `git tag v0.7.x && git push --tags`
 4. CI builds and publishes to PyPI automatically on tagged commits
 
 ## Code of Conduct
