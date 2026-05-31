@@ -2,13 +2,13 @@
 
 > Build and ship autonomous LLM training research systems
 
-**Status:** v7.0 (Production Ready) | **License:** MIT
+**Status:** v0.7.0 (Production Ready) | **License:** MIT
 
 An autonomous research stack for continuously improving LLM training through automated experimentation. Inspired by [Karpathy autorearch](https://github.com/karpathy/autoresearch), designed for single-GPU research labs.
 
 ---
 
-## What's Included (v7.2)
+## What's Included (v0.7.2)
 
 | Component | File | Description |
 |-----------|------|-------------|
@@ -47,19 +47,19 @@ An autonomous research stack for continuously improving LLM training through aut
 
 | Version | Features | Status |
 |---------|----------|--------|
-| v2 | Foundation, curriculum | Complete |
-| v3.0 | LLM generation, config, DB | Complete |
-| v3.1 | Memory, bandits, hypothesis | Complete |
-| v4.0 | Multi-agent, sandbox, checkpoint | Shipped |
-| v4.1 | CI/CD, Docker, tests | Shipped |
-| v5.0 | Reporting, figures, stats | Shipped |
-| v5.2 | Paper generation | Shipped |
-| v6.0 | Advanced autonomy, daemon mode | Shipped |
-| v6.1 | Self-modification, meta-loop | Shipped |
-| v6.2 | Distribution, multi-node, K8s | Shipped |
-| v7.0 | Production ready, peer-review, user guide | Shipped |
-| v7.1 | Multi-provider, multi-orchestrator support | Shipped |
-| v7.2 | Hardening: CI/CD, 104 tests, lint, security audit | Shipped |
+| v0.2 | Foundation, curriculum | Complete |
+| v0.3.0 | LLM generation, config, DB | Complete |
+| v0.3.1 | Memory, bandits, hypothesis | Complete |
+| v0.4.0 | Multi-agent, sandbox, checkpoint | Shipped |
+| v0.4.1 | CI/CD, Docker, tests | Shipped |
+| v0.5.0 | Reporting, figures, stats | Shipped |
+| v0.5.2 | Paper generation | Shipped |
+| v0.6.0 | Advanced autonomy, daemon mode | Shipped |
+| v0.6.1 | Self-modification, meta-loop | Shipped |
+| v0.6.2 | Distribution, multi-node, K8s | Shipped |
+| v0.7.0 | Production ready, peer-review, user guide | Shipped |
+| v0.7.1 | Multi-provider, multi-orchestrator support | Shipped |
+| v0.7.2 | Hardening: CI/CD, 104 tests, lint, security audit | Shipped |
 
 ---
 
