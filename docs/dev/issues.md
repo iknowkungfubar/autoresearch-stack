@@ -16,25 +16,25 @@ Documenting known issues, bugs, and technical debt in the autoresearch-stack.
 **Status:** FIXED (graceful fallback with TORCH_AVAILABLE check)
 
 ### 2. Documentation Version Mismatch → FIXED
-**Status:** FIXED in v7.2 — SDD updated to v7.0
+**Status:** FIXED in v0.0.7.2 — SDD updated to v0.7.0
 
 ### 3. Missing Sandbox Execution → FIXED
-**Status:** FIXED — sandbox.py shipped in v4.0
+**Status:** FIXED — sandbox.py shipped in v0.4.0
 
 ### 4. Missing Checkpoint System → FIXED
-**Status:** FIXED — checkpoint.py shipped in v4.0
+**Status:** FIXED — checkpoint.py shipped in v0.4.0
 
 ### 5. Test Suite Missing → FIXED
-**Status:** FIXED in v7.2 — 104 tests passing
+**Status:** FIXED in v0.0.7.2 — 104 tests passing
 
 ### 6. CI/CD Pipeline Minimal → FIXED
-**Status:** FIXED in v7.2 — Added lint enforcement, security scan, coverage
+**Status:** FIXED in v0.0.7.2 — Added lint enforcement, security scan, coverage
 
 ### 7. Lint Errors (131 ruff violations) → FIXED
-**Status:** FIXED in v7.2 — All ruff checks pass
+**Status:** FIXED in v0.0.7.2 — All ruff checks pass
 
 ### 8. Bare except Clauses → FIXED
-**Status:** FIXED in v7.2 — All changed to `except Exception`
+**Status:** FIXED in v0.0.7.2 — All changed to `except Exception`
 
 ---
 
@@ -72,7 +72,7 @@ Documenting known issues, bugs, and technical debt in the autoresearch-stack.
 | 2026-04-21 | CI/CD hardening | FIXED |
 | 2026-04-21 | lint cleanup | FIXED (131→0 ruff errors) |
 | 2026-04-21 | bare except clauses | FIXED |
-| 2026-04-21 | SDD outdated (v4.0) | FIXED (updated to v7.0) |
+| 2026-04-21 | SDD outdated (v0.4.0) | FIXED (updated to v0.7.0) |
 
 ---
 

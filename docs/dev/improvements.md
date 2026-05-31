@@ -1,12 +1,12 @@
 # Improvements Roadmap
 
-> Current version: **v7.2** - Hardening Sprint (CI/CD, tests, lint)
+> Current version: **v0.0.7.2** - Hardening Sprint (CI/CD, tests, lint)
 
 ---
 
-## Current State (v7.2)
+## Current State (v0.0.7.2)
 
-The v7.2 stack includes all v7.0 components plus hardening:
+The v0.0.7.2 stack includes all v0.7.0 components plus hardening:
 - `providers.py` - 13+ LLM provider integrations
 - `orchestrators.py` - 6 agentic framework integrations
 - `peer_review.py` - Review simulation
@@ -18,7 +18,7 @@ The v7.2 stack includes all v7.0 components plus hardening:
 
 ---
 
-## v4.0: Multi-Agent Architecture (COMPLETE)
+## v0.4.0: Multi-Agent Architecture (COMPLETE)
 
 - [x] Research Agent (literature, gaps)
 - [x] Hypothesis Agent (modifications)
@@ -28,23 +28,23 @@ The v7.2 stack includes all v7.0 components plus hardening:
 
 ---
 
-## v4.0: Production Hardening (COMPLETE)
+## v0.4.0: Production Hardening (COMPLETE)
 
-### v4.1: Safe Execution
+### v0.4.1: Safe Execution
 
 - [x] Sandboxed subprocess execution
 - [x] Resource limits (memory, CPU, time)
 - [x] Code validation
 - [x] Timeout handling
 
-### v4.2: Persistence
+### v0.4.2: Persistence
 
 - [x] Checkpoint system for resume
 - [x] State persistence to disk
 - [x] Graceful interruption
 - [x] Resume from last state
 
-### v4.3: Monitoring
+### v0.4.3: Monitoring
 
 - [x] Real-time status display
 - [x] Event logging
@@ -53,16 +53,16 @@ The v7.2 stack includes all v7.0 components plus hardening:
 
 ---
 
-## v5.0: Reporting & Research Automation
+## v0.5.0: Reporting & Research Automation
 
-### v5.1: Reporting (COMPLETE)
+### v0.5.1: Reporting (COMPLETE)
 
 - [x] Markdown report generation
 - [x] Figure generation from results
 - [x] Summary statistics
 - [x] Experiment comparisons
 
-### v5.2: Paper Generation (COMPLETE)
+### v0.5.2: Paper Generation (COMPLETE)
 
 - [x] Automated manuscript drafting
 - [x] Literature review integration
@@ -73,20 +73,20 @@ The v7.2 stack includes all v7.0 components plus hardening:
 
 ## v6+: Advanced Autonomy
 
-### v6.1: Self-Modification (COMPLETE)
+### v0.6.1: Self-Modification (COMPLETE)
 
 - [x] Meta-loop for methodology evolution
 - [x] Automatic prompt refinement
 - [x] Self-improving code
 
-### v6.2: Distribution (COMPLETE)
+### v0.6.2: Distribution (COMPLETE)
 
 - [x] Multi-node execution
 - [x] Cloud deployment (Docker, Kubernetes)
 - [x] Resource management
 - [x] Cost estimation
 
-### v6.3: Continuous Operation (COMPLETE)
+### v0.6.3: Continuous Operation (COMPLETE)
 
 - [x] Daemon mode
 - [x] Auto-restart on failure
@@ -101,18 +101,18 @@ The v7.2 stack includes all v7.0 components plus hardening:
 |---------|--------------|-------------|
 | v1 | 2025 | Initial release |
 | v2 | 2026 | Curriculum learning, feedback loop |
-| v3.0 | 2026-04-20 | LLM generation, config, DB |
-| v3.1 | 2026-04-20 | Memory, bandits, hypothesis |
-| v4.0 | 2026-04-20 | Multi-agent, production |
-| v4.1 | 2026-04-20 | CI/CD, Docker, tests |
-| v5.0 | 2026-04-20 | Reporting, figures, stats |
-| v5.2 | 2026-04-20 | Paper generation |
-| v6.0 | 2026-04-20 | Advanced autonomy, daemon mode |
-| v6.1 | 2026-04-20 | Self-modification, meta-loop |
-| v6.2 | 2026-04-20 | Distribution, multi-node |
-| v7.0 | 2026-04-21 | Production ready (peer-review, user guide) |
-| v7.1 | 2026-04-21 | Multi-provider, multi-orchestrator support |
-| v7.2 | 2026-04-21 | Hardening: CI/CD, 104 tests, lint cleanup |
+| v0.3.0 | 2026-04-20 | LLM generation, config, DB |
+| v0.3.1 | 2026-04-20 | Memory, bandits, hypothesis |
+| v0.4.0 | 2026-04-20 | Multi-agent, production |
+| v0.4.1 | 2026-04-20 | CI/CD, Docker, tests |
+| v0.5.0 | 2026-04-20 | Reporting, figures, stats |
+| v0.5.2 | 2026-04-20 | Paper generation |
+| v0.6.0 | 2026-04-20 | Advanced autonomy, daemon mode |
+| v0.6.1 | 2026-04-20 | Self-modification, meta-loop |
+| v0.6.2 | 2026-04-20 | Distribution, multi-node |
+| v0.7.0 | 2026-04-21 | Production ready (peer-review, user guide) |
+| v0.7.1 | 2026-04-21 | Multi-provider, multi-orchestrator support |
+| v0.0.7.2 | 2026-04-21 | Hardening: CI/CD, 104 tests, lint cleanup |
 
 ---
 

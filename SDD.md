@@ -1,6 +1,6 @@
 # System Design Document (SDD): Autonomous Research Stack
 
-## Version: v7.3.0 Production
+## Version: v0.0.7.3 Production
 
 ---
 
@@ -123,8 +123,8 @@ autoresearch-stack/
 │
 └── tests/
     ├── test_core.py          # Core module tests
-    ├── test_new_modules.py   # v5.0+ module tests
-    └── test_hardening.py     # v7.2 hardening tests (51 tests)
+    ├── test_new_modules.py   # v0.5.0+ module tests
+    └── test_hardening.py     # v0.0.7.2 hardening tests (51 tests)
 ```
 
 ---
@@ -143,7 +143,7 @@ autoresearch-stack/
 
 ---
 
-## 6. LLM Provider Support (v7.1)
+## 6. LLM Provider Support (v0.7.1)
 
 | Provider | Type | Status |
 |----------|------|--------|
@@ -179,8 +179,8 @@ autoresearch-stack/
 - [x] `ruff check .` passes with zero errors
 
 ### Documentation Gate ✅
-- [x] README reflects v7.0
-- [x] CHANGELOG updated through v7.2
+- [x] README reflects v0.7.0
+- [x] CHANGELOG updated through v0.0.7.2
 - [x] SDD reflects current architecture
 - [x] issues.md tracks active debt
 
@@ -239,9 +239,9 @@ For any feature to be merged:
 | torch fallback | MEDIUM | FIXED (graceful) |
 | ChromaDB optional | LOW | OK (simple fallback) |
 | train_any_llm stub | LOW | OK (by design) |
-| CI/CD needs security scan | MEDIUM | FIXED (v7.2) |
-| Test coverage for providers/orchestrators | MEDIUM | FIXED (v7.2 — 51 new tests) |
-| `--exit-zero` in ruff CI | MEDIUM | FIXED (v7.2 — enforced) |
+| CI/CD needs security scan | MEDIUM | FIXED (v0.0.7.2) |
+| Test coverage for providers/orchestrators | MEDIUM | FIXED (v0.0.7.2 — 51 new tests) |
+| `--exit-zero` in ruff CI | MEDIUM | FIXED (v0.0.7.2 — enforced) |
 
 See `issues.md` for full list.
 
@@ -264,4 +264,4 @@ Rationale:
 
 ---
 
-*Status: v7.0 Production Ready — Sprint 7.2 Hardening COMPLETE*
+*Status: v0.7.0 Production Ready — Sprint 7.2 Hardening COMPLETE*

@@ -2,7 +2,7 @@
 
 > Complete guide to installing, configuring, and running the autonomous LLM training research system
 
-**Version:** 7.3.0 | **Status:** Production-Ready
+**Version:** 0.7.3 | **Status:** Production-Ready
 
 ---
 

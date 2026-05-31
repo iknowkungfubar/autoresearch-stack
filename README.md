@@ -2,7 +2,7 @@
 
 > Build and ship autonomous LLM training research systems
 
-**Version:** v7.3.0 | **License:** MIT | **Python:** 3.11+
+**Version:** v0.7.3 | **License:** MIT | **Python:** 3.11+
 
 [![Tests](https://github.com/iknowkungfubar/autoresearch-stack/actions/workflows/ci.yml/badge.svg)](https://github.com/iknowkungfubar/autoresearch-stack/actions)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
@@ -131,9 +131,9 @@ export MEMORY_ENABLED=true             # Enable vector memory
 
 | Version | Status | Tests | Coverage | Type Safety |
 |---------|--------|-------|----------|-------------|
-| v7.3.0 | **Current** | 148 ✅ | 63% | 0 mypy errors |
-| v7.2.0 | Shipped | 104 ✅ | 57% | 43 errors |
-| v7.0.0 | Shipped | 53 ✅ | — | — |
+| v0.0.7.3 | **Current** | 148 ✅ | 63% | 0 mypy errors |
+| v0.0.7.2 | Shipped | 104 ✅ | 57% | 43 errors |
+| v0.7.0.0 | Shipped | 53 ✅ | — | — |
 
 ## Testing
 

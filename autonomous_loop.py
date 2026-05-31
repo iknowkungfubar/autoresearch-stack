@@ -21,7 +21,7 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 # Version
-__version__ = "7.3.0"
+__version__ = "0.7.3"
 
 # Import components
 from synthetic_data import (
