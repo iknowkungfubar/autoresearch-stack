@@ -250,7 +250,7 @@ class TestDaemon:
 
     def test_health_status(self):
         """Test health status."""
-        from daemon import HealthStatus, DaemonState
+        from daemon import DaemonState, HealthStatus
 
         status = HealthStatus(state=DaemonState.HEALTHY)
         assert status.state == DaemonState.HEALTHY
@@ -327,9 +327,9 @@ class TestOrchestrators:
     def test_orchestrator_factory(self):
         """Test OrchestratorFactory.create."""
         from orchestrators import (
+            LangChainIntegrator,
             OrchestratorFactory,
             OrchestratorType,
-            LangChainIntegrator,
         )
 
         orch = OrchestratorFactory.create(OrchestratorType.LANGCHAIN)

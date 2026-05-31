@@ -8,11 +8,11 @@ Features:
 - Quality filtering (perplexity-based)
 """
 
+import json
 import os
 import random
-import json
-from typing import List, Optional, Dict, Any
 from dataclasses import dataclass
+from typing import Any, Dict, List, Optional
 
 # Default topics for template generation
 DEFAULT_TOPICS = [

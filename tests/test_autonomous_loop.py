@@ -49,10 +49,9 @@ class TestAutonomousPipeline:
 
     def test_prepare_curriculum_disabled(self):
         """Test curriculum preparation when disabled."""
-        from autonomous_loop import AutonomousPipeline
-
         # Create pipeline and disable curriculum
         import config as cfg
+        from autonomous_loop import AutonomousPipeline
 
         cfg.reset_config()
         pipeline = AutonomousPipeline("config.yaml")
@@ -120,6 +119,7 @@ class TestAutonomousPipeline:
         """Test autonomous_pipeline with file path input."""
         import tempfile
         from pathlib import Path
+
         from autonomous_loop import autonomous_pipeline
 
         # Create a temp file with sample texts
@@ -142,7 +142,7 @@ class TestVectorStore:
 
     def test_simple_search(self):
         """Test simple vector store search."""
-        from memory import SimpleVectorStore, ExperimentMemory
+        from memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         store.add(
@@ -161,7 +161,7 @@ class TestVectorStore:
 
     def test_search_empty(self):
         """Test search with empty query returns recent."""
-        from memory import SimpleVectorStore, ExperimentMemory
+        from memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         store.add(

@@ -9,14 +9,15 @@ Supports:
 Phase 7.1: Multi-Provider Support.
 """
 
+import logging
 import os
 import time
-import logging
-import requests
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional, Union
 from dataclasses import dataclass, field
 from enum import Enum
+from typing import Any, Dict, List, Optional, Union
+
+import requests
 
 
 # Provider type enum
@@ -684,9 +685,11 @@ class GoogleVertexProvider(BaseLLMProvider):
         start = time.time()
 
         try:
-            from google.auth import default  # noqa: F401
-            from google.auth import load_credentials_from_file  # noqa: F401
             import vertexai
+            from google.auth import (
+                default,  # noqa: F401
+                load_credentials_from_file,  # noqa: F401
+            )
             from vertexai.generative_models import GenerativeModel
 
             project_id = self.extra_params.get("project_id") or os.getenv(

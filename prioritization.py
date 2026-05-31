@@ -10,10 +10,10 @@ Features:
 
 import math
 import random
-from typing import List, Dict, Optional, Any, Tuple
-from dataclasses import dataclass
 from collections import defaultdict
+from dataclasses import dataclass
 from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple
 
 
 class Strategy(Enum):

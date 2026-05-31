@@ -7,7 +7,6 @@ modules to improve coverage on critical paths.
 
 import pytest
 
-
 # === PROVIDERS (Extended) ===
 
 
@@ -227,7 +226,7 @@ class TestOrchestratorsExtended:
 
     def test_opencrew_not_available(self):
         """Test OpenCrew fallback when not installed."""
-        from orchestrators import OpenCrewIntegrator, AgentTask
+        from orchestrators import AgentTask, OpenCrewIntegrator
 
         orch = OpenCrewIntegrator()
         result = orch.run(AgentTask(description="test"))
@@ -244,7 +243,7 @@ class TestOrchestratorsExtended:
 
     def test_autogen_not_available(self):
         """Test AutoGen fallback when not installed."""
-        from orchestrators import AutoGenIntegrator, AgentTask
+        from orchestrators import AgentTask, AutoGenIntegrator
 
         orch = AutoGenIntegrator()
         result = orch.run(AgentTask(description="test"))
@@ -252,7 +251,7 @@ class TestOrchestratorsExtended:
 
     def test_langchain_not_available(self):
         """Test LangChain fallback when not installed."""
-        from orchestrators import LangChainIntegrator, AgentTask
+        from orchestrators import AgentTask, LangChainIntegrator
 
         orch = LangChainIntegrator()
         result = orch.run(AgentTask(description="test"))
@@ -260,7 +259,7 @@ class TestOrchestratorsExtended:
 
     def test_llamaindex_not_available(self):
         """Test LlamaIndex fallback when not installed."""
-        from orchestrators import LlamaIndexIntegrator, AgentTask
+        from orchestrators import AgentTask, LlamaIndexIntegrator
 
         orch = LlamaIndexIntegrator()
         result = orch.run(AgentTask(description="test"))
@@ -276,7 +275,7 @@ class TestOrchestratorsExtended:
 
     def test_orchestrator_run_multi(self):
         """Test orchestrator run_multi."""
-        from orchestrators import LangChainIntegrator, AgentTask
+        from orchestrators import AgentTask, LangChainIntegrator
 
         orch = LangChainIntegrator()
         tasks = [
@@ -305,7 +304,7 @@ class TestDaemonExtended:
 
     def test_health_status_defaults(self):
         """Test HealthStatus defaults."""
-        from daemon import HealthStatus, DaemonState
+        from daemon import DaemonState, HealthStatus
 
         status = HealthStatus()
         assert status.state == DaemonState.HEALTHY
@@ -316,7 +315,7 @@ class TestDaemonExtended:
 
     def test_health_status_custom(self):
         """Test HealthStatus with custom values."""
-        from daemon import HealthStatus, DaemonState
+        from daemon import DaemonState, HealthStatus
 
         status = HealthStatus(
             state=DaemonState.RUNNING,
@@ -461,7 +460,7 @@ class TestDistribute:
 
     def test_cost_estimate(self):
         """Test CostEstimate."""
-        from distribute import CostEstimate, CloudProvider
+        from distribute import CloudProvider, CostEstimate
 
         estimate = CostEstimate(
             provider=CloudProvider.AWS,

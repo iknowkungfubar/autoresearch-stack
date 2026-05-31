@@ -14,28 +14,28 @@ configuration. Set an experiment backend or override run_training()
 to use real training execution.
 """
 
-import time
-import random
 import argparse
-from typing import List, Optional, Dict, Any
+import random
+import time
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 # Version
 __version__ = "0.7.3"
 
 # Import components
+from config import get_config
+from curriculum import build_curriculum, create_scheduler
+from data_intelligence import clean_corpus
+from feedback import ExperimentStatus, Feedback
+from hypothesis import HypothesisGenerator
+from memory import MemorySystem
+from prioritization import get_prioritization
+from storage import ExperimentDB
 from synthetic_data import (
     SyntheticGenerator,
     model_in_the_loop_generate,
 )
-from data_intelligence import clean_corpus
-from curriculum import build_curriculum, create_scheduler
-from feedback import Feedback, ExperimentStatus
-from storage import ExperimentDB
-from config import get_config
-from memory import MemorySystem
-from prioritization import get_prioritization
-from hypothesis import HypothesisGenerator
 
 
 class AutonomousPipeline:

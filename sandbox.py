@@ -5,13 +5,13 @@ Phase 5: Production Hardening - Safe execution with resource limits.
 """
 
 import ast
-import sys
-import subprocess
-import tempfile
 import shutil
-from typing import Optional, Tuple
+import subprocess
+import sys
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional, Tuple
 
 
 @dataclass

@@ -13,12 +13,12 @@ Supports:
 Phase 7.1: Multi-Orchestrator Support.
 """
 
-import os
 import logging
+import os
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional, Union
 from dataclasses import dataclass, field
 from enum import Enum
+from typing import Any, Dict, List, Optional, Union
 
 
 # Tool type enum
@@ -176,7 +176,7 @@ class CrewAIIntegrator(BaseOrchestrator):
     def _setup_crew(self):
         """Set up CrewAI crew."""
         try:
-            from crewai import Agent, Crew, Task, Process  # noqa: F401
+            from crewai import Agent, Crew, Process, Task  # noqa: F401
             from langchain_openai import ChatOpenAI  # noqa: F401
 
             # Get LLM config
@@ -363,7 +363,7 @@ class LlamaIndexIntegrator(BaseOrchestrator):
         """Lazy load LlamaIndex client."""
         if self._client is None:
             try:
-                from llama_index import VectorStoreIndex, ServiceContext  # noqa: F401
+                from llama_index import ServiceContext, VectorStoreIndex  # noqa: F401
                 from llama_index.llms import ChatMessage  # noqa: F401
 
                 self._client = {

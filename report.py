@@ -4,10 +4,10 @@ Report generation - Markdown experiment reports.
 Phase 6: Reporting & Paper Generation.
 """
 
-from pathlib import Path
-from typing import Dict, Any, List, Optional, TYPE_CHECKING
-from datetime import datetime
 from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 # Optional imports for figures and statistics
 if TYPE_CHECKING:

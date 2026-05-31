@@ -6,11 +6,11 @@ Phase 6.1: Self-Modification.
 
 import json
 import os
-from pathlib import Path
-from typing import Dict, Any, List, Optional
-from datetime import datetime
 from dataclasses import dataclass, field
+from datetime import datetime
 from enum import Enum
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 # Optional LLM import
 try:

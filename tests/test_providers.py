@@ -1,8 +1,8 @@
 """Tests for LLM providers with mocked HTTP/API clients."""
 
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
+import pytest
 
 # ── Helper fixtures ──────────────────────────────────────────────
 

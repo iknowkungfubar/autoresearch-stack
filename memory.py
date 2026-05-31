@@ -9,10 +9,10 @@ Features:
 """
 
 import sqlite3
-from pathlib import Path
-from typing import List, Optional, Dict, Any
-from dataclasses import dataclass, asdict
 from collections import defaultdict
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 
 @dataclass

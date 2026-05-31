@@ -8,11 +8,11 @@ Features:
 - Multiple difficulty metrics
 """
 
-import random
 import math
-from typing import List, Dict, Optional, Any
+import random
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
 
 class DifficultyMetric(Enum):

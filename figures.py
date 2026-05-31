@@ -5,9 +5,9 @@ Phase 5.1: Figure Generation.
 """
 
 import json
-from pathlib import Path
-from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 # Optional numpy import
 try:
@@ -20,8 +20,8 @@ try:
     import matplotlib
 
     matplotlib.use("Agg")  # Non-interactive backend
-    import matplotlib.pyplot as plt
     import matplotlib.figure as mplt
+    import matplotlib.pyplot as plt
 
     MATPLOTLIB_AVAILABLE = True
 except ImportError:

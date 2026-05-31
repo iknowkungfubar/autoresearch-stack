@@ -6,10 +6,10 @@ Phase 5: Production Hardening - Monitoring.
 
 import sys
 import time
-from typing import Dict, Any, List, Optional
+from collections import deque
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from collections import deque
+from typing import Any, Dict, List, Optional
 
 
 @dataclass

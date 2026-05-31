@@ -11,8 +11,8 @@ can be exercised: curriculum, feedback, checkpointing, memory, etc.
 """
 
 import time
-from typing import Dict, Any, List
 from dataclasses import dataclass
+from typing import Any, Dict, List
 
 # Try to import numpy (required for demo mode)
 try:
@@ -102,7 +102,11 @@ class NumpyDemoModel:
 
     def state_dict(self) -> Dict[str, Any]:
         """Return model state for checkpointing."""
-        return {"w": float(self.w), "b": float(self.b), "lr": self.lr}
+        return {
+            "w": float(self.w.item()) if hasattr(self.w, "item") else float(self.w),
+            "b": float(self.b.item()) if hasattr(self.b, "item") else float(self.b),
+            "lr": self.lr,
+        }
 
     def load_state_dict(self, state: Dict[str, Any]):
         """Load model state from checkpoint."""

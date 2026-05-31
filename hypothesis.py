@@ -8,11 +8,11 @@ Features:
 - Failure pattern analysis
 """
 
-import random
 import os
-from typing import List, Dict, Optional, Any
+import random
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
 
 class ChangeType(Enum):
@@ -349,8 +349,9 @@ Prioritize high-impact changes based on training dynamics.
 
     def _call_anthropic(self, system: str, user: str, n: int) -> List[Hypothesis]:
         """Call Anthropic API."""
-        import anthropic
         import json
+
+        import anthropic
 
         client = anthropic.Anthropic(api_key=self.api_key)
 
@@ -392,8 +393,9 @@ Prioritize high-impact changes based on training dynamics.
 
     def _call_openai(self, system: str, user: str, n: int) -> List[Hypothesis]:
         """Call OpenAI API."""
-        import openai
         import json
+
+        import openai
 
         client = openai.OpenAI(api_key=self.api_key)
 

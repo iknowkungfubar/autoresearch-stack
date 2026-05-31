@@ -12,9 +12,9 @@ Roles:
 """
 
 import time
-from typing import List, Dict, Optional, Any
 from dataclasses import dataclass, field
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
 
 class AgentRole(Enum):

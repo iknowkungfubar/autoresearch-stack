@@ -4,11 +4,11 @@ Paper Generation - Automated research paper drafting.
 Phase 5.2: Paper Generation.
 """
 
-from pathlib import Path
-from typing import Dict, Any, List, Optional
-from datetime import datetime
 from dataclasses import dataclass, field
+from datetime import datetime
 from enum import Enum
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 
 class PaperSection(Enum):

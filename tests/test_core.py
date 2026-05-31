@@ -4,8 +4,9 @@ Test suite for Autonomous Research Stack.
 Unit tests for core modules.
 """
 
-import pytest
 import os
+
+import pytest
 
 
 # Test config
@@ -23,7 +24,7 @@ class TestConfig:
     def test_config_env_override(self):
         """Test environment variable override."""
         os.environ["EXPERIMENT_BUDGET"] = "100"
-        from config import reset_config, get_config
+        from config import get_config, reset_config
 
         reset_config()
         c = get_config("config.yaml")
@@ -153,7 +154,7 @@ class TestFeedback:
 
     def test_classify_failure(self):
         """Test failure classification."""
-        from feedback import Feedback, FailureClassification
+        from feedback import FailureClassification, Feedback
 
         fb = Feedback()
         classification = fb.classify_failure(
@@ -203,7 +204,7 @@ class TestMemory:
 
     def test_simple_vector_store(self):
         """Test vector store."""
-        from memory import SimpleVectorStore, ExperimentMemory
+        from memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
 

@@ -5,10 +5,10 @@ Phase 5.1: Summary Statistics.
 """
 
 import json
-from pathlib import Path
-from typing import Dict, Any, List, Optional
-from dataclasses import dataclass, field
 from collections import defaultdict
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 # Optional numpy/scipy imports
 try:

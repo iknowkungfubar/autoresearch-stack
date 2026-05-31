@@ -4,18 +4,18 @@ Daemon mode - Continuous autonomous research operation.
 Phase 6.3: Continuous Operation.
 """
 
+import atexit
+import json
+import logging
 import os
+import signal
 import sys
 import time
-import signal
-import atexit
-import logging
-import json
-from pathlib import Path
-from typing import Dict, Any, List, Optional, Callable
-from datetime import datetime
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional
 
 # PID file management
 PID_FILE = ".autoresearch.pid"
