@@ -438,7 +438,9 @@ class OrchestratorFactory:
             raise ValueError(f"Unknown orchestrator: {orchestrator}")
 
         if orch_class is BaseOrchestrator:
-            raise ValueError(f"Cannot instantiate abstract orchestrator: {orchestrator}")
+            raise ValueError(
+                f"Cannot instantiate abstract orchestrator: {orchestrator}"
+            )
 
         return orch_class(config=config)  # type: ignore[abstract]
 

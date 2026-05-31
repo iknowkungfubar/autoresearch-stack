@@ -115,7 +115,9 @@ class MemorySystem:
 
         # Try to use ChromaDB, fallback to simple
         self.use_chroma = False
-        self.vector_store: "SimpleVectorStore" = SimpleVectorStore()  # Always initialize fallback first
+        self.vector_store: "SimpleVectorStore" = (
+            SimpleVectorStore()
+        )  # Always initialize fallback first
         self._init_vector_store()
 
         # Statistics

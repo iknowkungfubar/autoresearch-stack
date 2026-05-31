@@ -373,7 +373,9 @@ Provide the improved prompt:"""
         if self.iteration > 1:
             prev_best = self.get_successful_modifications()
             if prev_best:
-                impacts = [m.actual_impact for m in prev_best if m.actual_impact is not None]
+                impacts = [
+                    m.actual_impact for m in prev_best if m.actual_impact is not None
+                ]
                 if not impacts or max(impacts) < self.config.min_improvement:
                     return {
                         "status": "converged",

@@ -113,6 +113,7 @@ class Feedback:
                             self.experiments.append(Experiment(**data))
                         except Exception as e:
                             import logging
+
                             logging.getLogger("feedback").debug(
                                 "Skipping malformed experiment line: %s", e
                             )

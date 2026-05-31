@@ -126,12 +126,23 @@ class Sandbox:
 
 # AST-level blocked imports (module names to forbid)
 BLOCKED_MODULES: set[str] = {
-    "os", "sys", "subprocess", "socket", "ctypes", "signal", "multiprocessing",
+    "os",
+    "sys",
+    "subprocess",
+    "socket",
+    "ctypes",
+    "signal",
+    "multiprocessing",
 }
 
 # AST-level blocked function calls (bare names like eval())
 BLOCKED_FUNCTIONS: set[str] = {
-    "eval", "exec", "__import__", "compile", "open", "input",
+    "eval",
+    "exec",
+    "__import__",
+    "compile",
+    "open",
+    "input",
 }
 
 

@@ -1,4 +1,5 @@
 """Tests for the autonomous loop module."""
+
 import random
 
 
@@ -52,6 +53,7 @@ class TestAutonomousPipeline:
 
         # Create pipeline and disable curriculum
         import config as cfg
+
         cfg.reset_config()
         pipeline = AutonomousPipeline("config.yaml")
         pipeline.config.curriculum.enabled = False
@@ -143,12 +145,17 @@ class TestVectorStore:
         from memory import SimpleVectorStore, ExperimentMemory
 
         store = SimpleVectorStore()
-        store.add(ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="learning rate adjustment",
-            change_type="optimization", val_bpb_before=1.0,
-            val_bpb_after=0.95, status="kept",
-        ))
+        store.add(
+            ExperimentMemory(
+                experiment_id=1,
+                timestamp="2026-01-01",
+                change_description="learning rate adjustment",
+                change_type="optimization",
+                val_bpb_before=1.0,
+                val_bpb_after=0.95,
+                status="kept",
+            )
+        )
         results = store.search("learning")
         assert len(results) >= 1
 
@@ -157,10 +164,16 @@ class TestVectorStore:
         from memory import SimpleVectorStore, ExperimentMemory
 
         store = SimpleVectorStore()
-        store.add(ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="test", change_type="test",
-            val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
-        ))
+        store.add(
+            ExperimentMemory(
+                experiment_id=1,
+                timestamp="2026-01-01",
+                change_description="test",
+                change_type="test",
+                val_bpb_before=1.0,
+                val_bpb_after=0.95,
+                status="kept",
+            )
+        )
         results = store.search("")
         assert len(results) >= 1

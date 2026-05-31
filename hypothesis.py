@@ -477,7 +477,9 @@ Prioritize high-impact changes based on training dynamics.
             )
         else:
             # General optimization
-            return random.choice(self._generate_templates(1, ChangeType.OPTIMIZATION.value))
+            return random.choice(
+                self._generate_templates(1, ChangeType.OPTIMIZATION.value)
+            )
 
 
 def generate_hypothesis(

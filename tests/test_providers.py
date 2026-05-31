@@ -1,4 +1,5 @@
 """Tests for LLM providers with mocked HTTP/API clients."""
+
 import pytest
 from unittest.mock import patch, MagicMock
 
@@ -53,7 +54,9 @@ class TestAnthropicProvider:
             provider = AnthropicProvider()
 
         with patch.object(provider, "_get_client", return_value=mock_anthropic_client):
-            response = provider.complete(sample_messages, model="claude-3-5-sonnet-20241022")
+            response = provider.complete(
+                sample_messages, model="claude-3-5-sonnet-20241022"
+            )
 
         assert response.content == "Hello from Claude"
         assert response.provider == "anthropic"
@@ -69,7 +72,9 @@ class TestAnthropicProvider:
             provider = AnthropicProvider()
 
         with patch.object(provider, "_get_client", return_value=mock_anthropic_client):
-            response = provider.chat(sample_messages, model="claude-3-5-sonnet-20241022")
+            response = provider.chat(
+                sample_messages, model="claude-3-5-sonnet-20241022"
+            )
 
         assert response.content == "Hello from Claude"
 
@@ -113,7 +118,10 @@ class TestAnthropicProvider:
         mock.messages.create.side_effect = Exception("API timeout")
         with patch.object(provider, "_get_client", return_value=mock):
             with pytest.raises(RuntimeError, match="Anthropic API error"):
-                provider.complete([{"role": "user", "content": "Hi"}], model="claude-3-5-sonnet-20241022")
+                provider.complete(
+                    [{"role": "user", "content": "Hi"}],
+                    model="claude-3-5-sonnet-20241022",
+                )
 
     def test_get_model_info(self):
         from providers import AnthropicProvider
@@ -203,7 +211,9 @@ class TestOpenAIProvider:
             provider = OpenAIProvider()
 
         with patch.object(provider, "_get_client", return_value=mock):
-            response = provider.complete([{"role": "user", "content": "Hi"}], model="gpt-4o")
+            response = provider.complete(
+                [{"role": "user", "content": "Hi"}], model="gpt-4o"
+            )
 
         assert response.content == ""
 
