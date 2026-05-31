@@ -1,6 +1,6 @@
 # Python dependencies for Autonomous Research Stack
 # Core
-numpy>=1.24.0
+numpy>=2.4.6
 pyyaml>=6.0
 
 # Optional: Visualization (install matplotlib/seaborn for figures)
