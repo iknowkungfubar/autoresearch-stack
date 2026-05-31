@@ -20,6 +20,9 @@ import argparse
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 
+# Version
+__version__ = "7.3.0"
+
 # Import components
 from synthetic_data import (
     SyntheticGenerator,
@@ -472,6 +475,13 @@ def autonomous_pipeline(
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(description="Autonomous Research Loop")
+    parser.add_argument(
+        "--version",
+        "-v",
+        action="version",
+        version=f"autoresearch-stack v{__version__}",
+        help="Show version and exit",
+    )
     parser.add_argument(
         "--config",
         "-c",
