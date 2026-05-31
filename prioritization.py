@@ -111,7 +111,7 @@ class BanditSelector:
         """Select an arm to pull."""
         if category is None:
             # Random category
-            category = random.choice(list(self.arms.keys()))
+            category = random.choice(list(self.arms.keys()))  # noqa: S311
 
         arm_dict = self.arms.get(category, {})
         if not arm_dict:
@@ -124,7 +124,7 @@ class BanditSelector:
         elif self.strategy == Strategy.THOMPSON:
             return self._thompson_select(arm_dict)
         else:
-            return random.choice(list(arm_dict.keys()))
+            return random.choice(list(arm_dict.keys()))  # noqa: S311
 
     def _ucb1_select(self, arms: Dict[str, Arm]) -> str:
         """UCB1 selection."""
@@ -156,8 +156,8 @@ class BanditSelector:
 
     def _epsilon_greedy_select(self, arms: Dict[str, Arm]) -> str:
         """Epsilon-greedy selection."""
-        if random.random() < self.epsilon:
-            return random.choice(list(arms.keys()))
+        if random.random() < self.epsilon:  # noqa: S311
+            return random.choice(list(arms.keys()))  # noqa: S311
 
         # Exploit: best known
         return max(arms.keys(), key=lambda n: arms[n].mean_reward)
@@ -168,7 +168,7 @@ class BanditSelector:
 
         for name, arm in arms.items():
             if arm.pull_count < 2:
-                samples.append((random.random(), name))
+                samples.append((random.random(), name))  # noqa: S311
             else:
                 # Sample from Gaussian posterior
                 from random import gauss
@@ -267,7 +267,9 @@ class PrioritizationSystem:
         return {
             "category": category,
             "change": arm,
-            "reasoning": f"Selected {arm} from {category} using {self.selector.strategy.value}",
+            "reasoning": (
+                f"Selected {arm} from {category} using {self.selector.strategy.value}"
+            ),
         }
 
     def record_result(

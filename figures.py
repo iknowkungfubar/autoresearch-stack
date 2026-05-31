@@ -67,7 +67,7 @@ class FigureGenerator:
         try:
             plt.style.use(self.config.style)
         except Exception:
-            pass  # Fallback to default
+            pass  # noqa: S110 - Fallback to default
 
     def _check_matplotlib(self):
         """Check if matplotlib is available."""

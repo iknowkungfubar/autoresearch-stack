@@ -193,7 +193,8 @@ class MetaLoop:
             name=name,
             version=current.version + 1,
             content=new_content,
-            notes=f"Evolved from v{current.version} based on feedback: {feedback[:100]}",
+            notes=f"Evolved from v{current.version} "
+            f"based on feedback: {feedback[:100]}",
         )
 
         self.prompts[f"{name}_v{new_prompt.version}"] = new_prompt
@@ -203,7 +204,10 @@ class MetaLoop:
         mod = Modification(
             id=f"mod_{len(self.modifications) + 1}",
             type=ModificationType.PROMPT,
-            description=f"Evolved prompt {name} from v{current.version} to v{new_prompt.version}",
+            description=(
+                f"Evolved prompt {name} from v{current.version} "
+                f"to v{new_prompt.version}"
+            ),
             old_value=current.content[:200],
             new_value=new_content[:200],
             expected_impact=0.05,
@@ -223,7 +227,8 @@ class MetaLoop:
             )
         client = Anthropic(api_key=api_key)
 
-        system = """You are an expert at improving prompts for autonomous research agents.
+        system = """You are an expert at improving prompts
+for autonomous research agents.
 Given the current prompt and feedback, propose an improved version.
 Focus on clarity, specificity, and effectiveness."""
 

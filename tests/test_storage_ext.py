@@ -222,9 +222,7 @@ class TestExperimentJSONL:
         log_path = tmp_path / "experiments.jsonl"
         log_path.parent.mkdir(parents=True, exist_ok=True)
         log_path.write_text(
-            '{"id": 1, "name": "valid"}\n'
-            "not valid json\n"
-            '{"id": 2, "name": "valid2"}\n'
+            '{"id": 1, "name": "valid"}\nnot valid json\n{"id": 2, "name": "valid2"}\n'
         )
 
         store = ExperimentJSONL(log_path=str(log_path))

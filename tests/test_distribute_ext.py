@@ -41,8 +41,12 @@ class TestNodeConfig:
         from distribute import NodeConfig, NodeRole
 
         config = NodeConfig(
-            role=NodeRole.MASTER, name="master-1", cpu_cores=8,
-            memory_gb=32, gpu_count=2, gpu_type="A100",
+            role=NodeRole.MASTER,
+            name="master-1",
+            cpu_cores=8,
+            memory_gb=32,
+            gpu_count=2,
+            gpu_type="A100",
         )
         assert config.name == "master-1"
         assert config.gpu_type == "A100"
@@ -68,8 +72,11 @@ class TestCostEstimate:
         from distribute import CloudProvider, CostEstimate
 
         est = CostEstimate(
-            provider=CloudProvider.AWS, instance_type="p3.2xlarge",
-            hourly_rate=3.06, estimated_hours=24, total_cost=73.44,
+            provider=CloudProvider.AWS,
+            instance_type="p3.2xlarge",
+            hourly_rate=3.06,
+            estimated_hours=24,
+            total_cost=73.44,
         )
         assert est.provider == CloudProvider.AWS
         assert est.total_cost == 73.44

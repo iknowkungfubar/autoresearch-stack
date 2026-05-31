@@ -56,7 +56,9 @@ class TestDaemon:
     def test_init_defaults(self, tmp_path):
         from daemon import Daemon, DaemonConfig, DaemonState
 
-        config = DaemonConfig(log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid"))
+        config = DaemonConfig(
+            log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid")
+        )
         daemon = Daemon(config)
         assert daemon.state == DaemonState.STOPPED
         assert daemon.experiments_run == 0
@@ -66,7 +68,9 @@ class TestDaemon:
     def test_state_transitions(self, tmp_path):
         from daemon import Daemon, DaemonConfig, DaemonState
 
-        config = DaemonConfig(log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid"))
+        config = DaemonConfig(
+            log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid")
+        )
         daemon = Daemon(config)
         assert daemon.state == DaemonState.STOPPED
         daemon.state = DaemonState.RUNNING
@@ -79,7 +83,9 @@ class TestDaemon:
     def test_experiment_tracking(self, tmp_path):
         from daemon import Daemon, DaemonConfig
 
-        config = DaemonConfig(log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid"))
+        config = DaemonConfig(
+            log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid")
+        )
         daemon = Daemon(config)
         assert daemon.experiments_run == 0
         daemon.experiments_run = 5
@@ -88,7 +94,9 @@ class TestDaemon:
     def test_error_tracking(self, tmp_path):
         from daemon import Daemon, DaemonConfig
 
-        config = DaemonConfig(log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid"))
+        config = DaemonConfig(
+            log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid")
+        )
         daemon = Daemon(config)
         assert daemon.error_count == 0
         daemon.error_count = 3
@@ -100,7 +108,9 @@ class TestDaemon:
     def test_restart_count(self, tmp_path):
         from daemon import Daemon, DaemonConfig
 
-        config = DaemonConfig(log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid"))
+        config = DaemonConfig(
+            log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid")
+        )
         daemon = Daemon(config)
         assert daemon.restart_count == 0
         daemon.restart_count = 2

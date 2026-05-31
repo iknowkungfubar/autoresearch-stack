@@ -1,1 +1,1 @@
-"""Autonomous Research Stack - Build and ship autonomous LLM training research systems."""
+"""Autonomous Research Stack - Build and ship autonomous LLM training research."""

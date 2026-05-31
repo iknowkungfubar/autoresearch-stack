@@ -239,13 +239,14 @@ class TestCreateScheduler:
         texts = ["a", "bb", "ccc"]
         scheduler = create_scheduler(texts, adaptive=True, warmup_ratio=0.2)
         from curriculum import AdaptiveScheduler
+
         assert isinstance(scheduler, AdaptiveScheduler)
 
     def test_create_non_adaptive(self):
         from curriculum import create_scheduler
 
         texts = ["a", "bb", "ccc"]
-        curriculum = {"easy": ["a"], "medium": ["b"], "hard": ["c"]}
         scheduler = create_scheduler(texts, adaptive=False)
         from curriculum import Scheduler
+
         assert isinstance(scheduler, Scheduler)

@@ -109,6 +109,7 @@ class TestSyntheticGenerator:
         gen = SyntheticGenerator(use_llm=False)
         result = gen.generate(n=3)
         from synthetic_data import GenerationResult
+
         assert isinstance(result, GenerationResult)
         assert hasattr(result, "prompts")
         assert hasattr(result, "used_llm")

@@ -158,11 +158,9 @@ class ExperimentDB:
             values.append(experiment_id)
             with self._get_connection() as conn:
                 conn.execute(
-                    f"""
-                    UPDATE experiments
-                    SET {", ".join(updates)}
-                    WHERE id = ?
-                """,
+                    f"""UPDATE experiments
+                        SET {", ".join(updates)}
+                        WHERE id = ?""",
                     values,
                 )
                 conn.commit()
@@ -315,7 +313,7 @@ class ExperimentJSONL:
                         try:
                             self.experiments.append(json.loads(line))
                         except Exception:
-                            pass
+                            pass  # noqa: S110 - skip malformed lines
 
     def append(self, experiment: Dict):
         """Append experiment to log."""

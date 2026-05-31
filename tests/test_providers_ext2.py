@@ -1,6 +1,8 @@
 """Tests for remaining LLM providers: VLLM, LiteLLM, LlamaCpp, TextGenWebUI."""
+
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock
 
 pytest.importorskip = getattr(pytest, "importorskip", lambda x: None)
 
@@ -10,11 +12,13 @@ class TestVLLMProvider:
 
     def test_init(self):
         from providers import VLLMProvider
+
         p = VLLMProvider(api_key="sk-test")
         assert p is not None
 
     def test_provider_type(self):
         from providers import VLLMProvider
+
         p = VLLMProvider(api_key="sk-test")
         assert p.__class__.__name__ == "VLLMProvider"
 
@@ -24,11 +28,13 @@ class TestLiteLLMProvider:
 
     def test_init(self):
         from providers import LiteLLMProvider
+
         p = LiteLLMProvider(api_key="sk-test")
         assert p is not None
 
     def test_provider_type(self):
         from providers import LiteLLMProvider
+
         p = LiteLLMProvider(api_key="sk-test")
         assert p.__class__.__name__ == "LiteLLMProvider"
 
@@ -38,11 +44,13 @@ class TestLlamaCppProvider:
 
     def test_init(self):
         from providers import LlamaCppProvider
+
         p = LlamaCppProvider()
         assert p is not None
 
     def test_provider_type(self):
         from providers import LlamaCppProvider
+
         p = LlamaCppProvider()
         assert p.__class__.__name__ == "LlamaCppProvider"
 
@@ -52,11 +60,13 @@ class TestTextGenWebUIProvider:
 
     def test_init(self):
         from providers import TextGenWebUIProvider
+
         p = TextGenWebUIProvider(base_url="http://localhost:7860")
         assert p.base_url == "http://localhost:7860"
 
     def test_complete(self):
         from providers import TextGenWebUIProvider
+
         p = TextGenWebUIProvider()
         with patch("providers.requests.post") as mock_post:
             mock = MagicMock()
@@ -91,20 +101,24 @@ class TestProviderFactoryFull:
 
     def test_factory_create_vllm(self):
         from providers import LLMProviderFactory, ProviderType
+
         p = LLMProviderFactory.create(ProviderType.VLLM)
         assert p.__class__.__name__ == "VLLMProvider"
 
     def test_factory_create_litellm(self):
         from providers import LLMProviderFactory, ProviderType
+
         p = LLMProviderFactory.create(ProviderType.LITELLM)
         assert p.__class__.__name__ == "LiteLLMProvider"
 
     def test_factory_create_llamacpp(self):
         from providers import LLMProviderFactory, ProviderType
+
         p = LLMProviderFactory.create(ProviderType.LLAMA_CPP)
         assert p.__class__.__name__ == "LlamaCppProvider"
 
     def test_factory_create_textgen(self):
         from providers import LLMProviderFactory, ProviderType
+
         p = LLMProviderFactory.create(ProviderType.TEXTGEN_WEBUI)
         assert p.__class__.__name__ == "TextGenWebUIProvider"

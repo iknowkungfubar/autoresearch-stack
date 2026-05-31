@@ -1,5 +1,4 @@
 """Extended tests for autonomous loop, distribute, and metaloop modules."""
-import pytest
 
 
 class TestAutonomousPipelineExtended:
@@ -74,10 +73,13 @@ class TestMetaLoopExtended:
         m = MetaLoop()
         mod = m.propose_hyperparameter_change("lr", 0.01, "increase")
         m.record_impact(mod.id, 0.05)
-        assert any(mo.actual_impact == 0.05 for mo in m.modifications if mo.id == mod.id)
+        assert any(
+            mo.actual_impact == 0.05 for mo in m.modifications if mo.id == mod.id
+        )
 
     def test_analyze_patterns(self):
         from metaloop import MetaLoop
+
         m = MetaLoop()
         result = m.analyze_patterns()
         assert isinstance(result, dict)
@@ -119,12 +121,13 @@ class TestDistributeExtended:
         assert n.is_healthy() is False
 
     def test_cost_estimate_default_currency(self):
-        from distribute import CostEstimate, CloudProvider
+        from distribute import CloudProvider, CostEstimate
 
         e = CostEstimate(CloudProvider.AWS, "t3.medium", 0.1, 10, 1.0)
         assert e.currency == "USD"
 
     def test_cluster_node(self):
         from distribute import Node, NodeConfig
+
         n = Node(NodeConfig())
         assert isinstance(n.id, str)

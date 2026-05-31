@@ -109,14 +109,29 @@ class TestComparisonReport:
 
         experiment_sets = {
             "Set A": [
-                {"id": 1, "change_description": "A1", "change_type": "opt",
-                 "status": "kept", "val_bpb_after": 0.9},
-                {"id": 2, "change_description": "A2", "change_type": "opt",
-                 "status": "kept", "val_bpb_after": 0.95},
+                {
+                    "id": 1,
+                    "change_description": "A1",
+                    "change_type": "opt",
+                    "status": "kept",
+                    "val_bpb_after": 0.9,
+                },
+                {
+                    "id": 2,
+                    "change_description": "A2",
+                    "change_type": "opt",
+                    "status": "kept",
+                    "val_bpb_after": 0.95,
+                },
             ],
             "Set B": [
-                {"id": 3, "change_description": "B1", "change_type": "opt",
-                 "status": "reverted", "val_bpb_after": 1.1},
+                {
+                    "id": 3,
+                    "change_description": "B1",
+                    "change_type": "opt",
+                    "status": "reverted",
+                    "val_bpb_after": 1.1,
+                },
             ],
         }
 
@@ -133,14 +148,17 @@ class TestComparisonReport:
 
         experiment_sets = {
             "Only Set": [
-                {"id": 1, "change_description": "Test", "change_type": "opt",
-                 "status": "kept", "val_bpb_after": 0.9},
+                {
+                    "id": 1,
+                    "change_description": "Test",
+                    "change_type": "opt",
+                    "status": "kept",
+                    "val_bpb_after": 0.9,
+                },
             ],
         }
 
-        report = generate_comparison_report(
-            experiment_sets, names=["Only"]
-        )
+        report = generate_comparison_report(experiment_sets, names=["Only"])
         content = report.render()
         assert "Only" in content
 
@@ -152,12 +170,19 @@ class TestFullReport:
         from report import generate_full_report
 
         experiments = [
-            {"id": 1, "change_description": "Test", "change_type": "opt",
-             "status": "kept", "val_bpb_after": 0.9,
-             "val_bpb_before": 1.0, "training_time": 5.0},
+            {
+                "id": 1,
+                "change_description": "Test",
+                "change_type": "opt",
+                "status": "kept",
+                "val_bpb_after": 0.9,
+                "val_bpb_before": 1.0,
+                "training_time": 5.0,
+            },
         ]
 
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             result = generate_full_report(
                 experiments=experiments,
@@ -172,6 +197,7 @@ class TestFullReport:
         import tempfile
 
         from report import generate_full_report
+
         with tempfile.TemporaryDirectory() as tmpdir:
             result = generate_full_report(
                 experiments=[],
@@ -185,12 +211,19 @@ class TestFullReport:
         from report import generate_full_report
 
         experiments = [
-            {"id": 1, "change_description": "Test", "change_type": "opt",
-             "status": "kept", "val_bpb_after": 0.95,
-             "val_bpb_before": 1.0, "training_time": 10.0},
+            {
+                "id": 1,
+                "change_description": "Test",
+                "change_type": "opt",
+                "status": "kept",
+                "val_bpb_after": 0.95,
+                "val_bpb_before": 1.0,
+                "training_time": 10.0,
+            },
         ]
 
         import tempfile
+
         with tempfile.TemporaryDirectory() as tmpdir:
             result = generate_full_report(
                 experiments=experiments,

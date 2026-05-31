@@ -6,6 +6,7 @@ Covers:
 - Template selection edge cases (unknown change_type, empty templates)
 - Fallback paths when LLM generation fails
 """
+
 from unittest.mock import patch
 
 

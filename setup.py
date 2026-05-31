@@ -18,7 +18,10 @@ setup(
     version="0.7.3",
     author="Autoresearch Team",
     author_email="turin@autoresearch.io",
-    description="Autonomous LLM training research stack - build and ship autonomous research systems",
+    description=(
+        "Autonomous LLM training research stack"
+        " - build and ship autonomous research systems"
+    ),
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/iknowkungfubar/autoresearch-stack",

@@ -5,6 +5,7 @@ Uses randomized inputs to verify invariant properties:
 - SimpleVectorStore: add/search work correctly for random data
 - Feedback: reward is consistent
 """
+
 import random
 
 
@@ -110,15 +111,17 @@ class TestSimpleVectorStoreProperties:
         rng = random.Random(42)
         n = rng.randint(1, 30)
         for i in range(n):
-            store.add(ExperimentMemory(
-                experiment_id=i + 1,
-                timestamp="2026-01-01",
-                change_description=f"experiment {i}",
-                change_type="optimization",
-                val_bpb_before=1.0,
-                val_bpb_after=0.95,
-                status="kept",
-            ))
+            store.add(
+                ExperimentMemory(
+                    experiment_id=i + 1,
+                    timestamp="2026-01-01",
+                    change_description=f"experiment {i}",
+                    change_type="optimization",
+                    val_bpb_before=1.0,
+                    val_bpb_after=0.95,
+                    status="kept",
+                )
+            )
         assert len(store.experiments) == n
 
     def test_search_returns_matches(self):
@@ -128,21 +131,25 @@ class TestSimpleVectorStoreProperties:
         store = SimpleVectorStore()
         rng = random.Random(42)
         for i in range(20):
-            desc = rng.choice([
-                "learning rate adjustment",
-                "batch size change",
-                "weight decay tuning",
-                "dropout addition",
-            ])
-            store.add(ExperimentMemory(
-                experiment_id=i + 1,
-                timestamp="2026-01-01",
-                change_description=desc,
-                change_type="optimization",
-                val_bpb_before=1.0,
-                val_bpb_after=0.95,
-                status="kept",
-            ))
+            desc = rng.choice(
+                [
+                    "learning rate adjustment",
+                    "batch size change",
+                    "weight decay tuning",
+                    "dropout addition",
+                ]
+            )
+            store.add(
+                ExperimentMemory(
+                    experiment_id=i + 1,
+                    timestamp="2026-01-01",
+                    change_description=desc,
+                    change_type="optimization",
+                    val_bpb_before=1.0,
+                    val_bpb_after=0.95,
+                    status="kept",
+                )
+            )
         for keyword in ["learning", "batch", "weight", "dropout"]:
             results = store.search(keyword)
             assert len(results) >= 1
@@ -153,15 +160,17 @@ class TestSimpleVectorStoreProperties:
 
         store = SimpleVectorStore()
         for i in range(50):
-            store.add(ExperimentMemory(
-                experiment_id=i + 1,
-                timestamp="2026-01-01",
-                change_description=f"test experiment number {i}",
-                change_type="optimization",
-                val_bpb_before=1.0,
-                val_bpb_after=0.95,
-                status="kept",
-            ))
+            store.add(
+                ExperimentMemory(
+                    experiment_id=i + 1,
+                    timestamp="2026-01-01",
+                    change_description=f"test experiment number {i}",
+                    change_type="optimization",
+                    val_bpb_before=1.0,
+                    val_bpb_after=0.95,
+                    status="kept",
+                )
+            )
         for limit in [1, 5, 10, 30]:
             results = store.search("test", limit=limit)
             assert len(results) <= limit
@@ -172,15 +181,17 @@ class TestSimpleVectorStoreProperties:
 
         store = SimpleVectorStore()
         for i in range(10):
-            store.add(ExperimentMemory(
-                experiment_id=i + 1,
-                timestamp="2026-01-01",
-                change_description=f"exp {i}",
-                change_type="optimization",
-                val_bpb_before=1.0,
-                val_bpb_after=0.95,
-                status="kept",
-            ))
+            store.add(
+                ExperimentMemory(
+                    experiment_id=i + 1,
+                    timestamp="2026-01-01",
+                    change_description=f"exp {i}",
+                    change_type="optimization",
+                    val_bpb_before=1.0,
+                    val_bpb_after=0.95,
+                    status="kept",
+                )
+            )
         results = store.search("", limit=5)
         assert len(results) == min(5, len(store.experiments))
 

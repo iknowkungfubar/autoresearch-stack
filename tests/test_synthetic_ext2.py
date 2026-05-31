@@ -1,8 +1,9 @@
 """Extended tests for synthetic data module.
 
-Covers remaining untested paths: LLM provider dispatch, 
+Covers remaining untested paths: LLM provider dispatch,
 Evol-Instruct scaling, and error handling.
 """
+
 from unittest.mock import patch
 
 

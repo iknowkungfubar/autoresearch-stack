@@ -19,8 +19,11 @@ class TestBanditSelector:
         for _ in range(5):
             arm = selector.select("optimization")
             assert arm in [
-                "learning_rate", "batch_size", "weight_decay",
-                "warmup_steps", "optimizer",
+                "learning_rate",
+                "batch_size",
+                "weight_decay",
+                "warmup_steps",
+                "optimizer",
             ]
             selector.update(arm, reward=1.0, category="optimization")
 

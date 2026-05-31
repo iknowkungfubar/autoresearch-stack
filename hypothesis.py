@@ -262,7 +262,9 @@ class HypothesisGenerator:
             memory_context: Past experiments for context
         """
         if change_type is None:
-            change_type = random.choice(list(ChangeType._value2member_map_.keys()))
+            change_type = random.choice(  # noqa: S311
+                list(ChangeType._value2member_map_.keys())
+            )
 
         # Convert string to ChangeType enum
         try:
@@ -322,7 +324,8 @@ class HypothesisGenerator:
         # Build prompt
         system_prompt = """You are a research hypothesis generator for LLM training.
 Generate experimental hypotheses that could improve val_bpb.
-Output ONLY a JSON array of objects with: change, description, change_type, expected_impact, reasoning"""
+Output ONLY a JSON array of objects with: change, description, change_type,
+expected_impact, reasoning"""
 
         user_prompt = f"""Generate {n} hypotheses for {change_type}.
 Prioritize high-impact changes based on training dynamics.
@@ -331,9 +334,14 @@ Prioritize high-impact changes based on training dynamics.
         # Add memory context if available
         if memory_context:
             recent = memory_context[-5:]
-            user_prompt += "\nRecent experiments:\n"
-            for exp in recent:
-                user_prompt += f"- {exp.get('change', 'unknown')}: {exp.get('status', 'unknown')}\n"
+            user_prompt += (
+                "\nRecent experiments:\n"
+                + "\n".join(
+                    f"- {exp.get('change', 'unknown')}: {exp.get('status', 'unknown')}"
+                    for exp in recent
+                )
+                + "\n"
+            )
 
         try:
             if self.provider == "anthropic":
@@ -479,7 +487,7 @@ Prioritize high-impact changes based on training dynamics.
             )
         else:
             # General optimization
-            return random.choice(
+            return random.choice(  # noqa: S311
                 self._generate_templates(1, ChangeType.OPTIMIZATION.value)
             )
 

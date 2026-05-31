@@ -158,7 +158,8 @@ class AutonomousPipeline:
                 scheduler = create_scheduler(texts, adaptive=False)
 
             print(
-                f"  Curriculum: {', '.join(f'{k}: {len(v)}' for k, v in curriculum.items())}"
+                "  Curriculum: "
+                f"{', '.join(f'{k}: {len(v)}' for k, v in curriculum.items())}"
             )
         else:
             scheduler = None
@@ -275,11 +276,11 @@ class AutonomousPipeline:
 
         # Simulate training result with realistic noise
         # Most experiments are neutral or slightly worse; ~20% show improvement
-        improvement = random.gauss(0, 0.02)  # Mean 0, std 0.02
-        if random.random() < 0.2:
+        improvement = random.gauss(0, 0.02)  # noqa: S311 - Mean 0, std 0.02
+        if random.random() < 0.2:  # noqa: S311
             # Some experiments are actively harmful
             improvement = -abs(improvement) - 0.01
-        elif random.random() < 0.25:
+        elif random.random() < 0.25:  # noqa: S311
             # ~25% show mild improvement
             improvement = abs(improvement)
         # Remaining ~55% are essentially neutral (±0.005)
@@ -299,7 +300,8 @@ class AutonomousPipeline:
         else:
             status = ExperimentStatus.REVERTED
             print(
-                f"Result: val_bpb did not improve {baseline_val_bpb:.6f} → {val_bpb_after:.6f}"
+                f"Result: val_bpb did not improve "
+                f"{baseline_val_bpb:.6f} → {val_bpb_after:.6f}"
             )
             print("Status: REVERTED")
 

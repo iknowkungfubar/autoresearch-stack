@@ -86,7 +86,7 @@ class Sandbox:
 
         try:
             # Run with resource limits
-            result = subprocess.run(
+            result = subprocess.run(  # noqa: S603 - sandboxed execution of user code
                 [sys.executable, str(code_file)],
                 capture_output=True,
                 text=True,

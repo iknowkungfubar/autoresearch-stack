@@ -125,9 +125,11 @@ DEFAULT_REVIEWERS = [
 REVIEW_TEMPLATES = {
     ReviewAspect.ORIGINALITY: {
         ReviewStrength.STRONG: [
-            "This work presents a novel approach to {topic} that differs significantly from existing methods.",
+            "This work presents a novel approach to {topic} that differs "
+            "significantly from existing methods.",
             "The contribution is highly original and opens new research directions.",
-            "The ideas presented are fresh and not previously explored in the literature.",
+            "The ideas presented are fresh and not previously explored "
+            "in the literature.",
         ],
         ReviewStrength.MODERATE: [
             "The work builds on existing ideas but applies them in a new context.",
@@ -249,7 +251,9 @@ class PeerReviewSimulator:
 
         # Get template comment
         templates = REVIEW_TEMPLATES.get(aspect, {}).get(strength, ["No comment."])
-        comment = random.choice(templates).format(topic=random.choice(topics))
+        comment = random.choice(templates).format(  # noqa: S311
+            topic=random.choice(topics)  # noqa: S311
+        )
 
         return ReviewCriterion(aspect=aspect, strength=strength, comment=comment)
 
@@ -261,7 +265,7 @@ class PeerReviewSimulator:
     ) -> PeerReview:
         """Simulate a single peer review."""
         # Select reviewer
-        reviewer = random.choice(self.config.reviewer_pool or DEFAULT_REVIEWERS)
+        reviewer = random.choice(self.config.reviewer_pool or DEFAULT_REVIEWERS)  # noqa: S311
 
         # Extract topics
         topics = self._get_topics(paper_content)
@@ -318,7 +322,7 @@ class PeerReviewSimulator:
                 "The paper does not meet the bar for publication.",
             ],
         }
-        summary = random.choice(summaries[verdict])
+        summary = random.choice(summaries[verdict])  # noqa: S311
 
         review = PeerReview(
             id=f"review_{len(self.reviews) + 1}",
@@ -354,14 +358,14 @@ class PeerReviewSimulator:
         if metrics is None:
             # Default reasonable metrics
             metrics = {
-                "originality": random.uniform(0.6, 0.9),
-                "technical_quality": random.uniform(0.65, 0.9),
-                "clarity": random.uniform(0.7, 0.9),
-                "reproducibility": random.uniform(0.7, 0.9),
-                "significance": random.uniform(0.6, 0.85),
-                "related_work": random.uniform(0.65, 0.9),
-                "experimental_design": random.uniform(0.7, 0.9),
-                "statistical_rigor": random.uniform(0.65, 0.9),
+                "originality": random.uniform(0.6, 0.9),  # noqa: S311
+                "technical_quality": random.uniform(0.65, 0.9),  # noqa: S311
+                "clarity": random.uniform(0.7, 0.9),  # noqa: S311
+                "reproducibility": random.uniform(0.7, 0.9),  # noqa: S311
+                "significance": random.uniform(0.6, 0.85),  # noqa: S311
+                "related_work": random.uniform(0.65, 0.9),  # noqa: S311
+                "experimental_design": random.uniform(0.7, 0.9),  # noqa: S311
+                "statistical_rigor": random.uniform(0.65, 0.9),  # noqa: S311
             }
 
         # Generate reviews

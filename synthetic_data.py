@@ -125,8 +125,8 @@ class SyntheticGenerator:
         difficulty_list = self._get_difficulty_list(difficulty)
 
         for _ in range(n):
-            topic = random.choice(topics)
-            template = random.choice(difficulty_list)
+            topic = random.choice(topics)  # noqa: S311
+            template = random.choice(difficulty_list)  # noqa: S311
             prompt = template.format(topic=topic)
             prompts.append(prompt)
 
@@ -322,7 +322,7 @@ Output ONLY a JSON array of evolved prompts."""
             elif self.provider == "openai":
                 return self._call_openai(system, user, len(prompts))
         except Exception:
-            pass
+            pass  # noqa: S110 - fallback to next provider
 
         return prompts
 

@@ -7,6 +7,7 @@ Covers:
 - demo_training() end-to-end
 - TrainingResult dataclass
 """
+
 import numpy as np
 
 
@@ -53,7 +54,9 @@ class TestNumpyDemoModel:
         for _ in range(20):
             _, loss = model(x, y)
             final_loss = loss
-        assert final_loss <= loss1 * 1.1 or final_loss < 0.5, "Training should stabilize or reduce loss"
+        assert final_loss <= loss1 * 1.1 or final_loss < 0.5, (
+            "Training should stabilize or reduce loss"
+        )
 
     def test_state_dict(self):
         from train_any_llm import NumpyDemoModel
@@ -144,6 +147,7 @@ class TestTrainingFunction:
 
         model = create_demo_model()
         from train_any_llm import Trainer
+
         trainer = Trainer(model=model)
 
         curriculum = {

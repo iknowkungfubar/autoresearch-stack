@@ -141,15 +141,14 @@ class ExperimentReport(Report):
         )
 
         # Results
-        self.add_section(
-            "Results",
-            f"""
-| Metric | Before | After |
-|-------|--------|-------|
-| val_bpb | {self.data.get("val_bpb_before", "N/A")} | {self.data.get("val_bpb_after", "N/A")} |
-| Training Time | {self.data.get("training_time", "N/A")}s | - |
-""",
+        section = (
+            "\n| Metric | Before | After |\n"
+            "|-------|--------|-------|\n"
+            f"| val_bpb | {self.data.get('val_bpb_before', 'N/A')} "
+            f"| {self.data.get('val_bpb_after', 'N/A')} |\n"
+            f"| Training Time | {self.data.get('training_time', 'N/A')}s | - |\n"
         )
+        self.add_section("Results", section)
 
         if self.data.get("status") == "reverted":
             self.add_section(

@@ -173,7 +173,7 @@ class AdaptiveScheduler:
         if not texts:
             return ""
 
-        return random.choice(texts)
+        return random.choice(texts)  # noqa: S311
 
     def get_stage_ratio(self, step: int, total: int) -> Dict[str, float]:
         """Get probability distribution across stages."""
@@ -191,7 +191,7 @@ class Scheduler:
 
     def __init__(self, curriculum: Dict[str, List[str]]):
         self.curriculum = curriculum
-        self._random = random.Random()
+        self._random = random.Random()  # noqa: S311
 
     def get_stage(self, step: int, total: int) -> str:
         """Get stage based on progress."""

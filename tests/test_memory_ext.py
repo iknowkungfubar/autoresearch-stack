@@ -63,16 +63,28 @@ class TestMemorySystem:
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         store = memory.vector_store
 
-        store.add(ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="LR test", change_type="optimization",
-            val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
-        ))
-        store.add(ExperimentMemory(
-            experiment_id=2, timestamp="2026-01-01",
-            change_description="Dropout test", change_type="architecture",
-            val_bpb_before=1.0, val_bpb_after=1.2, status="reverted",
-        ))
+        store.add(
+            ExperimentMemory(
+                experiment_id=1,
+                timestamp="2026-01-01",
+                change_description="LR test",
+                change_type="optimization",
+                val_bpb_before=1.0,
+                val_bpb_after=0.95,
+                status="kept",
+            )
+        )
+        store.add(
+            ExperimentMemory(
+                experiment_id=2,
+                timestamp="2026-01-01",
+                change_description="Dropout test",
+                change_type="architecture",
+                val_bpb_before=1.0,
+                val_bpb_after=1.2,
+                status="reverted",
+            )
+        )
 
         patterns = memory.get_patterns(change_type="optimization")
         assert len(patterns["success"]) >= 1
@@ -96,18 +108,23 @@ class TestMemorySystem:
 
         # Add many failed optimization experiments
         for i in range(5):
-            store.add(ExperimentMemory(
-                experiment_id=i + 1, timestamp="2026-01-01",
-                change_description=[
-                    "Increase learning rate by 10%",
-                    "Decrease learning rate by 10%",
-                    "Add learning rate warmup",
-                    "Adjust weight decay",
-                    "Change optimizer to AdamW",
-                ][i],
-                change_type="optimization",
-                val_bpb_before=1.0, val_bpb_after=1.5, status="reverted",
-            ))
+            store.add(
+                ExperimentMemory(
+                    experiment_id=i + 1,
+                    timestamp="2026-01-01",
+                    change_description=[
+                        "Increase learning rate by 10%",
+                        "Decrease learning rate by 10%",
+                        "Add learning rate warmup",
+                        "Adjust weight decay",
+                        "Change optimizer to AdamW",
+                    ][i],
+                    change_type="optimization",
+                    val_bpb_before=1.0,
+                    val_bpb_after=1.5,
+                    status="reverted",
+                )
+            )
 
         suggestion = memory.suggest_next("optimization")
         assert isinstance(suggestion, str)
@@ -120,12 +137,17 @@ class TestMemorySystem:
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         store = memory.vector_store
 
-        store.add(ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="learning rate test",
-            change_type="optimization",
-            val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
-        ))
+        store.add(
+            ExperimentMemory(
+                experiment_id=1,
+                timestamp="2026-01-01",
+                change_description="learning rate test",
+                change_type="optimization",
+                val_bpb_before=1.0,
+                val_bpb_after=0.95,
+                status="kept",
+            )
+        )
 
         # Hit
         memory.query("learning")
@@ -143,16 +165,28 @@ class TestMemorySystem:
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         store = memory.vector_store
 
-        store.add(ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="Good change", change_type="optimization",
-            val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
-        ))
-        store.add(ExperimentMemory(
-            experiment_id=2, timestamp="2026-01-01",
-            change_description="Bad change", change_type="optimization",
-            val_bpb_before=1.0, val_bpb_after=1.5, status="reverted",
-        ))
+        store.add(
+            ExperimentMemory(
+                experiment_id=1,
+                timestamp="2026-01-01",
+                change_description="Good change",
+                change_type="optimization",
+                val_bpb_before=1.0,
+                val_bpb_after=0.95,
+                status="kept",
+            )
+        )
+        store.add(
+            ExperimentMemory(
+                experiment_id=2,
+                timestamp="2026-01-01",
+                change_description="Bad change",
+                change_type="optimization",
+                val_bpb_before=1.0,
+                val_bpb_after=1.5,
+                status="reverted",
+            )
+        )
 
         stats = memory.get_statistics()
         assert stats["total_experiments"] == 2
@@ -167,9 +201,13 @@ class TestExperimentMemory:
         from memory import ExperimentMemory
 
         exp = ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="Test", change_type="opt",
-            val_bpb_before=1.0, val_bpb_after=0.9, status="kept",
+            experiment_id=1,
+            timestamp="2026-01-01",
+            change_description="Test",
+            change_type="opt",
+            val_bpb_before=1.0,
+            val_bpb_after=0.9,
+            status="kept",
         )
         assert exp.improved is True
 
@@ -177,9 +215,13 @@ class TestExperimentMemory:
         from memory import ExperimentMemory
 
         exp = ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="Test", change_type="opt",
-            val_bpb_before=1.0, val_bpb_after=1.1, status="reverted",
+            experiment_id=1,
+            timestamp="2026-01-01",
+            change_description="Test",
+            change_type="opt",
+            val_bpb_before=1.0,
+            val_bpb_after=1.1,
+            status="reverted",
         )
         assert exp.improved is False
 
@@ -187,9 +229,13 @@ class TestExperimentMemory:
         from memory import ExperimentMemory
 
         exp = ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="Test", change_type="opt",
-            val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
+            experiment_id=1,
+            timestamp="2026-01-01",
+            change_description="Test",
+            change_type="opt",
+            val_bpb_before=1.0,
+            val_bpb_after=0.95,
+            status="kept",
         )
         d = exp.to_dict()
         assert d["experiment_id"] == 1
@@ -199,9 +245,13 @@ class TestExperimentMemory:
         from memory import ExperimentMemory
 
         exp = ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="Test", change_type="opt",
-            val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
+            experiment_id=1,
+            timestamp="2026-01-01",
+            change_description="Test",
+            change_type="opt",
+            val_bpb_before=1.0,
+            val_bpb_after=0.95,
+            status="kept",
         )
         assert exp.tags == []
 
@@ -213,16 +263,28 @@ class TestSimpleVectorStoreExtended:
         from memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
-        store.add(ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="LR", change_type="optimization",
-            val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
-        ))
-        store.add(ExperimentMemory(
-            experiment_id=2, timestamp="2026-01-01",
-            change_description="Dropout", change_type="architecture",
-            val_bpb_before=1.0, val_bpb_after=1.2, status="reverted",
-        ))
+        store.add(
+            ExperimentMemory(
+                experiment_id=1,
+                timestamp="2026-01-01",
+                change_description="LR",
+                change_type="optimization",
+                val_bpb_before=1.0,
+                val_bpb_after=0.95,
+                status="kept",
+            )
+        )
+        store.add(
+            ExperimentMemory(
+                experiment_id=2,
+                timestamp="2026-01-01",
+                change_description="Dropout",
+                change_type="architecture",
+                val_bpb_before=1.0,
+                val_bpb_after=1.2,
+                status="reverted",
+            )
+        )
 
         opts = store.get_by_type("optimization")
         assert len(opts) == 1
@@ -232,16 +294,28 @@ class TestSimpleVectorStoreExtended:
         from memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
-        store.add(ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="Kept", change_type="opt",
-            val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
-        ))
-        store.add(ExperimentMemory(
-            experiment_id=2, timestamp="2026-01-01",
-            change_description="Reverted", change_type="opt",
-            val_bpb_before=1.0, val_bpb_after=1.2, status="reverted",
-        ))
+        store.add(
+            ExperimentMemory(
+                experiment_id=1,
+                timestamp="2026-01-01",
+                change_description="Kept",
+                change_type="opt",
+                val_bpb_before=1.0,
+                val_bpb_after=0.95,
+                status="kept",
+            )
+        )
+        store.add(
+            ExperimentMemory(
+                experiment_id=2,
+                timestamp="2026-01-01",
+                change_description="Reverted",
+                change_type="opt",
+                val_bpb_before=1.0,
+                val_bpb_after=1.2,
+                status="reverted",
+            )
+        )
 
         kept = store.get_by_status("kept")
         assert len(kept) == 1
@@ -252,11 +326,17 @@ class TestSimpleVectorStoreExtended:
 
         store = SimpleVectorStore()
         for i in range(10):
-            store.add(ExperimentMemory(
-                experiment_id=i + 1, timestamp="2026-01-01",
-                change_description=f"exp {i}", change_type="opt",
-                val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
-            ))
+            store.add(
+                ExperimentMemory(
+                    experiment_id=i + 1,
+                    timestamp="2026-01-01",
+                    change_description=f"exp {i}",
+                    change_type="opt",
+                    val_bpb_before=1.0,
+                    val_bpb_after=0.95,
+                    status="kept",
+                )
+            )
 
         recent = store.get_recent(3)
         assert len(recent) == 3
@@ -265,11 +345,17 @@ class TestSimpleVectorStoreExtended:
         from memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
-        store.add(ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="test", change_type="opt",
-            val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
-        ))
+        store.add(
+            ExperimentMemory(
+                experiment_id=1,
+                timestamp="2026-01-01",
+                change_description="test",
+                change_type="opt",
+                val_bpb_before=1.0,
+                val_bpb_after=0.95,
+                status="kept",
+            )
+        )
         recent = store.get_recent(100)
         assert len(recent) == 1
 
@@ -277,11 +363,17 @@ class TestSimpleVectorStoreExtended:
         from memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
-        store.add(ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="learning rate experiment",
-            change_type="opt", val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
-        ))
+        store.add(
+            ExperimentMemory(
+                experiment_id=1,
+                timestamp="2026-01-01",
+                change_description="learning rate experiment",
+                change_type="opt",
+                val_bpb_before=1.0,
+                val_bpb_after=0.95,
+                status="kept",
+            )
+        )
         results = store.search("zzz_nonexistent")
         assert len(results) == 0
 
@@ -291,10 +383,16 @@ class TestSimpleVectorStoreExtended:
         store = SimpleVectorStore()
         assert len(store.index) == 0
 
-        store.add(ExperimentMemory(
-            experiment_id=1, timestamp="2026-01-01",
-            change_description="learning rate test",
-            change_type="opt", val_bpb_before=1.0, val_bpb_after=0.95, status="kept",
-        ))
+        store.add(
+            ExperimentMemory(
+                experiment_id=1,
+                timestamp="2026-01-01",
+                change_description="learning rate test",
+                change_type="opt",
+                val_bpb_before=1.0,
+                val_bpb_after=0.95,
+                status="kept",
+            )
+        )
         assert "learning" in store.index
         assert "rate" in store.index
