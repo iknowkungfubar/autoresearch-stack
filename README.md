@@ -2,70 +2,14 @@
 
 > Build and ship autonomous LLM training research systems
 
-**Status:** v0.7.0 (Production Ready) | **License:** MIT
+**Version:** v7.3.0 | **License:** MIT | **Python:** 3.11+
 
-An autonomous research stack for continuously improving LLM training through automated experimentation. Inspired by [Karpathy autorearch](https://github.com/karpathy/autoresearch), designed for single-GPU research labs.
+[![Tests](https://github.com/iknowkungfubar/autoresearch-stack/actions/workflows/ci.yml/badge.svg)](https://github.com/iknowkungfubar/autoresearch-stack/actions)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
----
-
-## What's Included (v0.7.2)
-
-| Component | File | Description |
-|-----------|------|-------------|
-| Data Intelligence | `data_intelligence.py` | Corpus cleaning, noise filtering |
-| Synthetic Data | `synthetic_data.py` | LLM-powered generation with Evol-Instruct |
-| Curriculum | `curriculum.py` | Adaptive scheduling |
-| Feedback | `feedback.py` | Experiment logging & failure classification |
-| Training | `train_any_llm.py` | Training abstraction (stub) |
-| Pipeline | `autonomous_loop.py` | Full orchestration |
-| Configuration | `config.py` + `config.yaml` | Environment-based config |
-| Storage | `storage.py` | SQLite experiment database |
-| Memory | `memory.py` | Vector store with search |
-| Prioritization | `prioritization.py` | Bandit-based selection |
-| Hypothesis | `hypothesis.py` | LLM-driven hypothesis generation |
-| Multi-Agent | `multi_agent.py` | Specialized agent system |
-| Sandbox | `sandbox.py` | Safe code execution |
-| Checkpoint | `checkpoint.py` | State persistence |
-| Monitor | `monitor.py` | Real-time status |
-| Report | `report.py` | Markdown reports |
-| Figures | `figures.py` | Visualization (matplotlib) |
-| Stats | `stats.py` | Summary statistics |
-| Paper | `paper.py` | Research paper generation |
-| Peer Review | `peer_review.py` | Review simulation |
-| MetaLoop | `metaloop.py` | Self-modification |
-| Distribution | `distribute.py` | Multi-node cluster |
-| K8s | `k8s/deployment.yaml` | Kubernetes deployment |
-| Docker Compose | `docker-compose.yml` | Local cluster |
-| Daemon | `daemon.py` | Continuous operation |
-| User Guide | `USER_GUIDE.md` | Comprehensive documentation |
-| Agent | `agent.md` | RALPH agent guardrails |
-| Instructions | `prompt.md` | Loop execution prompt |
-
----
-
-## Development Roadmap
-
-| Version | Features | Status |
-|---------|----------|--------|
-| v0.2 | Foundation, curriculum | Complete |
-| v0.3.0 | LLM generation, config, DB | Complete |
-| v0.3.1 | Memory, bandits, hypothesis | Complete |
-| v0.4.0 | Multi-agent, sandbox, checkpoint | Shipped |
-| v0.4.1 | CI/CD, Docker, tests | Shipped |
-| v0.5.0 | Reporting, figures, stats | Shipped |
-| v0.5.2 | Paper generation | Shipped |
-| v0.6.0 | Advanced autonomy, daemon mode | Shipped |
-| v0.6.1 | Self-modification, meta-loop | Shipped |
-| v0.6.2 | Distribution, multi-node, K8s | Shipped |
-| v0.7.0 | Production ready, peer-review, user guide | Shipped |
-| v0.7.1 | Multi-provider, multi-orchestrator support | Shipped |
-| v0.7.2 | Hardening: CI/CD, 104 tests, lint, security audit | Shipped |
-
----
-
-## The Metric
-
-**val_bpb** (validation bits per byte) - Lower is better
+An autonomous research stack for continuously improving LLM training through automated experimentation. Inspired by [Karpathy's autoresearch](https://github.com/karpathy/autoresearch), designed for single-GPU research labs.
 
 ---
 
@@ -73,50 +17,152 @@ An autonomous research stack for continuously improving LLM training through aut
 
 ```bash
 # Install
+pip install autoresearch-stack
+
+# Or from source
+git clone https://github.com/iknowkungfubar/autoresearch-stack.git
+cd autoresearch-stack
 pip install -e .
 
-# Configure
+# Configure (at least one API key)
 export ANTHROPIC_API_KEY=sk-ant-...
+# or: export OPENAI_API_KEY=sk-...
 
-# Run autonomous loop
-python autonomous_loop.py --experiments 100
+# Run the data pipeline
+autoresearch --prepare-only
 
-# Run tests
-pytest tests/
+# Run 10 autonomous experiments
+autoresearch --experiments 10
 
-# Or use Docker
-docker build -t autoresearch-stack .
-docker run --rm -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY autoresearch-stack
+# Run with custom config
+autoresearch -c my_config.yaml -i training_data.txt --experiments 100
+
+# Python module syntax also works
+python -m autoresearch --help
 ```
 
+## Demo: Numpy Training (no GPU required)
+
+```bash
+# Test the training pipeline without PyTorch
+python train_any_llm.py --demo
+```
+
+This runs a complete training loop using the numpy demo model, exercising the curriculum scheduler, loss tracking, and convergence detection — no GPU or PyTorch needed.
+
+## Features
+
+### Data Pipeline
+| Module | What it does |
+|--------|-------------|
+| `data_intelligence.py` | Corpus cleaning, noise detection, text repair |
+| `synthetic_data.py` | LLM-powered generation with Evol-Instruct |
+| `curriculum.py` | Adaptive scheduling (linear, exponential, step, adaptive) |
+| `storage.py` | SQLite experiment database with JSONL fallback |
+
+### Experiment Engine
+| Module | What it does |
+|--------|-------------|
+| `memory.py` | Vector store with semantic search (ChromaDB optional) |
+| `prioritization.py` | Bandit-based selection (UCB1, epsilon-greedy, Thompson) |
+| `hypothesis.py` | LLM-driven hypothesis generation with rule-based fallback |
+| `feedback.py` | Reward computation, failure classification (13 types) |
+| `mult_agent.py` | Multi-agent architecture (research, hypothesis, execution, evaluation) |
+
+### Infrastructure
+| Module | What it does |
+|--------|-------------|
+| `sandbox.py` | Safe code execution with AST-based validation |
+| `checkpoint.py` | State persistence and resume |
+| `monitor.py` | Real-time status and progress bars |
+| `daemon.py` | Background execution with health checks and auto-restart |
+| `distribute.py` | Multi-node cluster management (Docker/K8s) |
+
+### LLM Integration
+| Module | What it does |
+|--------|-------------|
+| `providers.py` | 17+ LLM providers (Anthropic, OpenAI, OpenRouter, Ollama, vLLM, etc.) |
+| `orchestrators.py` | 7 agent orchestrators (CrewAI, AutoGen, LangChain, etc.) |
+| `train_any_llm.py` | Training abstraction (numpy demo + optional PyTorch) |
+
+### Reporting & Analysis
+| Module | What it does |
+|--------|-------------|
+| `report.py` | Markdown experiment reports with comparison |
+| `figures.py` | Matplotlib visualizations with graceful fallback |
+| `stats.py` | Summary statistics and convergence analysis |
+| `paper.py` | Research paper generation (Markdown/LaTeX) |
+| `peer_review.py` | Peer review simulation (5 reviewer profiles) |
+
 ---
 
-## Key Files
+## Configuration
 
-| Phase | Files |
-|-------|-------|
-| Foundation | config.py, synthetic_data.py, curriculum.py |
-| Intelligence | memory.py, prioritization.py, hypothesis.py |
-| Multi-Agent | multi_agent.py |
-| Production | sandbox.py, checkpoint.py, monitor.py |
-| Reporting | report.py, figures.py, stats.py |
+All configuration lives in `config.yaml`. Environment variables override YAML values:
 
----
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...   # API key (never put in config file!)
+export EXPERIMENT_BUDGET=1000          # Override max experiments
+export LEARNING_RATE=0.0005            # Override model LR
+export SYNTHETIC_USE_LLM=true          # Enable LLM data generation
+export MEMORY_ENABLED=true             # Enable vector memory
+```
 
-## Research References
+## Provider Support
 
-- [Karpathy autorearch](https://github.com/karpathy/autoresearch) - val_bpb metric
-- [Ouroboros](https://github.com/razzant/ouroboros) - Self-modifying
-- [AI Scientist](https://github.com/SakanaAI/AI-Scientist) - Paper generation
+**Cloud:** Anthropic (Claude), OpenAI (GPT-4/4o), OpenRouter, Google Vertex AI, Azure OpenAI, Mistral AI, Cohere, Zen AI
 
----
+**Local:** Ollama, vLLM, LM Studio, llama.cpp, LiteLLM, KoboldCPP, LocalAI, Text Generation WebUI
 
-## Constraints (Never Changed)
+**Orchestrators:** OpenCode, OpenCrew, AgentForge, CrewAI, AutoGen, LangChain, LlamaIndex
+
+## The Metric
+
+**val_bpb** (validation bits per byte) — Lower is better. The single optimization target.
+
+## Project Constraints (Never Changed)
 
 1. **val_bpb** is the ONLY metric
 2. ONE change per experiment
 3. Revert on regression
 4. Single-GPU focused
+
+## Development Status
+
+| Version | Status | Tests | Coverage | Type Safety |
+|---------|--------|-------|----------|-------------|
+| v7.3.0 | **Current** | 148 ✅ | 63% | 0 mypy errors |
+| v7.2.0 | Shipped | 104 ✅ | 57% | 43 errors |
+| v7.0.0 | Shipped | 53 ✅ | — | — |
+
+## Testing
+
+```bash
+# Run all tests
+pytest tests/ -q
+
+# With coverage
+pytest tests/ -q --cov=./
+
+# Run specific test file
+pytest tests/test_providers.py -v
+```
+
+## Docker
+
+```bash
+docker build -t autoresearch-stack .
+docker run --rm -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY autoresearch-stack
+
+# Multi-node cluster
+docker compose up
+```
+
+## References
+
+- [Karpathy autoresearch](https://github.com/karpathy/autoresearch) — val_bpb metric
+- [Ouroboros](https://github.com/razzant/ouroboros) — Self-modifying systems
+- [AI Scientist](https://github.com/SakanaAI/AI-Scientist) — Paper generation
 
 ---
 

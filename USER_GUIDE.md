@@ -1,8 +1,8 @@
-# Autonomous Research Stack - User Guide
+# Autonomous Research Stack — User Guide
 
-> Complete guide to using the autonomous LLM training research system
+> Complete guide to installing, configuring, and running the autonomous LLM training research system
 
-**Version:** 7.2 | **Status:** Production-Ready
+**Version:** 7.3.0 | **Status:** Production-Ready
 
 ---
 
@@ -11,36 +11,46 @@
 1. [Quick Start](#quick-start)
 2. [Installation](#installation)
 3. [Configuration](#configuration)
-4. [Running Experiments](#running-experiments)
-5. [Components Overview](#components-overview)
-6. [Advanced Features](#advanced-features)
-7. [Deployment](#deployment)
-8. [Troubleshooting](#troubleshooting)
+4. [CLI Usage](#cli-usage)
+5. [Python API](#python-api)
+6. [Demo Training](#demo-training)
+7. [Provider Setup](#provider-setup)
+8. [Testing](#testing)
+9. [Deployment](#deployment)
+10. [Troubleshooting](#troubleshooting)
 
 ---
 
 ## Quick Start
 
-### 5-Minute Quick Start
+### 30-Second Quick Start
 
 ```bash
-# 1. Clone and install
+# Install
+pip install autoresearch-stack
+
+# Set API key
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# Run the data pipeline
+autoresearch --prepare-only
+
+# Run experiments
+autoresearch --experiments 10
+```
+
+### 2-Minute Demo (no GPU, no API key)
+
+```bash
+# From source
 git clone https://github.com/iknowkungfubar/autoresearch-stack.git
 cd autoresearch-stack
 pip install -e .
 
-# 2. Set API key
-export ANTHROPIC_API_KEY="sk-ant-..."
-
-# 3. Run autonomous experiments
-python autonomous_loop.py --experiments 10
-
-# 4. View results
-python -m pytest tests/  # Run tests
-cat experiment_report.md  # View report
+# Run the numpy demo training — exercises curriculum, loss tracking,
+# convergence detection without PyTorch or an API key
+python train_any_llm.py --demo
 ```
-
-That's it! Your first autonomous experiment loop is running.
 
 ---
 
@@ -50,425 +60,309 @@ That's it! Your first autonomous experiment loop is running.
 
 - Python 3.11+
 - Linux/macOS (Windows via WSL)
-- 8GB RAM minimum (16GB recommended)
-- GPU recommended for training
+- 4GB RAM minimum
+- GPU optional (numpy demo works on CPU)
 
-### Standard Installation
+### From PyPI
 
 ```bash
-# Clone repository
+pip install autoresearch-stack
+```
+
+### From Source
+
+```bash
 git clone https://github.com/iknowkungfubar/autoresearch-stack.git
 cd autoresearch-stack
-
-# Create virtual environment (recommended)
 python -m venv venv
-source venv/bin/activate  # Linux/macOS
-# venv\Scripts\activate  # Windows
-
-# Install dependencies
+source venv/bin/activate
 pip install -e .
 ```
 
 ### Optional Dependencies
 
 ```bash
-# For vector storage (optional)
-pip install chromadb
-
-# For visualization (optional)
-pip install matplotlib seaborn
-
-# For cloud deployment (optional)
-pip install boto3 google-cloud-aiplatform azure-ml
+pip install anthropic        # Anthropic Claude provider
+pip install openai           # OpenAI / OpenRouter provider
+pip install chromadb         # Vector memory store
+pip install matplotlib       # Figures and visualization
 ```
 
-### Docker Installation
+### Docker
 
 ```bash
-# Build Docker image
-docker build -t autoresearch .
-
-# Run container
-docker run --rm -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY autoresearch
+docker build -t autoresearch-stack .
+docker run --rm -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY autoresearch-stack
 ```
 
 ---
 
 ## Configuration
 
-### Environment Variables
+### Config File
 
-Create a `.env` file or export:
-
-```bash
-# Required for LLM features
-export ANTHROPIC_API_KEY="sk-ant-..."
-
-# Optional: Alternative providers
-export OPENAI_API_KEY="sk-..."
-export SERPER_API_KEY="..."
-
-# Configuration
-export AUTORESEARCH_DB_PATH="./data/experiments.db"
-export AUTORESEARCH_LOG_LEVEL="INFO"
-```
-
-### Configuration File
-
-Edit `config.yaml`:
+Edit `config.yaml` (auto-created with defaults if missing):
 
 ```yaml
-# Training configuration
-training:
-  base_model: "gpt2"
-  max_epochs: 10
-  batch_size: 32
-  learning_rate: 0.0001
-
-# Experiment configuration
 experiment:
-  max_experiments: 100
-  patience: 5
-  target_metric: "val_bpb"
+  budget: 500              # Max experiments
+  time_per_experiment: 300 # Seconds per experiment
+  val_target: 0.95         # Target val_bpb to achieve
 
-# Agent configuration
-agents:
-  use_llm: true
-  model: "claude-3-sonnet-20240229"
-  temperature: 0.7
+model:
+  size: "124M"
+  learning_rate: 0.0001
+  batch_size: 32
+
+synthetic:
+  n_samples: 200
+  use_llm: false           # Requires API key
+  model_provider: "anthropic"
 ```
 
-### Programmatic Configuration
+### Environment Variable Overrides
 
-```python
-from config import Config
+Any config value can be overridden via environment variables:
 
-config = Config(
-    training=dict(
-        max_epochs=20,
-        batch_size=64,
-    ),
-    experiment=dict(
-        max_experiments=50,
-    )
-)
+```bash
+export EXPERIMENT_BUDGET=1000          # Override max experiments
+export LEARNING_RATE=0.0005            # Override model LR
+export SYNTHETIC_USE_LLM=true          # Enable LLM data generation
+export MEMORY_ENABLED=true             # Enable vector memory
+```
 
-# Use in pipeline
-pipeline = AutonomousPipeline(config=config)
+### API Keys (set via env vars, never in config file)
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."     # Anthropic Claude
+export OPENAI_API_KEY="sk-..."            # OpenAI
+export OPENROUTER_API_KEY="sk-or-..."     # OpenRouter
+export MISTRAL_API_KEY="..."              # Mistral AI
+export ZEN_API_KEY="..."                  # Zen AI
 ```
 
 ---
 
-## Running Experiments
-
-### Command Line Interface
+## CLI Usage
 
 ```bash
-# Run with defaults
-python autonomous_loop.py
+# Show help
+autoresearch --help
 
-# Run specific number of experiments
-python autonomous_loop.py --experiments 100
+# Prepare data only (no experiments)
+autoresearch --prepare-only
 
-# Run with custom config
-python autonomous_loop.py --config config.yaml
+# Run N experiments
+autoresearch --experiments 10
 
-# Resume from checkpoint
-python autonomous_loop.py --resume
+# Run with custom config and input
+autoresearch -c my_config.yaml -i input_data.txt
 
-# Daemon mode (continuous operation)
-python daemon.py start
+# Run full autonomous loop (up to budget)
+autoresearch --experiments 100
+
+# Python module syntax (equivalent)
+python -m autoresearch --help
 ```
 
-### Python API
+### Daemon Mode
+
+```bash
+python daemon.py start          # Start background daemon
+python daemon.py status         # Check health
+python daemon.py stop           # Stop gracefully
+python daemon.py restart        # Restart
+```
+
+---
+
+## Python API
+
+### Autonomous Pipeline
 
 ```python
 from autonomous_loop import AutonomousPipeline
-from config import Config
+from config import get_config
 
-# Create pipeline
-config = Config()
-pipeline = AutonomousPipeline(config=config)
+config = get_config("config.yaml")
+pipeline = AutonomousPipeline("config.yaml")
 
-# Run experiments
-results = pipeline.run(num_experiments=50)
+# Prepare data
+data = pipeline.prepare_data(
+    raw_texts=["machine learning is fun", "neural networks are powerful"],
+    use_synthetic=True,
+    use_model_loop=False,
+)
 
-# Access results
-print(f"Best val_bpb: {results['best_val_bpb']}")
-print(f"Total experiments: {results['total']}")
+# Run a single experiment
+result = pipeline.run_experiment(
+    change_description="Increase LR by 10%",
+    change_code="config.model.learning_rate *= 1.1",
+    change_type="optimization",
+    baseline_val_bpb=1.0,
+)
+print(f"New val_bpb: {result['val_bpb_after']:.4f}")
+print(f"Improved: {result['improved']}")
 ```
 
-### Using Multi-Agent System
+### Hypothesis Generation
 
 ```python
-from multi_agent import OrchestratorAgent
-from config import Config
+from hypothesis import HypothesisGenerator
 
-# Initialize orchestrator
-config = Config()
-orchestrator = OrchestratorAgent(config)
-
-# Run research cycle
-result = orchestrator.run_cycle()
-
-# Get hypothesis
-hypothesis = result["hypothesis"]
-print(f"Proposed: {hypothesis.description}")
+gen = HypothesisGenerator(use_llm=False)
+hypotheses = gen.generate(n=3, change_type="optimization")
+for h in hypotheses:
+    print(f"- {h.description} ({h.expected_impact})")
+    print(f"  Code: {h.code_diff}")
 ```
 
----
-
-## Components Overview
-
-### Core Modules
-
-| Module | Purpose | Quick Example |
-|--------|---------|--------------|
-| `config.py` | Configuration management | `Config().training.max_epochs` |
-| `storage.py` | SQLite database | `ExperimentDB().save_experiment(exp)` |
-| `autonomous_loop.py` | Main pipeline | `AutonomousPipeline().run()` |
-
-### Intelligence Modules
-
-| Module | Purpose |
-|--------|---------|
-| `memory.py` | Vector store for experiment history |
-| `prioritization.py` | Bandit-based experiment selection |
-| `hypothesis.py` | LLM-powered hypothesis generation |
-
-### Production Modules
-
-| Module | Purpose |
-|--------|---------|
-| `sandbox.py` | Safe code execution |
-| `checkpoint.py` | State persistence |
-| `monitor.py` | Real-time display |
-| `daemon.py` | Continuous operation |
-
-### Reporting Modules
-
-| Module | Purpose |
-|--------|---------|
-| `report.py` | Markdown reports |
-| `figures.py` | Visualizations |
-| `stats.py` | Statistics |
-| `paper.py` | Paper generation |
-| `peer_review.py` | Review simulation |
-
----
-
-## Advanced Features
-
-### Using Memory System
+### Provider Selection
 
 ```python
-from memory import MemorySystem
+from providers import LLMProviderFactory
 
-# Initialize
-memory = MemorySystem()
+# Create a provider
+provider = LLMProviderFactory.create("anthropic")
 
-# Store experiment
-memory.store({
-    "change": "increased learning rate",
-    "result": "improved val_bpb",
-    "type": "optimization",
+# Or from config
+provider = LLMProviderFactory.from_config({
+    "provider": "openai",
+    "api_key": "sk-...",
 })
 
-# Search similar experiments
-similar = memory.query("learning rate adjustments", k=5)
-print(similar)
-```
-
-### Bandit-Based Selection
-
-```python
-from prioritization import BanditSelector
-
-selector = BanditSelector(method="ucb1")
-
-# Select next experiment type
-choice = selector.select()
-selector.update(choice, reward=0.1)
-```
-
-### Generating Reports
-
-```python
-from report import generate_full_report
-
-# Generate full report with figures
-files = generate_full_report(
-    experiments=experiments,
-    output_dir="output",
-    baseline=1.0,
+# Generate completion
+response = provider.complete(
+    messages=[{"role": "user", "content": "Hello"}],
+    model="gpt-4o",
 )
-
-print(f"Report: {files['report']}")
-print(f"Figures: {files.get('figures')}")
+print(response.content)
 ```
 
-### Generating Papers
+### Sandbox Execution
 
 ```python
-from paper import generate_paper_from_experiments
+from sandbox import SafeRunner
 
-paper = generate_paper_from_experiments(experiments)
-paper.save("research_paper.md")
+runner = SafeRunner()
+
+# Safe code runs
+result = runner.run("print('hello world')")
+print(f"Output: {result.stdout}")
+
+# Dangerous code is blocked
+result = runner.run("import os; os.system('rm -rf /')")
+print(f"Blocked: {not result.success}")
 ```
 
-### Peer Review Simulation
+---
 
-```python
-from peer_review import PeerReviewSimulator
+## Demo Training
 
-simulator = PeerReviewSimulator(num_reviewers=3)
-reviews = simulator.simulate_review_round(
-    paper_title="My Paper",
-    paper_content=content,
-)
-
-# Get consensus
-consensus = simulator.get_consensus(reviews)
-print(f"Verdict: {consensus['agreement']}")
-```
-
-### Running as Daemon
+### Numpy Demo (no GPU, no API key)
 
 ```bash
-# Start daemon (background)
-python daemon.py start
+python train_any_llm.py --demo
+```
 
-# Check status
-python daemon.py status
+Output:
+```
+NUMPY DEMO TRAINING
+  Step 0: loss=0.035699, stage=easy
+  Step 25: loss=0.043933, stage=easy
+  Step 50: loss=0.073658, stage=medium
+  Step 75: loss=0.443240, stage=hard
 
-# Stop daemon
-python daemon.py stop
+Training complete:
+  Steps: 100
+  Final training loss: 0.021189
+  Val BPB: 0.7124
+  Converged: True
+```
 
-# Restart
-python daemon.py restart
+This exercises: curriculum scheduler, numpy demo model, training loop,
+loss tracking, and convergence detection — all without PyTorch.
+
+### With PyTorch
+
+When PyTorch is installed, `train_any_llm.py` uses it automatically:
+
+```python
+from train_any_llm import Trainer
+# The Trainer class wraps torch models when available,
+# falls back to numpy demo when not
+```
+
+---
+
+## Provider Setup
+
+### Supported Cloud Providers
+
+| Provider | Env Variable | Package |
+|----------|-------------|---------|
+| Anthropic Claude | `ANTHROPIC_API_KEY` | `pip install anthropic` |
+| OpenAI | `OPENAI_API_KEY` | `pip install openai` |
+| OpenRouter | `OPENROUTER_API_KEY` | `pip install openai` |
+| Google Vertex AI | `GOOGLE_CLOUD_PROJECT` | `pip install google-cloud-aiplatform` |
+| Azure OpenAI | `AZURE_OPENAI_API_KEY` + `AZURE_OPENAI_ENDPOINT` | `pip install openai` |
+| Mistral AI | `MISTRAL_API_KEY` | `pip install mistralai` |
+
+### Supported Local Providers
+
+| Provider | Default URL | Notes |
+|----------|------------|-------|
+| Ollama | `http://localhost:11434` | `ollama pull llama3` |
+| vLLM | `http://localhost:8000` | OpenAI-compatible API |
+| LM Studio | `http://localhost:1234/v1` | Enable CORS in LM Studio |
+| llama.cpp | `http://localhost:8080` | Server mode |
+
+Set `provider: "ollama"` and `base_url: "http://localhost:11434"` in config.yaml.
+
+---
+
+## Testing
+
+```bash
+# Run all tests (148 total)
+pytest tests/ -q
+
+# With coverage report
+pytest tests/ -q --cov=./
+
+# Specific test files
+pytest tests/test_providers.py -v     # 32 provider tests
+pytest tests/test_core.py -v          # Core module tests
+pytest tests/test_autonomous_loop.py -v  # Pipeline tests
+
+# Run with mypy type checking
+mypy . --ignore-missing-imports
 ```
 
 ---
 
 ## Deployment
 
-### Local Cluster (Docker Compose)
+### Docker
 
 ```bash
-# Start cluster
-docker-compose up -d
+docker build -t autoresearch-stack .
+docker run --rm -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY autoresearch-stack
+```
 
-# Scale workers
-docker-compose up -d --scale worker=3
+### Docker Compose (multi-node)
 
-# View logs
-docker-compose logs -f
+```bash
+docker compose up -d
+docker compose logs -f
+docker compose down
 ```
 
 ### Kubernetes
 
 ```bash
-# Deploy to K8s
 kubectl apply -f k8s/deployment.yaml
-
-# Check status
 kubectl get pods -l app=autoresearch
-```
-
-### Cloud Deployment
-
-```python
-from distribute import CostEstimator, Cluster
-
-# Estimate costs
-cost = CostEstimator.estimate_experiment_run(
-    provider=CloudProvider.AWS,
-    instance_type="p3.2xlarge",
-    num_experiments=100,
-    minutes_per_experiment=30,
-)
-print(f"Estimated cost: ${cost.total_cost:.2f}")
-```
-
----
-
-## Testing
-
-### Run All Tests
-
-```bash
-# All tests
-pytest
-
-# With coverage
-pytest --cov=. --cov-report=html
-
-# Specific test file
-pytest tests/test_core.py -v
-```
-
-### Run Specific Tests
-
-```bash
-# Test config
-pytest tests/test_core.py::TestConfig -v
-
-# Test agents
-pytest tests/test_core.py::TestMultiAgent -v
-```
-
----
-
-## Troubleshooting
-
-### Common Issues
-
-**Issue:** `ModuleNotFoundError: No module named 'anthropic'`
-
-```bash
-pip install anthropic
-```
-
-**Issue:** `APIError: Invalid API key`
-
-```bash
-# Verify key is set
-echo $ANTHROPIC_API_KEY
-
-# Or set temporarily
-export ANTHROPIC_API_KEY="sk-ant-..."
-```
-
-**Issue:** Tests failing
-
-```bash
-# Check Python version
-python --version  # Should be 3.10+
-
-# Reinstall dependencies
-pip install -e . --force-reinstall
-
-# Clear cache
-rm -rf __pycache__ .pytest_cache
-```
-
-**Issue:** Out of memory
-
-```bash
-# Reduce batch size in config.yaml
-training:
-  batch_size: 8  # Reduce from 32
-```
-
-### Getting Help
-
-```bash
-# View logs
-cat autoresearch.log
-
-# Debug mode
-export AUTORESEARCH_LOG_LEVEL=DEBUG
-python autonomous_loop.py
 ```
 
 ---
@@ -477,69 +371,74 @@ python autonomous_loop.py
 
 ```
 autoresearch-stack/
-├── autonomous_loop.py    # Main pipeline
-├── config.py            # Configuration
-├── storage.py           # Database
-├── memory.py            # Vector store
-├── prioritization.py    # Bandits
-├── hypothesis.py       # Hypothesis generation
-├── multi_agent.py      # Agent system
-├── providers.py        # LLM provider integrations
-├── orchestrators.py    # Agentic framework integrations
-├── sandbox.py          # Safe execution
-├── checkpoint.py       # Persistence
-├── monitor.py          # Display
-├── daemon.py           # Daemon mode
-├── report.py           # Reports
-├── figures.py          # Visualizations
-├── stats.py            # Statistics
-├── paper.py            # Paper generation
-├── peer_review.py      # Review simulation
-├── distribute.py       # Distribution
-├── metaloop.py         # Self-modification
-├── data_intelligence.py # Corpus cleaning
-├── synthetic_data.py   # Synthetic generation
-├── curriculum.py       # Adaptive scheduling
-├── feedback.py         # Experiment logging
-├── train_any_llm.py    # Training abstraction
-│
-├── k8s/                 # Kubernetes configs
-├── docker-compose.yml   # Docker cluster
-├── config.yaml          # Default config
-├── setup.py             # Package setup
-├── requirements.txt     # Dependencies
-│
-├── tests/               # Test suite (104 tests)
-│   ├── test_core.py
-│   ├── test_new_modules.py
-│   └── test_hardening.py
-├── README.md            # Overview
-├── CHANGELOG.md         # Version history
-├── SDD.md               # System design doc
-├── USER_GUIDE.md        # This guide
-└── .github/workflows/   # CI/CD pipeline
+├── autonomous_loop.py     # Main pipeline orchestration
+├── autoresearch/          # Python package (__init__, __main__)
+├── config.py              # YAML + env var configuration
+├── config.yaml            # Default configuration
+├── providers.py           # 17+ LLM provider integrations
+├── orchestrators.py       # 7 agent orchestrator integrations
+├── synthetic_data.py      # LLM-powered data generation
+├── curriculum.py          # Adaptive scheduling
+├── memory.py              # Vector store with search
+├── prioritization.py      # Bandit-based selection
+├── hypothesis.py          # Hypothesis generation
+├── feedback.py            # Experiment logging & classification
+├── sandbox.py             # AST-validated safe execution
+├── checkpoint.py          # State persistence
+├── monitor.py             # Real-time status display
+├── daemon.py              # Background execution
+├── distribute.py          # Multi-node cluster management
+├── metaloop.py            # Self-modification system
+├── report.py              # Markdown report generation
+├── figures.py             # Visualization (matplotlib)
+├── stats.py               # Summary statistics
+├── paper.py               # Research paper generation
+├── peer_review.py         # Peer review simulation
+├── data_intelligence.py   # Corpus cleaning
+├── train_any_llm.py       # Training abstraction (numpy demo + PyTorch)
+├── storage.py             # SQLite database
+├── multi_agent.py         # Multi-agent architecture
+├── tests/                 # 148 passing tests
+├── k8s/                   # Kubernetes deployment
+├── docs/                  # Development documentation
+├── Dockerfile             # Docker build
+├── docker-compose.yml     # Multi-node cluster
+└── setup.py               # pip installable package
 ```
 
 ---
 
-## Contributing
+## Troubleshooting
 
-1. Fork the repository
-2. Create a feature branch
-3. Write tests for new features
-4. Ensure all tests pass
-5. Update documentation
-6. Submit pull request
+### `ModuleNotFoundError: No module named 'anthropic'`
 
----
+```bash
+pip install anthropic
+```
 
-## License
+### `ValueError: ANTHROPIC_API_KEY required`
 
-MIT License - See LICENSE file.
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+# Or set OPENAI_API_KEY / OPENROUTER_API_KEY
+```
 
----
+### `No known vulnerabilities found` (pip-audit check)
 
-## Support
+This is a good thing — it means your dependencies are clean.
 
-- GitHub Issues: https://github.com/iknowkungfubar/autoresearch-stack/issues
-- Documentation: https://github.com/iknowkungfubar/autoresearch-stack#readme
+### Tests fail on first run
+
+```bash
+pip install -e .
+```
+
+### Out of memory
+
+Reduce batch size or experiment count in config.yaml:
+```yaml
+model:
+  batch_size: 8  # Default: 32
+experiment:
+  budget: 50     # Default: 500
+```
