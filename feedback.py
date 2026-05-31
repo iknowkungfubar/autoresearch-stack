@@ -111,8 +111,11 @@ class Feedback:
                         try:
                             data = json.loads(line)
                             self.experiments.append(Experiment(**data))
-                        except Exception:
-                            pass
+                        except Exception as e:
+                            import logging
+                            logging.getLogger("feedback").debug(
+                                "Skipping malformed experiment line: %s", e
+                            )
 
     def reward(self, val_bpb: float, score: float = 0.0) -> float:
         """Compute reward from val_bpb and optional score.

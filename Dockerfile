@@ -10,9 +10,9 @@ LABEL description="Autonomous LLM training research stack"
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
-    git \
+    git=1:2.43* \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for caching
