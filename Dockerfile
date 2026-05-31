@@ -12,7 +12,7 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
-    git=1:2.43* \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for caching
