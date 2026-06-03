@@ -8,6 +8,14 @@ services:
       - "8000:8000"
     environment:
       - ROLE=master
+      # SECURITY WARNING: API keys passed via environment variables
+      # can be leaked through docker inspect, logs, or /proc.
+      # For production, use Docker secrets (swarm mode):
+      #   secrets:
+      #     - anthropic_api_key
+      #   environment:
+      #     - ANTHROPIC_API_KEY_FILE=/run/secrets/anthropic_api_key
+      # Then read /run/secrets/anthropic_api_key in your app.
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     volumes:
       - ./data:/app/data
@@ -23,6 +31,11 @@ services:
     environment:
       - ROLE=worker
       - MASTER_HOST=master
+      # SECURITY WARNING: API keys passed via environment variables
+      # can be leaked through docker inspect, logs, or /proc.
+      # For production, use Docker secrets (swarm mode):
+      #   secrets:
+      #     - anthropic_api_key
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     volumes:
       - ./data:/app/data
@@ -40,6 +53,11 @@ services:
     environment:
       - ROLE=worker
       - MASTER_HOST=master
+      # SECURITY WARNING: API keys passed via environment variables
+      # can be leaked through docker inspect, logs, or /proc.
+      # For production, use Docker secrets (swarm mode):
+      #   secrets:
+      #     - anthropic_api_key
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     volumes:
       - ./data:/app/data
@@ -57,6 +75,11 @@ services:
     environment:
       - ROLE=worker
       - MASTER_HOST=master
+      # SECURITY WARNING: API keys passed via environment variables
+      # can be leaked through docker inspect, logs, or /proc.
+      # For production, use Docker secrets (swarm mode):
+      #   secrets:
+      #     - anthropic_api_key
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     volumes:
       - ./data:/app/data
