@@ -33,6 +33,26 @@ Repository = "https://github.com/iknowkungfubar/autoresearch-stack"
 [project.scripts]
 autoresearch = "autonomous_loop:main"
 
+[tool.setuptools]
+include-package-data = true
+py-modules = [
+    "autonomous_loop", "config", "data_intelligence",
+    "synthetic_data", "curriculum", "feedback",
+    "storage", "memory", "prioritization",
+    "hypothesis", "providers", "orchestrators",
+    "sandbox", "checkpoint", "monitor",
+    "report", "figures", "stats",
+    "paper", "peer_review", "metaloop",
+    "multi_agent", "distribute", "daemon",
+    "train_any_llm",
+]
+
+[tool.setuptools.packages.find]
+include = ["autoresearch", "autoresearch.*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.md"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q --tb=short"
