@@ -13,6 +13,7 @@ modifications.json
 prompts.json
 htmlcov/
 .coverage
+coverage.xml
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -20,4 +21,5 @@ htmlcov/
 venv/
 dist/
 build/
+daemon_stats.json
 

@@ -2,11 +2,11 @@
 
 ## Supported Versions
 
-| Version | Supported |
-|---------|-----------|
-| 7.3.x   | ✅ Active development |
-| 7.2.x   | ✅ Supported |
-| < 7.2   | ❌ Not supported |
+|| Version | Supported |
+||---------|-----------|
+|| 0.7.x   | ✅ Active development |
+|| 0.6.x   | ✅ Supported |
+|| < 0.6   | ❌ Not supported |
 
 ## Reporting a Vulnerability
 
@@ -43,14 +43,14 @@ This is a local research tool with no API endpoints, no user accounts, and no st
 
 ### Code Execution Safety
 The sandbox module (`sandbox.py`) uses **AST-based validation** to prevent dangerous code execution:
-- Blocks imports of `os`, `sys`, `subprocess`, `socket`, `ctypes`
-- Blocks calls to `eval()`, `exec()`, `__import__()`, `compile()`, `open()`
+- Blocks imports of `os`, `sys`, `subprocess`, `socket`, `ctypes`, `builtins`
+- Blocks calls to `eval()`, `exec()`, `__import__()`, `compile()`, `open()`, `breakpoint()`, `getattr()`
+- Blocks attribute access chains on blocked modules (e.g., `os.environ.get`)
 - String-matching bypasses (e.g., `import  os`, `importos`) are caught by AST parsing
 
 ### Dependency Security
 - All dependencies are audited with `pip-audit` in CI
-- No known vulnerabilities in the dependency tree
-- Dependencies are minimal (numpy, pyyaml, requests — optional packages for providers)
+- Runtime dependencies are minimal (`numpy`, `pyyaml`, `requests`)
 
 ## Hall of Fame
 

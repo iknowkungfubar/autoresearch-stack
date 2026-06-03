@@ -137,6 +137,7 @@ BLOCKED_MODULES: set[str] = {
     "pathlib",
     "breakpoint",
     "__builtins__",
+    "builtins",
 }
 
 # AST-level blocked function calls (bare names like eval())
@@ -147,6 +148,8 @@ BLOCKED_FUNCTIONS: set[str] = {
     "compile",
     "open",
     "input",
+    "breakpoint",
+    "getattr",
 }
 
 

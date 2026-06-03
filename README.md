@@ -129,9 +129,9 @@ export MEMORY_ENABLED=true             # Enable vector memory
 
 ## Development Status
 
-| Version | Status | Tests | Coverage | Type Safety |
-|---------|--------|-------|----------|-------------|
-| v0.7.3 | **Current** | 148 ✅ | 63% | 0 mypy errors |
+|| Version | Status | Tests | Coverage | Type Safety |
+||---------|--------|-------|----------|-------------|
+|| v0.7.3 | **Current** | 148 ✅ | 73% | 0 mypy errors |
 | v0.7.2 | Shipped | 104 ✅ | 57% | 43 errors |
 | v0.7.0 | Shipped | 53 ✅ | — | — |
 
