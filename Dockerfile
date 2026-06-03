@@ -3,7 +3,7 @@
 # Run: docker run --rm -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY autoresearch-stack
 
 # hadolint ignore=DL3007
-FROM python:3.11-slim AS builder
+FROM python:3.14-slim AS builder
 
 LABEL maintainer="turin@autoresearch.io"
 LABEL description="Autonomous LLM training research stack"
@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # --- Production stage ---
-FROM python:3.11-slim
+FROM python:3.14-slim
 
 # Create non-root user first so subsequent COPY --chown works
 RUN useradd -m -u 1000 appuser
