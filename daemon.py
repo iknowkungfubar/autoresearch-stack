@@ -5,6 +5,7 @@ Phase 6.3: Continuous Operation.
 """
 
 import atexit
+import fcntl
 import json
 import logging
 import os
@@ -105,9 +106,28 @@ class Daemon:
         self.logger = logging.getLogger(__name__)
 
     def _write_pid(self):
-        """Write PID file."""
-        with open(self.config.pid_file, "w") as f:
-            f.write(str(os.getpid()))
+        """Write PID file atomically to prevent TOCTOU races."""
+        pid_path = self.config.pid_file
+        pid = os.getpid()
+        # Use O_CREAT | O_EXCL for atomic PID file creation.
+        # This fails if the file already exists, avoiding TOCTOU.
+        try:
+            fd = os.open(pid_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            with os.fdopen(fd, "w") as f:
+                f.write(str(pid))
+        except FileExistsError:
+            # PID file already exists — check if the process is alive
+            existing = Path(pid_path).read_text().strip()
+            if existing:
+                try:
+                    os.kill(int(existing), 0)
+                    raise RuntimeError(
+                        f"PID file {pid_path} already exists with live PID {existing}"
+                    )
+                except (OSError, ValueError):
+                    # Process is dead; overwrite stale PID file
+                    with open(pid_path, "w") as f:
+                        f.write(str(pid))
 
     def _remove_pid(self):
         """Remove PID file."""
@@ -310,7 +330,7 @@ class Daemon:
             print("Daemon not running")
             return
 
-        print(f"Dameon running with PID: {pid}")
+        print("Daemon running")
         status = self.get_status()
         print(f"Uptime: {status.uptime_seconds:.0f}s")
         print(f"Experiments: {status.experiments_run}")
