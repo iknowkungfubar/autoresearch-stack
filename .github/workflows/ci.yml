@@ -60,7 +60,7 @@ jobs:
       run: pip install -e .
 
     - name: Dependency audit (vulnerability scan)
-      run: pip-audit --no-deps .
+      run: pip-audit --strict .
 
     - name: Scan for hardcoded secrets
       run: |
