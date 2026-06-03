@@ -52,9 +52,11 @@ memory:
 
 # API Configuration
 api:
-  # API keys should be set via environment variables:
-  # ANTHROPIC_API_KEY, OPENAI_API_KEY, OPENROUTER_API_KEY, etc.
-  # Do not put API keys here!
+  # WARNING: API keys are secrets! Never type them in this file.
+  # Set them as environment variables instead (they take precedence):
+  #   ANTHROPIC_API_KEY, OPENAI_API_KEY, OPENROUTER_API_KEY, etc.
+  # Hard-coding keys here puts them in version control and exposes them
+  # to anyone with repo access. Use env vars only.
   api_base: null         # Custom API base URL (optional)
   timeout: 60            # Request timeout (seconds)
 

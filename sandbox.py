@@ -133,6 +133,10 @@ BLOCKED_MODULES: set[str] = {
     "ctypes",
     "signal",
     "multiprocessing",
+    "io",
+    "pathlib",
+    "breakpoint",
+    "__builtins__",
 }
 
 # AST-level blocked function calls (bare names like eval())
@@ -251,9 +255,13 @@ class SafeRunner:
 
 
 def run_safe(code: str, timeout: int = 60) -> ExecutionResult:
-    """Convenience function to run code safely."""
-    with Sandbox() as sandbox:
-        return sandbox.execute(code, timeout=timeout)
+    """Convenience function to run code safely.
+
+    Uses SafeRunner to validate code via AST-based analysis before
+    executing it in the sandboxed environment.
+    """
+    runner = SafeRunner()
+    return runner.run(code, timeout=timeout)
 
 
 if __name__ == "__main__":
