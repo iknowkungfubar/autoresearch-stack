@@ -10,10 +10,10 @@ LABEL description="Autonomous LLM training research stack"
 
 WORKDIR /app
 
-# Install system build dependencies with pinned versions
+# Install system build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc=4:12.2.* \
-    git=1:2.39.* \
+    gcc \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy only requirements first for caching
