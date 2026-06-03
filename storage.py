@@ -122,7 +122,7 @@ class ExperimentDB:
         """Update experiment with results."""
         # Allowlist of valid column names to prevent SQL injection
         # via parameter names.
-        ALLOWED_COLUMNS: set[str] = {
+        allowed_columns: set[str] = {
             "val_bpb_after",
             "training_loss",
             "eval_loss",
@@ -176,7 +176,7 @@ class ExperimentDB:
                 # against the allowlist before building the SQL.
                 for clause in updates:
                     col = clause.split(" ")[0]
-                    if col not in ALLOWED_COLUMNS:
+                    if col not in allowed_columns:
                         raise ValueError(f"Disallowed column name: {col}")
                 conn.execute(
                     f"""UPDATE experiments
