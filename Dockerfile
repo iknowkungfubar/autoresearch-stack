@@ -1,9 +1,5 @@
 # Dockerfile for Autonomous Research Stack
-# Build: docker build -t autoresearch-stack .
-# Run: docker run --rm -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY autoresearch-stack
-
-# hadolint ignore=DL3007
-FROM python:3.14-slim AS builder
+FROM python:3.11-slim
 
 LABEL maintainer="turin@autoresearch.io"
 LABEL description="Autonomous LLM training research stack"
@@ -23,23 +19,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# --- Production stage ---
-FROM python:3.14-slim
-
-# Create non-root user first so subsequent COPY --chown works
-RUN useradd -m -u 1000 appuser
-
-WORKDIR /app
-
-# No runtime system packages needed beyond the slim base
-
-# Copy installed packages from builder (ownership set to appuser)
-COPY --from=builder --chown=appuser:appuser /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
-COPY --from=builder --chown=appuser:appuser /usr/local/bin /usr/local/bin
-COPY --from=builder --chown=appuser:appuser /app /app
-
-# Ensure appuser owns everything
-RUN chown -R appuser:appuser /app
+# Create non-root user
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
 
 USER appuser
 
