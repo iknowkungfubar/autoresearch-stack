@@ -366,4 +366,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v0.2.0
 
 ## Unreleased
 
-*No unreleased features. All previously planned features shipped through v0.7.2.*
+### Security
+- **sandbox.py** — Added `breakpoint()` and `getattr()` to `BLOCKED_FUNCTIONS` to prevent debugger-based code execution and attribute introspection bypasses.
+- **sandbox.py** — Added `builtins` to `BLOCKED_MODULES` to prevent `builtins.eval()` / `builtins.__import__()` attribute-chain bypass.
+- **CI/CD** — Switched dependency audit from `pip-audit -r requirements.txt` (which included dev deps) to `pip-audit --no-deps .` against the installed package only.
+
+### Fixed
+- **pyproject.toml** — Added missing `requests>=2.28.0` to core dependencies. The `providers.py` module uses `requests` at module level but it was only listed as an optional/transitive dependency.
+- **requirements.txt** — Removed dev-only packages (`pytest`, `pytest-cov`, `ruff`, `mypy`, `types-requests`, `docker`) from requirements.txt. These belong in CI or dev tooling, not as package requirements.
+- **pyproject.toml** — Removed `autoresearch/*` from coverage omit list (the package code should be measured).
+- **pyproject.toml** — Raised coverage `fail_under` from 55% to 70% to match actual test coverage (~73%).
+
+### Changed
+- **CI/CD** — Added Docker layer caching (`docker/build-push-action` with `type=gha`) for faster builds.
+- **CI/CD** — Added Docker Dependabot configuration for automated base image updates.
+- **CI/CD** — Fixed `grep` regex for secrets scanning (use `-E` with proper braces instead of escaped braces).
+- **SECURITY.md** — Updated to reflect current sandbox blocked list and dependency list.

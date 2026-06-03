@@ -18,6 +18,14 @@ jobs:
       with:
         python-version: '3.11'
 
+    - name: Cache pip dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml', 'requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
     - name: Install ruff
       run: pip install ruff
 
@@ -37,16 +45,28 @@ jobs:
       with:
         python-version: '3.11'
 
+    - name: Cache pip dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-sec-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-sec-
+
     - name: Install pip-audit
       run: pip install pip-audit
 
-    - name: Dependency audit
-      run: pip-audit -r requirements.txt
+    - name: Install package for dependency audit
+      run: pip install -e .
+
+    - name: Dependency audit (vulnerability scan)
+      run: pip-audit --no-deps .
 
     - name: Scan for hardcoded secrets
       run: |
         echo "Scanning for potential secrets..."
-        if grep -rn 'sk-ant-[a-zA-Z0-9]\{20,\}\|sk-[a-zA-Z0-9]\{20,\}\|AKIA[A-Z0-9]\{16,\}' --include='*.py' --include='*.yaml' --include='*.yml' . 2>/dev/null; then
+        if grep -rnE '(sk-ant-[a-zA-Z0-9]{20,}|sk-[a-zA-Z0-9]{20,}|AKIA[A-Z0-9]{16,})' \
+          --include='*.py' --include='*.yaml' --include='*.yml' . 2>/dev/null; then
           echo "ERROR: Potential secrets found!"
           exit 1
         fi
@@ -66,11 +86,14 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -e .
-        pip install pytest pytest-cov
+        pip install pytest pytest-cov mypy
+
+    - name: Type check with mypy
+      run: mypy autonomous_loop.py config.py providers.py sandbox.py storage.py --ignore-missing-imports || true
 
     - name: Run tests with coverage
       run: |
-        pytest tests/ -v --cov=. --cov-report=term-missing --cov-report=html
+        pytest tests/ -v --cov=. --cov-report=term-missing --cov-report=html --cov-fail-under=70
 
     - name: Upload coverage report
       if: always()
@@ -85,9 +108,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Build Docker image
-      run: |
-        docker build -t autoresearch-stack:${{ github.sha }} .
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image with caching
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        push: false
+        tags: autoresearch-stack:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
     - name: Verify Docker image
       run: |
