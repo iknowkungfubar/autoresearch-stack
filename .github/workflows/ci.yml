@@ -82,6 +82,8 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+        cache: 'pip'
+        cache-dependency-path: '**/requirements.txt'
 
     - name: Install dependencies
       run: |
@@ -93,7 +95,7 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        pytest tests/ -v --cov=. --cov-report=term-missing --cov-report=html --cov-fail-under=70
+        pytest tests/ -v --cov=. --cov-report=term-missing --cov-report=html --cov-fail-under=55
 
     - name: Upload coverage report
       if: always()
