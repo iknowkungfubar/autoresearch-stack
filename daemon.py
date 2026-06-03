@@ -5,7 +5,6 @@ Phase 6.3: Continuous Operation.
 """
 
 import atexit
-import fcntl
 import json
 import logging
 import os
