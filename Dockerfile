@@ -1,5 +1,5 @@
 # Dockerfile for Autonomous Research Stack
-FROM python:3.11-slim
+FROM python:3.14-slim
 
 LABEL maintainer="turin@autoresearch.io"
 LABEL description="Autonomous LLM training research stack"
