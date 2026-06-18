@@ -66,14 +66,9 @@ jobs:
       run: pip-audit --strict .
 
     - name: Scan for hardcoded secrets
-      run: |
-        echo "Scanning for potential secrets..."
-        if grep -rnE '(sk-ant-[a-zA-Z0-9]{20,}|sk-[a-zA-Z0-9]{20,}|AKIA[A-Z0-9]{16,})' \
-          --include='*.py' --include='*.yaml' --include='*.yml' . 2>/dev/null; then
-          echo "ERROR: Potential secrets found!"
-          exit 1
-        fi
-        echo "No hardcoded secrets found."
+      uses: gitleaks/gitleaks-action@v3
+      env:
+        GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
 
   test:
     runs-on: ubuntu-latest
