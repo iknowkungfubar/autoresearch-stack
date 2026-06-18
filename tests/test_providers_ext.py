@@ -18,7 +18,7 @@ class TestZenProvider:
     def test_model_mapping(self):
         from providers import ZenProvider
 
-        provider = ZenProvider(api_key="test-zen-key-12345")
+        provider = ZenProvider(api_key="test-zen-key-12345")  # gitleaks:allow
 
         with patch("providers.requests.post") as mock_post:
             mock_response = MagicMock()
