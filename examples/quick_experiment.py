@@ -14,6 +14,7 @@ Requirements:
 from __future__ import annotations
 
 import sys
+import tempfile
 from pathlib import Path
 
 # Allow running from repo checkout
@@ -33,7 +34,7 @@ CONFIG = {
     },
     "reporting": {
         "enabled": True,
-        "output_dir": "/tmp/autoresearch-demo",
+        "output_dir": tempfile.mkdtemp(prefix="autoresearch-demo-"),
     },
 }
 
