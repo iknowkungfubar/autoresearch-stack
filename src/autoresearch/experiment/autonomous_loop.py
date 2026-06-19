@@ -33,7 +33,7 @@ from autoresearch.data.synthetic_data import (
 )
 from autoresearch.experiment.feedback import ExperimentStatus, Feedback
 from autoresearch.experiment.hypothesis import HypothesisGenerator
-from autoresearch.experiment.memory import ExperimentMemory, MemorySystem
+from autoresearch.experiment.memory import MemorySystem
 from autoresearch.experiment.prioritization import get_prioritization
 from autoresearch.experiment.storage import ExperimentDB
 
