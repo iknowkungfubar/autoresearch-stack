@@ -369,7 +369,7 @@ class TestLocalProviders:
         from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
-        with patch("providers.requests.get") as mock_get:
+        with patch("autoresearch.llm.providers.requests.get") as mock_get:
             mock_get.return_value.json.return_value = {
                 "models": [{"name": "llama3"}, {"name": "mistral"}]
             }
@@ -382,7 +382,7 @@ class TestLocalProviders:
         from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
-        with patch("providers.requests.get") as mock_get:
+        with patch("autoresearch.llm.providers.requests.get") as mock_get:
             mock_get.side_effect = Exception("Connection refused")
             models = provider.list_models()
         assert models == []

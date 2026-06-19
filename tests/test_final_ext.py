@@ -83,7 +83,7 @@ class TestDaemonCLI:
     def test_run_daemon_stop(self, tmp_path):
         from autoresearch.infrastructure.daemon import run_daemon
 
-        with patch("daemon.Daemon") as MockDaemon:
+        with patch("autoresearch.infrastructure.daemon.Daemon") as MockDaemon:
             inst = MockDaemon.return_value
             inst.is_running.return_value = True
             run_daemon(
@@ -96,7 +96,7 @@ class TestDaemonCLI:
     def test_run_daemon_status(self, tmp_path):
         from autoresearch.infrastructure.daemon import run_daemon
 
-        with patch("daemon.Daemon") as MockDaemon:
+        with patch("autoresearch.infrastructure.daemon.Daemon") as MockDaemon:
             inst = MockDaemon.return_value
             inst.is_running.return_value = True
             inst.state = MagicMock(value="running")
@@ -109,7 +109,7 @@ class TestDaemonCLI:
     def test_run_daemon_restart(self, tmp_path):
         from autoresearch.infrastructure.daemon import run_daemon
 
-        with patch("daemon.Daemon") as MockDaemon:
+        with patch("autoresearch.infrastructure.daemon.Daemon") as MockDaemon:
             inst = MockDaemon.return_value
             run_daemon(
                 start_command="restart",

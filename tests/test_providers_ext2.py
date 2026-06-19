@@ -68,7 +68,7 @@ class TestTextGenWebUIProvider:
         from autoresearch.llm.providers import TextGenWebUIProvider
 
         p = TextGenWebUIProvider()
-        with patch("providers.requests.post") as mock_post:
+        with patch("autoresearch.llm.providers.requests.post") as mock_post:
             mock = MagicMock()
             mock.json.return_value = {
                 "choices": [{"text": "webui reply"}],

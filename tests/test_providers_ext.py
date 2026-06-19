@@ -20,7 +20,7 @@ class TestZenProvider:
 
         provider = ZenProvider(api_key="test-zen-key-12345")  # gitleaks:allow
 
-        with patch("providers.requests.post") as mock_post:
+        with patch("autoresearch.llm.providers.requests.post") as mock_post:
             mock_response = MagicMock()
             mock_response.json.return_value = {
                 "choices": [{"message": {"content": "Zen response"}}]
@@ -75,7 +75,7 @@ class TestOllamaProvider:
         from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
-        with patch("providers.requests.get") as mock_get:
+        with patch("autoresearch.llm.providers.requests.get") as mock_get:
             mock_get.return_value.json.return_value = {
                 "models": [{"name": "llama3"}, {"name": "mistral"}]
             }
@@ -87,7 +87,7 @@ class TestOllamaProvider:
         from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
-        with patch("providers.requests.get") as mock_get:
+        with patch("autoresearch.llm.providers.requests.get") as mock_get:
             mock_get.side_effect = Exception("refused")
             models = provider.list_models()
         assert models == []
@@ -96,7 +96,7 @@ class TestOllamaProvider:
         from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
-        with patch("providers.requests.post") as mock_post:
+        with patch("autoresearch.llm.providers.requests.post") as mock_post:
             mock_response = MagicMock()
             mock_response.json.return_value = {
                 "message": {"content": "ollama reply"},
