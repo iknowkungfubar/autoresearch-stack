@@ -5,6 +5,7 @@ Tests for figures, stats, paper, peer_review, metaloop, daemon,
 providers, and orchestrators.
 """
 
+import os
 import pytest
 
 
@@ -200,6 +201,11 @@ class TestPeerReview:
 
 
 # Test metaloop module
+
+_HAS_ANTHROPIC = bool(os.environ.get("ANTHROPIC_API_KEY"))
+
+
+@pytest.mark.skipif(not _HAS_ANTHROPIC, reason="requires ANTHROPIC_API_KEY")
 class TestMetaLoop:
     """Test self-modification module."""
 

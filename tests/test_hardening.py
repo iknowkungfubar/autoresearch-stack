@@ -5,6 +5,7 @@ Additional tests for providers, orchestrators, daemon, distribute, and other
 modules to improve coverage on critical paths.
 """
 
+import os
 import pytest
 
 # === PROVIDERS (Extended) ===
@@ -476,7 +477,10 @@ class TestDistribute:
 
 # === METALOOP (Extended) ===
 
+_HAS_ANTHROPIC = bool(os.environ.get("ANTHROPIC_API_KEY"))
 
+
+@pytest.mark.skipif(not _HAS_ANTHROPIC, reason="requires ANTHROPIC_API_KEY")
 class TestMetaLoopExtended:
     """Extended metaloop tests."""
 

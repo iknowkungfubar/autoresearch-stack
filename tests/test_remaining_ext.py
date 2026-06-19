@@ -1,6 +1,7 @@
 """Extended tests for autonomous loop, distribute, and metaloop modules."""
 
-
+import os
+import pytest
 class TestAutonomousPipelineExtended:
     """More autonomous_loop tests."""
 
@@ -21,6 +22,10 @@ class TestAutonomousPipelineExtended:
         assert p.best_val_bpb == float("inf")
 
 
+_HAS_ANTHROPIC = bool(os.environ.get("ANTHROPIC_API_KEY"))
+
+
+@pytest.mark.skipif(not _HAS_ANTHROPIC, reason="requires ANTHROPIC_API_KEY")
 class TestMetaLoopExtended:
     """Extended metaloop tests."""
 
