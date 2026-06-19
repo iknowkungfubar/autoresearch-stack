@@ -92,11 +92,11 @@ jobs:
         pip install pytest pytest-cov mypy
 
     - name: Type check with mypy
-      run: mypy autonomous_loop.py config.py providers.py sandbox.py storage.py --ignore-missing-imports
+      run: mypy src/autoresearch/ --ignore-missing-imports
 
     - name: Run tests with coverage
       run: |
-        pytest tests/ -v --cov=. --cov-report=term-missing --cov-report=html --cov-fail-under=55
+        pytest tests/ -v --cov=src/autoresearch --cov-report=term-missing --cov-report=html --cov-fail-under=55
 
     - name: Upload coverage report
       if: always()
