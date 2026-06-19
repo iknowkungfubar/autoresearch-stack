@@ -38,6 +38,12 @@ autoresearch --experiments 10
 # Run with custom config
 autoresearch -c my_config.yaml -i training_data.txt --experiments 100
 
+# Portfolio alias (both commands work identically)
+turintech-autoresearch --experiments 10
+
+# Legacy alias (deprecated, kept for backwards compat)
+turintech-research --experiments 10
+
 # Python module syntax also works
 python -m autoresearch --help
 ```
@@ -47,6 +53,16 @@ python -m autoresearch --help
 ```bash
 # Test the training pipeline without PyTorch
 python train_any_llm.py --demo
+```
+
+## Examples
+
+The [examples/](examples/) directory contains ready-to-run demos:
+
+- **`examples/quick_experiment.py`** — Minimal 2-epoch hyperparameter sweep with grid search
+
+```bash
+python examples/quick_experiment.py
 ```
 
 This runs a complete training loop using the numpy demo model, exercising the curriculum scheduler, loss tracking, and convergence detection — no GPU or PyTorch needed.

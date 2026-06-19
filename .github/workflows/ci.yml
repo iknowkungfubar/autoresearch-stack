@@ -127,7 +127,7 @@ jobs:
 
     - name: Verify Docker image
       run: |
-        docker run --rm autoresearch-stack:${{ github.sha }} python -c "import config; print('OK')"
+        docker run --rm autoresearch-stack:${{ github.sha }} python -c "from autoresearch import __version__; print(f'OK v{__version__}')"
 
   publish:
     runs-on: ubuntu-latest

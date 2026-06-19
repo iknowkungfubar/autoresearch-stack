@@ -33,6 +33,9 @@ Documentation = "https://github.com/iknowkungfubar/autoresearch-stack#readme"
 
 [project.scripts]
 autoresearch = "autoresearch.__main__:main"
+turintech-autoresearch = "autoresearch.__main__:main"
+# Backwards compat alias — deprecated, use turintech-autoresearch
+turintech-research = "autoresearch.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
