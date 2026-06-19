@@ -22,5 +22,6 @@ venv/
 dist/
 build/
 daemon_stats.json
+.coverage
 .hermes/
 
