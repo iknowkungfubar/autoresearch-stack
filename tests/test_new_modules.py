@@ -132,7 +132,10 @@ class TestPeerReview:
 
     def test_simulator_init(self):
         """Test PeerReviewSimulator initialization."""
-        from autoresearch.reporting.peer_review import PeerReviewSimulator, ReviewSimulationConfig
+        from autoresearch.reporting.peer_review import (
+            PeerReviewSimulator,
+            ReviewSimulationConfig,
+        )
 
         config = ReviewSimulationConfig(num_reviewers=3, seed=42)
         simulator = PeerReviewSimulator(config)
@@ -140,7 +143,10 @@ class TestPeerReview:
 
     def test_simulate_review_round(self):
         """Test review round simulation."""
-        from autoresearch.reporting.peer_review import PeerReviewSimulator, ReviewSimulationConfig
+        from autoresearch.reporting.peer_review import (
+            PeerReviewSimulator,
+            ReviewSimulationConfig,
+        )
 
         config = ReviewSimulationConfig(num_reviewers=2, seed=42)
         simulator = PeerReviewSimulator(config)
@@ -157,7 +163,10 @@ class TestPeerReview:
 
     def test_consensus(self):
         """Test consensus calculation."""
-        from autoresearch.reporting.peer_review import PeerReviewSimulator, ReviewSimulationConfig
+        from autoresearch.reporting.peer_review import (
+            PeerReviewSimulator,
+            ReviewSimulationConfig,
+        )
 
         config = ReviewSimulationConfig(num_reviewers=3, seed=42)
         simulator = PeerReviewSimulator(config)
@@ -173,7 +182,10 @@ class TestPeerReview:
 
     def test_review_report(self):
         """Test review report generation."""
-        from autoresearch.reporting.peer_review import PeerReviewSimulator, ReviewSimulationConfig
+        from autoresearch.reporting.peer_review import (
+            PeerReviewSimulator,
+            ReviewSimulationConfig,
+        )
 
         config = ReviewSimulationConfig(num_reviewers=2, seed=42)
         simulator = PeerReviewSimulator(config)

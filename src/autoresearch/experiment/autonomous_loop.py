@@ -27,15 +27,14 @@ __version__ = "0.7.3"
 from autoresearch.config import get_config
 from autoresearch.data.curriculum import build_curriculum, create_scheduler
 from autoresearch.data.data_intelligence import clean_corpus
-from autoresearch.experiment.feedback import ExperimentStatus, Feedback
-from autoresearch.experiment.hypothesis import HypothesisGenerator
-from autoresearch.experiment.memory import ExperimentMemory
-from autoresearch.experiment.prioritization import get_prioritization
-from autoresearch.experiment.storage import ExperimentDB
 from autoresearch.data.synthetic_data import (
     SyntheticGenerator,
     model_in_the_loop_generate,
 )
+from autoresearch.experiment.feedback import ExperimentStatus, Feedback
+from autoresearch.experiment.hypothesis import HypothesisGenerator
+from autoresearch.experiment.prioritization import get_prioritization
+from autoresearch.experiment.storage import ExperimentDB
 
 
 class AutonomousPipeline:

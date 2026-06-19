@@ -43,7 +43,10 @@ class TestOrchestratorFactory:
         assert p.__class__.__name__ == "LangChainIntegrator"
 
     def test_orchestrator_client(self):
-        from autoresearch.llm.orchestrators import LangChainIntegrator, OrchestratorClient
+        from autoresearch.llm.orchestrators import (
+            LangChainIntegrator,
+            OrchestratorClient,
+        )
 
         client = OrchestratorClient(orchestrator=LangChainIntegrator())
         task = client.run("test task")

@@ -168,7 +168,11 @@ class TestHealthChecker:
         assert len(c.checks) == 1
 
     def test_check_all_healthy(self, tmp_path):
-        from autoresearch.infrastructure.daemon import DaemonConfig, DaemonState, HealthChecker
+        from autoresearch.infrastructure.daemon import (
+            DaemonConfig,
+            DaemonState,
+            HealthChecker,
+        )
 
         c = HealthChecker(
             DaemonConfig(
@@ -179,7 +183,11 @@ class TestHealthChecker:
         assert c.check_all().state == DaemonState.HEALTHY
 
     def test_check_all_unhealthy(self, tmp_path):
-        from autoresearch.infrastructure.daemon import DaemonConfig, DaemonState, HealthChecker
+        from autoresearch.infrastructure.daemon import (
+            DaemonConfig,
+            DaemonState,
+            HealthChecker,
+        )
 
         c = HealthChecker(
             DaemonConfig(
@@ -190,7 +198,11 @@ class TestHealthChecker:
         assert c.check_all().state == DaemonState.UNHEALTHY
 
     def test_check_all_exception(self, tmp_path):
-        from autoresearch.infrastructure.daemon import DaemonConfig, DaemonState, HealthChecker
+        from autoresearch.infrastructure.daemon import (
+            DaemonConfig,
+            DaemonState,
+            HealthChecker,
+        )
 
         def _fail():
             raise RuntimeError("fail")
