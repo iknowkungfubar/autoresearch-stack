@@ -29,7 +29,7 @@ from autoresearch.data.curriculum import build_curriculum, create_scheduler
 from autoresearch.data.data_intelligence import clean_corpus
 from autoresearch.experiment.feedback import ExperimentStatus, Feedback
 from autoresearch.experiment.hypothesis import HypothesisGenerator
-from autoresearch.experiment.memory import MemoryStore
+from autoresearch.experiment.memory import ExperimentMemory
 from autoresearch.experiment.prioritization import get_prioritization
 from autoresearch.experiment.storage import ExperimentDB
 from autoresearch.data.synthetic_data import (
