@@ -12,7 +12,7 @@ import os
 import random
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 
 class ChangeType(Enum):
@@ -371,7 +371,7 @@ Prioritize high-impact changes based on training dynamics.
             messages=[{"role": "user", "content": user}],
         )
 
-        content = response.content[0].text
+        content = cast(Any, response.content[0]).text
 
         # Parse JSON
         try:
@@ -417,7 +417,7 @@ Prioritize high-impact changes based on training dynamics.
             ],
         )
 
-        content = response.choices[0].message.content
+        content = response.choices[0].message.content or "{}"
 
         # Parse JSON
         try:

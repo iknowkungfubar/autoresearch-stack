@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 # Optional LLM import
 try:
@@ -247,7 +247,7 @@ Provide the improved prompt:"""
             messages=[{"role": "user", "content": user}],
         )
 
-        return response.content[0].text
+        return cast(Any, response.content[0]).text
 
     def _evolve_heuristic(self, prompt: str, feedback: str) -> str:
         """Evolve prompt using simple heuristics."""

@@ -12,7 +12,7 @@ import json
 import os
 import random
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 # Default topics for template generation
 DEFAULT_TOPICS = [
@@ -221,7 +221,7 @@ Make each prompt specific and actionable."""
                 messages=[{"role": "user", "content": user}],
             )
 
-            content = response.content[0].text
+            content = cast(Any, response.content[0]).text
             return self._parse_json_array(content)
         except ImportError:
             raise RuntimeError("anthropic package not installed")
@@ -243,7 +243,7 @@ Make each prompt specific and actionable."""
                 ],
             )
 
-            content = response.choices[0].message.content
+            content = response.choices[0].message.content or "[]"
             return self._parse_json_array(content)
         except ImportError:
             raise RuntimeError("openai package not installed")
