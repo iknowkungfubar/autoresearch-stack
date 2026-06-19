@@ -109,7 +109,7 @@ class NumpyDemoModel:
         }
 
     def load_state_dict(self, state: Dict[str, Any]):
-        """Load model state from checkpoint."""
+        """Load model state from autoresearch.infrastructure.checkpoint."""
         self.w = state.get("w", self.w)
         self.b = state.get("b", self.b)
         self.lr = state.get("lr", self.lr)
@@ -267,7 +267,7 @@ def demo_training():
     This demonstrates the training API and can be used to
     validate the pipeline without installing PyTorch.
     """
-    from curriculum import Scheduler
+    from autoresearch.data.curriculum import Scheduler
 
     print("=" * 50)
     print("NUMPY DEMO TRAINING")

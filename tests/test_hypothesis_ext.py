@@ -14,7 +14,7 @@ class TestHypothesisTemplates:
     """Tests for template-based hypothesis generation."""
 
     def test_generate_optimization(self):
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         results = gen.generate(n=3, change_type="optimization")
@@ -25,7 +25,7 @@ class TestHypothesisTemplates:
             assert h.code_diff
 
     def test_generate_architecture(self):
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         results = gen.generate(n=2, change_type="architecture")
@@ -34,7 +34,7 @@ class TestHypothesisTemplates:
             assert h.change_type == "architecture"
 
     def test_generate_curriculum(self):
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         results = gen.generate(n=2, change_type="curriculum")
@@ -43,7 +43,7 @@ class TestHypothesisTemplates:
             assert h.change_type == "curriculum"
 
     def test_generate_synthetic(self):
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         results = gen.generate(n=2, change_type="synthetic")
@@ -53,7 +53,7 @@ class TestHypothesisTemplates:
 
     def test_generate_none_type(self):
         """When change_type is None, a random type is chosen."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         results = gen.generate(n=1, change_type=None)
@@ -61,7 +61,7 @@ class TestHypothesisTemplates:
 
     def test_generate_invalid_type(self):
         """Invalid change_type falls back to optimization."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         results = gen.generate(n=2, change_type="unknown_type")
@@ -69,7 +69,7 @@ class TestHypothesisTemplates:
 
     def test_generate_more_than_available(self):
         """Requesting more than available templates returns all available."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         # Architecture only has 4 templates, request 10
@@ -79,7 +79,7 @@ class TestHypothesisTemplates:
 
     def test_generate_zero(self):
         """Requesting 0 hypotheses returns empty list."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         results = gen.generate(n=0, change_type="optimization")
@@ -91,7 +91,7 @@ class TestHypothesisAnalysis:
 
     def test_high_training_loss(self):
         """High training loss suggests underfitting → higher LR."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         h = gen.generate_from_analysis(training_loss=6.0, val_bpb=2.0)
@@ -100,7 +100,7 @@ class TestHypothesisAnalysis:
 
     def test_possible_overfitting(self):
         """Low train loss, high val_bpb suggests overfitting → dropout."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         h = gen.generate_from_analysis(training_loss=0.05, val_bpb=2.0)
@@ -109,7 +109,7 @@ class TestHypothesisAnalysis:
 
     def test_poor_baseline(self):
         """High val_bpb with moderate loss → increase capacity."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         h = gen.generate_from_analysis(training_loss=0.5, val_bpb=1.5)
@@ -118,7 +118,7 @@ class TestHypothesisAnalysis:
 
     def test_good_baseline(self):
         """Low everything → general optimization."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         h = gen.generate_from_analysis(training_loss=0.5, val_bpb=0.8)
@@ -127,7 +127,7 @@ class TestHypothesisAnalysis:
 
     def test_analysis_with_memory_context(self):
         """Memory context passed but not used in non-LLM mode."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         memory = [{"change": "LR test", "status": "kept"}]
@@ -146,7 +146,7 @@ class TestHypothesisLLMFallback:
 
     def test_llm_fallback_on_api_error(self):
         """When LLM API errors, fall back to templates."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=True, provider="anthropic")
         gen.api_key = "sk-test-fake"
@@ -159,7 +159,7 @@ class TestHypothesisLLMFallback:
 
     def test_llm_disabled_without_api_key(self):
         """When use_llm=True but no API key, uses templates."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=True, provider="anthropic")
         gen.api_key = None
@@ -169,7 +169,7 @@ class TestHypothesisLLMFallback:
 
     def test_generate_with_memory_context(self):
         """Memory context is accepted but doesn't affect template output."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         memory = [
@@ -184,7 +184,7 @@ class TestHypothesisDataclass:
     """Tests for the Hypothesis dataclass."""
 
     def test_to_dict(self):
-        from hypothesis import Hypothesis
+        from autoresearch.experiment.hypothesis import Hypothesis
 
         h = Hypothesis(
             change="learning_rate",
@@ -202,7 +202,7 @@ class TestHypothesisDataclass:
         assert d["expected_impact"] == "high"
 
     def test_hypothesis_str_fields(self):
-        from hypothesis import Hypothesis
+        from autoresearch.experiment.hypothesis import Hypothesis
 
         h = Hypothesis(
             change="batch_size",
@@ -222,7 +222,7 @@ class TestChangeType:
     """Tests for ChangeType enum."""
 
     def test_values(self):
-        from hypothesis import ChangeType
+        from autoresearch.experiment.hypothesis import ChangeType
 
         assert ChangeType.OPTIMIZATION.value == "optimization"
         assert ChangeType.ARCHITECTURE.value == "architecture"

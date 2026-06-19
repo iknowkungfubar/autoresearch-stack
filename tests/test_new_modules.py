@@ -14,7 +14,7 @@ class TestFigures:
 
     def test_figure_generator_init(self):
         """Test FigureGenerator initialization."""
-        from figures import FigureGenerator
+        from autoresearch.reporting.figures import FigureGenerator
 
         gen = FigureGenerator()
         assert gen is not None
@@ -22,7 +22,7 @@ class TestFigures:
 
     def test_figure_config(self):
         """Test FigureConfig."""
-        from figures import FigureConfig
+        from autoresearch.reporting.figures import FigureConfig
 
         config = FigureConfig(width=12, height=8, dpi=150)
         assert config.width == 12
@@ -36,7 +36,7 @@ class TestStats:
 
     def test_summary_statistics_init(self):
         """Test SummaryStatistics initialization."""
-        from stats import SummaryStatistics
+        from autoresearch.reporting.stats import SummaryStatistics
 
         stats = SummaryStatistics()
         assert stats is not None
@@ -44,7 +44,7 @@ class TestStats:
 
     def test_calculate(self):
         """Test calculate method."""
-        from stats import SummaryStatistics
+        from autoresearch.reporting.stats import SummaryStatistics
 
         experiments = [
             {"id": 1, "status": "kept", "val_bpb_after": 0.95},
@@ -62,7 +62,7 @@ class TestStats:
 
     def test_to_dict(self):
         """Test to_dict serialization."""
-        from stats import SummaryStatistics
+        from autoresearch.reporting.stats import SummaryStatistics
 
         experiments = [{"id": 1, "status": "kept", "val_bpb_after": 0.95}]
         stats = SummaryStatistics(experiments)
@@ -73,7 +73,7 @@ class TestStats:
 
     def test_summary_text(self):
         """Test text summary generation."""
-        from stats import SummaryStatistics
+        from autoresearch.reporting.stats import SummaryStatistics
 
         experiments = [
             {"id": 1, "status": "kept", "val_bpb_after": 0.95},
@@ -91,14 +91,14 @@ class TestPaper:
 
     def test_paper_init(self):
         """Test Paper initialization."""
-        from paper import Paper
+        from autoresearch.reporting.paper import Paper
 
         paper = Paper()
         assert paper is not None
 
     def test_paper_sections(self):
         """Test paper has sections."""
-        from paper import Paper
+        from autoresearch.reporting.paper import Paper
 
         paper = Paper()
         assert "abstract" in paper.sections
@@ -107,7 +107,7 @@ class TestPaper:
 
     def test_paper_render(self):
         """Test paper rendering."""
-        from paper import Paper
+        from autoresearch.reporting.paper import Paper
 
         paper = Paper()
         content = paper.render()
@@ -116,7 +116,7 @@ class TestPaper:
 
     def test_generate_paper_from_experiments(self):
         """Test paper generation from experiments."""
-        from paper import generate_paper_from_experiments
+        from autoresearch.reporting.paper import generate_paper_from_experiments
 
         experiments = [
             {"id": 1, "status": "kept", "val_bpb_before": 1.0, "val_bpb_after": 0.95},
@@ -132,7 +132,7 @@ class TestPeerReview:
 
     def test_simulator_init(self):
         """Test PeerReviewSimulator initialization."""
-        from peer_review import PeerReviewSimulator, ReviewSimulationConfig
+        from autoresearch.reporting.peer_review import PeerReviewSimulator, ReviewSimulationConfig
 
         config = ReviewSimulationConfig(num_reviewers=3, seed=42)
         simulator = PeerReviewSimulator(config)
@@ -140,7 +140,7 @@ class TestPeerReview:
 
     def test_simulate_review_round(self):
         """Test review round simulation."""
-        from peer_review import PeerReviewSimulator, ReviewSimulationConfig
+        from autoresearch.reporting.peer_review import PeerReviewSimulator, ReviewSimulationConfig
 
         config = ReviewSimulationConfig(num_reviewers=2, seed=42)
         simulator = PeerReviewSimulator(config)
@@ -157,7 +157,7 @@ class TestPeerReview:
 
     def test_consensus(self):
         """Test consensus calculation."""
-        from peer_review import PeerReviewSimulator, ReviewSimulationConfig
+        from autoresearch.reporting.peer_review import PeerReviewSimulator, ReviewSimulationConfig
 
         config = ReviewSimulationConfig(num_reviewers=3, seed=42)
         simulator = PeerReviewSimulator(config)
@@ -173,7 +173,7 @@ class TestPeerReview:
 
     def test_review_report(self):
         """Test review report generation."""
-        from peer_review import PeerReviewSimulator, ReviewSimulationConfig
+        from autoresearch.reporting.peer_review import PeerReviewSimulator, ReviewSimulationConfig
 
         config = ReviewSimulationConfig(num_reviewers=2, seed=42)
         simulator = PeerReviewSimulator(config)
@@ -193,7 +193,7 @@ class TestMetaLoop:
 
     def test_metaloop_init(self):
         """Test MetaLoop initialization."""
-        from metaloop import MetaLoop
+        from autoresearch.infrastructure.metaloop import MetaLoop
 
         meta = MetaLoop()
         assert meta is not None
@@ -201,7 +201,7 @@ class TestMetaLoop:
 
     def test_register_prompt(self):
         """Test prompt registration."""
-        from metaloop import MetaLoop
+        from autoresearch.infrastructure.metaloop import MetaLoop
 
         meta = MetaLoop()
         prompt = meta.register_prompt("my_test_prompt", "Test prompt content")
@@ -211,7 +211,7 @@ class TestMetaLoop:
 
     def test_run_iteration(self):
         """Test iteration run."""
-        from metaloop import MetaLoop
+        from autoresearch.infrastructure.metaloop import MetaLoop
 
         meta = MetaLoop()
         meta.register_prompt("test", "Test prompt")
@@ -230,7 +230,7 @@ class TestDaemon:
 
     def test_daemon_init(self):
         """Test Daemon initialization."""
-        from daemon import Daemon, DaemonConfig, DaemonState
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig, DaemonState
 
         config = DaemonConfig(pid_file="/tmp/test.pid")
         daemon = Daemon(config)
@@ -238,7 +238,7 @@ class TestDaemon:
 
     def test_daemon_config(self):
         """Test DaemonConfig."""
-        from daemon import DaemonConfig
+        from autoresearch.infrastructure.daemon import DaemonConfig
 
         config = DaemonConfig(
             log_file="test.log",
@@ -250,7 +250,7 @@ class TestDaemon:
 
     def test_health_status(self):
         """Test health status."""
-        from daemon import DaemonState, HealthStatus
+        from autoresearch.infrastructure.daemon import DaemonState, HealthStatus
 
         status = HealthStatus(state=DaemonState.HEALTHY)
         assert status.state == DaemonState.HEALTHY
@@ -262,7 +262,7 @@ class TestProviders:
 
     def test_provider_factory_create(self):
         """Test ProviderFactory.create."""
-        from providers import LLMProviderFactory, ProviderType
+        from autoresearch.llm.providers import LLMProviderFactory, ProviderType
 
         # This should create provider without error
         provider = LLMProviderFactory.create(ProviderType.OPENAI)
@@ -270,7 +270,7 @@ class TestProviders:
 
     def test_provider_types(self):
         """Test ProviderType enum."""
-        from providers import ProviderType
+        from autoresearch.llm.providers import ProviderType
 
         assert ProviderType.ANTHROPIC.value == "anthropic"
         assert ProviderType.OPENAI.value == "openai"
@@ -278,7 +278,7 @@ class TestProviders:
 
     def test_model_registry(self):
         """Test model registry."""
-        from providers import MODEL_REGISTRY
+        from autoresearch.llm.providers import MODEL_REGISTRY
 
         assert "claude-3-5-sonnet-20241022" in MODEL_REGISTRY
         assert "gpt-4o" in MODEL_REGISTRY
@@ -286,7 +286,7 @@ class TestProviders:
 
     def test_llm_response(self):
         """Test LLMResponse dataclass."""
-        from providers import LLMResponse
+        from autoresearch.llm.providers import LLMResponse
 
         response = LLMResponse(
             content="Hello",
@@ -303,14 +303,14 @@ class TestOrchestrators:
 
     def test_orchestrator_types(self):
         """Test OrchestratorType enum."""
-        from orchestrators import OrchestratorType
+        from autoresearch.llm.orchestrators import OrchestratorType
 
         assert OrchestratorType.LANGCHAIN.value == "langchain"
         assert OrchestratorType.CREWAI.value == "crewai"
 
     def test_agent_task(self):
         """Test AgentTask dataclass."""
-        from orchestrators import AgentTask
+        from autoresearch.llm.orchestrators import AgentTask
 
         task = AgentTask(description="Test task")
         assert task.description == "Test task"
@@ -318,7 +318,7 @@ class TestOrchestrators:
 
     def test_agent_result(self):
         """Test AgentResult dataclass."""
-        from orchestrators import AgentResult
+        from autoresearch.llm.orchestrators import AgentResult
 
         result = AgentResult(content="Test result")
         assert result.content == "Test result"
@@ -326,7 +326,7 @@ class TestOrchestrators:
 
     def test_orchestrator_factory(self):
         """Test OrchestratorFactory.create."""
-        from orchestrators import (
+        from autoresearch.llm.orchestrators import (
             LangChainIntegrator,
             OrchestratorFactory,
             OrchestratorType,

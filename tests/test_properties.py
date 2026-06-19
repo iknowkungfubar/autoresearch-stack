@@ -21,7 +21,7 @@ class TestCurriculumProperties:
 
     def test_stages_are_monotonic(self):
         """Stage never decreases as training progresses."""
-        from curriculum import Scheduler
+        from autoresearch.data.curriculum import Scheduler
 
         curriculum = {"easy": ["a"], "medium": ["b"], "hard": ["c"]}
         scheduler = Scheduler(curriculum)
@@ -34,7 +34,7 @@ class TestCurriculumProperties:
 
     def test_first_step_is_first_stage(self):
         """Step 0 is always in 'easy'."""
-        from curriculum import Scheduler
+        from autoresearch.data.curriculum import Scheduler
 
         scheduler = Scheduler({"easy": ["a"], "hard": ["c"]})
         for total in [100, 500, 1000]:
@@ -42,7 +42,7 @@ class TestCurriculumProperties:
 
     def test_last_step_is_last_stage(self):
         """Final step is always in 'hard'."""
-        from curriculum import Scheduler
+        from autoresearch.data.curriculum import Scheduler
 
         scheduler = Scheduler({"easy": ["a"], "medium": ["b"], "hard": ["c"]})
         for total in [100, 500, 1000]:
@@ -50,7 +50,7 @@ class TestCurriculumProperties:
 
     def test_stage_distribution_randomized(self):
         """Run 100 randomized params — properties hold."""
-        from curriculum import Scheduler
+        from autoresearch.data.curriculum import Scheduler
 
         rng = random.Random(42)
         for _ in range(100):
@@ -62,7 +62,7 @@ class TestCurriculumProperties:
 
     def test_more_steps_never_backwards(self):
         """Stage never regresses across random progressions."""
-        from curriculum import Scheduler
+        from autoresearch.data.curriculum import Scheduler
 
         rng = random.Random(123)
         for _ in range(50):
@@ -77,7 +77,7 @@ class TestCurriculumProperties:
 
     def test_zero_total_returns_medium(self):
         """Edge case: total=0 returns 'medium'."""
-        from curriculum import Scheduler
+        from autoresearch.data.curriculum import Scheduler
 
         scheduler = Scheduler({"easy": ["a"], "medium": ["b"], "hard": ["c"]})
         assert scheduler.get_stage(0, 0) == "medium"
@@ -85,7 +85,7 @@ class TestCurriculumProperties:
 
     def test_stage_boundaries(self):
         """Verify stage transition points."""
-        from curriculum import Scheduler
+        from autoresearch.data.curriculum import Scheduler
 
         scheduler = Scheduler({"easy": ["a"], "medium": ["b"], "hard": ["c"]})
         total = 100
@@ -105,7 +105,7 @@ class TestSimpleVectorStoreProperties:
 
     def test_add_reflects_count(self):
         """Adding N items means store has N items."""
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         rng = random.Random(42)
@@ -126,7 +126,7 @@ class TestSimpleVectorStoreProperties:
 
     def test_search_returns_matches(self):
         """Searching for a keyword returns experiments containing it."""
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         rng = random.Random(42)
@@ -156,7 +156,7 @@ class TestSimpleVectorStoreProperties:
 
     def test_search_respects_limit(self):
         """Search results never exceed the requested limit."""
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         for i in range(50):
@@ -177,7 +177,7 @@ class TestSimpleVectorStoreProperties:
 
     def test_empty_query_returns_recent(self):
         """Empty query returns most recent experiments."""
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         for i in range(10):
@@ -201,7 +201,7 @@ class TestFeedbackProperties:
 
     def test_reward_is_finite(self):
         """Reward is always a finite float."""
-        from feedback import Feedback
+        from autoresearch.experiment.feedback import Feedback
 
         fb = Feedback()
         rng = random.Random(42)
@@ -215,7 +215,7 @@ class TestFeedbackProperties:
 
     def test_reward_is_positive_for_improvement(self):
         """When val_bpb decreases (improves), reward should be positive."""
-        from feedback import Feedback
+        from autoresearch.experiment.feedback import Feedback
 
         fb = Feedback()
         reward = fb.reward(2.0, 0.0)

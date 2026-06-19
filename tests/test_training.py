@@ -15,7 +15,7 @@ class TestNumpyDemoModel:
     """Tests for the numpy-based demo model."""
 
     def test_init(self):
-        from train_any_llm import NumpyDemoModel
+        from autoresearch.llm.train_any_llm import NumpyDemoModel
 
         model = NumpyDemoModel(learning_rate=0.01)
         assert model.lr == 0.01
@@ -23,7 +23,7 @@ class TestNumpyDemoModel:
         assert model.b is not None
 
     def test_forward(self):
-        from train_any_llm import NumpyDemoModel
+        from autoresearch.llm.train_any_llm import NumpyDemoModel
 
         model = NumpyDemoModel()
         x = np.array([1.0, 2.0, 3.0], dtype=np.float64)
@@ -32,7 +32,7 @@ class TestNumpyDemoModel:
         assert np.all(np.isfinite(preds))
 
     def test_call(self):
-        from train_any_llm import NumpyDemoModel
+        from autoresearch.llm.train_any_llm import NumpyDemoModel
 
         model = NumpyDemoModel(learning_rate=0.1)
         x = np.array([[1.0]], dtype=np.float64)
@@ -43,7 +43,7 @@ class TestNumpyDemoModel:
         assert preds.shape == (1, 1)
 
     def test_training_reduces_loss(self):
-        from train_any_llm import NumpyDemoModel
+        from autoresearch.llm.train_any_llm import NumpyDemoModel
 
         model = NumpyDemoModel(learning_rate=0.05)
         x = np.array([[1.0], [2.0], [3.0]], dtype=np.float64)
@@ -59,7 +59,7 @@ class TestNumpyDemoModel:
         )
 
     def test_state_dict(self):
-        from train_any_llm import NumpyDemoModel
+        from autoresearch.llm.train_any_llm import NumpyDemoModel
 
         model = NumpyDemoModel(learning_rate=0.01)
         state = model.state_dict()
@@ -69,7 +69,7 @@ class TestNumpyDemoModel:
         assert state["lr"] == 0.01
 
     def test_load_state_dict(self):
-        from train_any_llm import NumpyDemoModel
+        from autoresearch.llm.train_any_llm import NumpyDemoModel
 
         model = NumpyDemoModel(learning_rate=0.01)
         model.load_state_dict({"w": 0.5, "b": 0.1, "lr": 0.001})
@@ -79,7 +79,7 @@ class TestNumpyDemoModel:
 
     def test_convergence_on_linear_data(self):
         """The model should learn a simple linear relationship."""
-        from train_any_llm import NumpyDemoModel
+        from autoresearch.llm.train_any_llm import NumpyDemoModel
 
         model = NumpyDemoModel(learning_rate=0.1)
         x = np.array([[0.5], [1.0], [1.5], [2.0], [2.5]], dtype=np.float64)
@@ -98,7 +98,7 @@ class TestTrainer:
     """Tests for the Trainer class."""
 
     def test_encode_numpy(self):
-        from train_any_llm import NumpyDemoModel, Trainer
+        from autoresearch.llm.train_any_llm import NumpyDemoModel, Trainer
 
         model = NumpyDemoModel()
         trainer = Trainer(model=model)
@@ -110,7 +110,7 @@ class TestTrainer:
     def test_step_reduces_loss(self):
         import numpy as np
 
-        from train_any_llm import NumpyDemoModel, Trainer
+        from autoresearch.llm.train_any_llm import NumpyDemoModel, Trainer
 
         model = NumpyDemoModel(learning_rate=0.5)
         trainer = Trainer(model=model)
@@ -122,14 +122,14 @@ class TestTrainer:
         assert loss2 <= loss1 or abs(loss2 - loss1) < 0.01
 
     def test_get_lr(self):
-        from train_any_llm import NumpyDemoModel, Trainer
+        from autoresearch.llm.train_any_llm import NumpyDemoModel, Trainer
 
         model = NumpyDemoModel(learning_rate=0.05)
         trainer = Trainer(model=model)
         assert trainer.get_lr() == 0.05
 
     def test_encode_empty_text(self):
-        from train_any_llm import NumpyDemoModel, Trainer
+        from autoresearch.llm.train_any_llm import NumpyDemoModel, Trainer
 
         model = NumpyDemoModel()
         trainer = Trainer(model=model)
@@ -142,11 +142,11 @@ class TestTrainingFunction:
     """Tests for the train() function."""
 
     def test_training_with_curriculum(self):
-        from curriculum import Scheduler
-        from train_any_llm import create_demo_model, train
+        from autoresearch.data.curriculum import Scheduler
+        from autoresearch.llm.train_any_llm import create_demo_model, train
 
         model = create_demo_model()
-        from train_any_llm import Trainer
+        from autoresearch.llm.train_any_llm import Trainer
 
         trainer = Trainer(model=model)
 
@@ -164,7 +164,7 @@ class TestTrainingFunction:
         assert isinstance(result.converged, bool)
 
     def test_training_result_fields(self):
-        from train_any_llm import TrainingResult
+        from autoresearch.llm.train_any_llm import TrainingResult
 
         result = TrainingResult(
             val_bpb=0.95,
@@ -186,7 +186,7 @@ class TestDemoTraining:
     """Tests for the demo_training() function."""
 
     def test_demo_training_runs(self):
-        from train_any_llm import demo_training
+        from autoresearch.llm.train_any_llm import demo_training
 
         result = demo_training()
         assert result is not None
@@ -200,7 +200,7 @@ class TestCreateDemoModel:
     """Tests for factory function."""
 
     def test_create(self):
-        from train_any_llm import create_demo_model
+        from autoresearch.llm.train_any_llm import create_demo_model
 
         model = create_demo_model()
         assert model.lr == 0.01

@@ -9,14 +9,14 @@ class TestZenProvider:
     """Tests for Zen AI provider."""
 
     def test_init(self):
-        from providers import ZenProvider
+        from autoresearch.llm.providers import ZenProvider
 
         with patch.dict("os.environ", {"ZEN_API_KEY": "test-key"}):
             provider = ZenProvider()
             assert provider.base_url == "https://api.zen-ai.com/v1"
 
     def test_model_mapping(self):
-        from providers import ZenProvider
+        from autoresearch.llm.providers import ZenProvider
 
         provider = ZenProvider(api_key="test-zen-key-12345")  # gitleaks:allow
 
@@ -36,7 +36,7 @@ class TestZenProvider:
             assert response.provider == "zen"
 
     def test_missing_api_key(self):
-        from providers import ZenProvider
+        from autoresearch.llm.providers import ZenProvider
 
         with patch.dict("os.environ", clear=True):
             provider = ZenProvider()
@@ -48,13 +48,13 @@ class TestMistralProvider:
     """Tests for Mistral AI provider."""
 
     def test_init(self):
-        from providers import MistralProvider
+        from autoresearch.llm.providers import MistralProvider
 
         provider = MistralProvider()
         assert provider.base_url == "https://api.mistral.ai/v1"
 
     def test_missing_api_key(self):
-        from providers import MistralProvider
+        from autoresearch.llm.providers import MistralProvider
 
         with patch.dict("os.environ", clear=True):
             provider = MistralProvider()
@@ -66,13 +66,13 @@ class TestOllamaProvider:
     """Tests for Ollama local provider."""
 
     def test_custom_base_url(self):
-        from providers import OllamaProvider
+        from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider(base_url="http://custom:11434")
         assert provider.base_url == "http://custom:11434"
 
     def test_list_models(self):
-        from providers import OllamaProvider
+        from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
         with patch("providers.requests.get") as mock_get:
@@ -84,7 +84,7 @@ class TestOllamaProvider:
         assert len(models) == 2
 
     def test_list_models_error(self):
-        from providers import OllamaProvider
+        from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
         with patch("providers.requests.get") as mock_get:
@@ -93,7 +93,7 @@ class TestOllamaProvider:
         assert models == []
 
     def test_complete(self):
-        from providers import OllamaProvider
+        from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
         with patch("providers.requests.post") as mock_post:
@@ -117,7 +117,7 @@ class TestLMStudioProvider:
     """Tests for LM Studio provider."""
 
     def test_custom_url(self):
-        from providers import LMStudioProvider
+        from autoresearch.llm.providers import LMStudioProvider
 
         provider = LMStudioProvider(base_url="http://localhost:1234/v1")
         assert provider.base_url == "http://localhost:1234/v1"
@@ -127,13 +127,13 @@ class TestAzureOpenAIProvider:
     """Tests for Azure OpenAI provider."""
 
     def test_init(self):
-        from providers import AzureOpenAIProvider
+        from autoresearch.llm.providers import AzureOpenAIProvider
 
         provider = AzureOpenAIProvider()
         assert provider is not None
 
     def test_missing_api_key(self):
-        from providers import AzureOpenAIProvider
+        from autoresearch.llm.providers import AzureOpenAIProvider
 
         with patch.dict("os.environ", clear=True):
             provider = AzureOpenAIProvider()
@@ -145,7 +145,7 @@ class TestGoogleVertexProvider:
     """Tests for Google Vertex AI provider."""
 
     def test_missing_project(self):
-        from providers import GoogleVertexProvider
+        from autoresearch.llm.providers import GoogleVertexProvider
 
         with patch.dict("os.environ", clear=True):
             provider = GoogleVertexProvider()
@@ -160,7 +160,7 @@ class TestAnthropicConverse:
     """Tests for Anthropic provider edge cases."""
 
     def test_empty_response_content(self):
-        from providers import AnthropicProvider
+        from autoresearch.llm.providers import AnthropicProvider
 
         with patch.dict("os.environ", {"ANTHROPIC_API_KEY": "sk-ant-test"}):
             provider = AnthropicProvider()
@@ -179,7 +179,7 @@ class TestAnthropicConverse:
         assert response.content == ""
 
     def test_longer_context_model(self):
-        from providers import AnthropicProvider
+        from autoresearch.llm.providers import AnthropicProvider
 
         with patch.dict("os.environ", {"ANTHROPIC_API_KEY": "sk-ant-test"}):
             provider = AnthropicProvider()

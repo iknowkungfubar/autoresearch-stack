@@ -5,7 +5,7 @@ class TestDaemonState:
     """Tests for DaemonState enum."""
 
     def test_all_states(self):
-        from daemon import DaemonState
+        from autoresearch.infrastructure.daemon import DaemonState
 
         assert DaemonState.STOPPED.value == "stopped"
         assert DaemonState.RUNNING.value == "running"
@@ -13,7 +13,7 @@ class TestDaemonState:
         assert DaemonState.FAILED.value == "failed"
 
     def test_state_count(self):
-        from daemon import DaemonState
+        from autoresearch.infrastructure.daemon import DaemonState
 
         assert len(list(DaemonState)) >= 5
 
@@ -22,7 +22,7 @@ class TestDaemonConfig:
     """Tests for DaemonConfig dataclass."""
 
     def test_defaults(self):
-        from daemon import DaemonConfig
+        from autoresearch.infrastructure.daemon import DaemonConfig
 
         config = DaemonConfig()
         assert config.health_check_interval == 60
@@ -32,7 +32,7 @@ class TestDaemonConfig:
         assert config.stop_on_failure is True
 
     def test_custom_values(self):
-        from daemon import DaemonConfig
+        from autoresearch.infrastructure.daemon import DaemonConfig
 
         config = DaemonConfig(
             log_file="/tmp/test_daemon.log",
@@ -54,7 +54,7 @@ class TestDaemon:
     """Tests for the Daemon class."""
 
     def test_init_defaults(self, tmp_path):
-        from daemon import Daemon, DaemonConfig, DaemonState
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig, DaemonState
 
         config = DaemonConfig(
             log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid")
@@ -66,7 +66,7 @@ class TestDaemon:
         assert daemon.restart_count == 0
 
     def test_state_transitions(self, tmp_path):
-        from daemon import Daemon, DaemonConfig, DaemonState
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig, DaemonState
 
         config = DaemonConfig(
             log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid")
@@ -81,7 +81,7 @@ class TestDaemon:
         assert daemon.state == DaemonState.FAILED
 
     def test_experiment_tracking(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         config = DaemonConfig(
             log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid")
@@ -92,7 +92,7 @@ class TestDaemon:
         assert daemon.experiments_run == 5
 
     def test_error_tracking(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         config = DaemonConfig(
             log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid")
@@ -106,7 +106,7 @@ class TestDaemon:
         assert daemon.last_error == "Test error"
 
     def test_restart_count(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         config = DaemonConfig(
             log_file=str(tmp_path / "d.log"), pid_file=str(tmp_path / "d.pid")
@@ -117,7 +117,7 @@ class TestDaemon:
         assert daemon.restart_count == 2
 
     def test_config_stop_on_failure(self, tmp_path):
-        from daemon import DaemonConfig
+        from autoresearch.infrastructure.daemon import DaemonConfig
 
         config = DaemonConfig(
             log_file=str(tmp_path / "d.log"),
@@ -127,7 +127,7 @@ class TestDaemon:
         assert config.stop_on_failure is False
 
     def test_config_run_on_start(self, tmp_path):
-        from daemon import DaemonConfig
+        from autoresearch.infrastructure.daemon import DaemonConfig
 
         config = DaemonConfig(
             log_file=str(tmp_path / "d.log"),

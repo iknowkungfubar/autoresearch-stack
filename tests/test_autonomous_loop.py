@@ -8,7 +8,7 @@ class TestAutonomousPipeline:
 
     def test_init_defaults(self):
         """Test pipeline initializes with default config."""
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         pipeline = AutonomousPipeline("config.yaml")
         assert pipeline.experiment_count == 0
@@ -21,7 +21,7 @@ class TestAutonomousPipeline:
 
     def test_prepare_data_basic(self):
         """Test prepare_data with no synthetic generation."""
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         pipeline = AutonomousPipeline("config.yaml")
         texts = ["hello world test data", "more training data here"]
@@ -30,7 +30,7 @@ class TestAutonomousPipeline:
 
     def test_prepare_data_synthetic(self):
         """Test prepare_data with synthetic generation."""
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         pipeline = AutonomousPipeline("config.yaml")
         texts = ["hello world test data"]
@@ -40,7 +40,7 @@ class TestAutonomousPipeline:
 
     def test_prepare_curriculum_enabled(self):
         """Test curriculum preparation when enabled."""
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         pipeline = AutonomousPipeline("config.yaml")
         texts = ["short", "medium length text", "a very long text for testing purposes"]
@@ -50,8 +50,8 @@ class TestAutonomousPipeline:
     def test_prepare_curriculum_disabled(self):
         """Test curriculum preparation when disabled."""
         # Create pipeline and disable curriculum
-        import config as cfg
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch import config as cfg
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         cfg.reset_config()
         pipeline = AutonomousPipeline("config.yaml")
@@ -62,7 +62,7 @@ class TestAutonomousPipeline:
 
     def test_run_experiment_improves(self):
         """Test run_experiment with random seed for reproducibility."""
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         pipeline = AutonomousPipeline("config.yaml")
         # Seed for deterministic test
@@ -82,7 +82,7 @@ class TestAutonomousPipeline:
 
     def test_run_experiment_tracking(self):
         """Test experiment count increments correctly."""
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         pipeline = AutonomousPipeline("config.yaml")
         random.seed(123)
@@ -94,7 +94,7 @@ class TestAutonomousPipeline:
 
     def test_get_status(self):
         """Test get_status returns expected fields."""
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         pipeline = AutonomousPipeline("config.yaml")
         status = pipeline.get_status()
@@ -106,7 +106,7 @@ class TestAutonomousPipeline:
 
     def test_autonomous_pipeline_convenience(self):
         """Test autonomous_pipeline convenience function."""
-        from autonomous_loop import autonomous_pipeline
+        from autoresearch.experiment.autonomous_loop import autonomous_pipeline
 
         texts = ["machine learning is a method of data analysis"]
         data = autonomous_pipeline(
@@ -120,7 +120,7 @@ class TestAutonomousPipeline:
         import tempfile
         from pathlib import Path
 
-        from autonomous_loop import autonomous_pipeline
+        from autoresearch.experiment.autonomous_loop import autonomous_pipeline
 
         # Create a temp file with sample texts
         with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
@@ -142,7 +142,7 @@ class TestVectorStore:
 
     def test_simple_search(self):
         """Test simple vector store search."""
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         store.add(
@@ -161,7 +161,7 @@ class TestVectorStore:
 
     def test_search_empty(self):
         """Test search with empty query returns recent."""
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         store.add(

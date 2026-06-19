@@ -10,7 +10,7 @@ readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.11"
 authors = [
-    {name = "Autoresearch Team", email = "turin@autoresearch.io"}
+    {name = "TurinTech Solutions", email = "turin@turintechsolutions.com"}
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -29,25 +29,13 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/iknowkungfubar/autoresearch-stack"
 Repository = "https://github.com/iknowkungfubar/autoresearch-stack"
+Documentation = "https://github.com/iknowkungfubar/autoresearch-stack#readme"
 
 [project.scripts]
-autoresearch = "autonomous_loop:main"
-
-[tool.setuptools]
-include-package-data = true
-py-modules = [
-    "autonomous_loop", "config", "data_intelligence",
-    "synthetic_data", "curriculum", "feedback",
-    "storage", "memory", "prioritization",
-    "hypothesis", "providers", "orchestrators",
-    "sandbox", "checkpoint", "monitor",
-    "report", "figures", "stats",
-    "paper", "peer_review", "metaloop",
-    "multi_agent", "distribute", "daemon",
-    "train_any_llm",
-]
+autoresearch = "autoresearch.__main__:main"
 
 [tool.setuptools.packages.find]
+where = ["src"]
 include = ["autoresearch", "autoresearch.*"]
 
 [tool.setuptools.package-data]
@@ -59,7 +47,7 @@ addopts = "-q --tb=short"
 log_cli_level = "WARNING"
 
 [tool.coverage.run]
-source = ["."]
+source = ["src/autoresearch"]
 omit = [
     ".venv/*",
     "tests/*",
@@ -93,8 +81,7 @@ ignore = ["S101"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["E501", "F841", "N806", "N817", "S108", "S311"]
-"curriculum.py" = ["S311"]
-"figures.py" = ["S110"]
-"storage.py" = ["S608", "S110"]
-"synthetic_data.py" = ["S110"]
-
+"src/autoresearch/curriculum.py" = ["S311"]
+"src/autoresearch/figures.py" = ["S110"]
+"src/autoresearch/storage.py" = ["S608", "S110"]
+"src/autoresearch/synthetic_data.py" = ["S110"]

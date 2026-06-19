@@ -144,7 +144,7 @@ class HypothesisAgent(BaseAgent):
 
     def generate(self, context: Dict) -> Dict[str, Any]:
         """Generate a hypothesis."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         hypotheses = gen.generate(n=1, change_type=context.get("change_type"))

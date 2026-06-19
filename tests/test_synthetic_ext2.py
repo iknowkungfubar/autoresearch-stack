@@ -11,7 +11,7 @@ class TestSyntheticLLMPaths:
     """Tests for LLM-powered generation paths."""
 
     def test_llm_anthropic_fallback(self):
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator(use_llm=True, provider="anthropic")
         gen.api_key = "test-key"
@@ -21,7 +21,7 @@ class TestSyntheticLLMPaths:
         assert len(result.prompts) == 3
 
     def test_llm_openai_fallback(self):
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator(use_llm=True, provider="openai")
         gen.api_key = "test-key"
@@ -31,7 +31,7 @@ class TestSyntheticLLMPaths:
         assert len(result.prompts) == 3
 
     def test_unknown_provider_uses_templates(self):
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator(use_llm=True, provider="unknown_provider")
         gen.api_key = "test-key"
@@ -41,7 +41,7 @@ class TestSyntheticLLMPaths:
 
     def test_generate_with_difficulty_scaling(self):
         """Evol-Instruct scaling produces mixed difficulties."""
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator(use_llm=False)
         result = gen.generate(n=10, difficulty="mixed")
@@ -49,7 +49,7 @@ class TestSyntheticLLMPaths:
 
     def test_generation_result_dataclass(self):
         """GenerationResult has correct fields."""
-        from synthetic_data import GenerationResult
+        from autoresearch.data.synthetic_data import GenerationResult
 
         r = GenerationResult(prompts=["a", "b"], used_llm=True, metadata={})
         assert len(r.prompts) == 2
@@ -62,7 +62,7 @@ class TestSyntheticQualityFilter:
     """Tests for quality filtering edge cases."""
 
     def test_filter_removes_below_min_length(self):
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator()
         prompts = ["short", "valid prompt text here"]
@@ -70,7 +70,7 @@ class TestSyntheticQualityFilter:
         assert "short" not in filtered
 
     def test_filter_removes_above_max_length(self):
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator()
         prompts = ["x" * 200, "valid text"]

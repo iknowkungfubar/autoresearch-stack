@@ -15,7 +15,7 @@ class TestConfig:
 
     def test_config_load(self):
         """Test config loads from yaml."""
-        from config import get_config
+        from autoresearch.config import get_config
 
         c = get_config("config.yaml")
         assert c.experiment.budget == 500
@@ -24,7 +24,7 @@ class TestConfig:
     def test_config_env_override(self):
         """Test environment variable override."""
         os.environ["EXPERIMENT_BUDGET"] = "100"
-        from config import get_config, reset_config
+        from autoresearch.config import get_config, reset_config
 
         reset_config()
         c = get_config("config.yaml")
@@ -33,7 +33,7 @@ class TestConfig:
 
     def test_config_to_dict(self):
         """Test config serialization."""
-        from config import get_config
+        from autoresearch.config import get_config
 
         c = get_config("config.yaml")
         d = c.to_dict()
@@ -47,7 +47,7 @@ class TestDataIntelligence:
 
     def test_repair(self):
         """Test text repair."""
-        from data_intelligence import repair
+        from autoresearch.data.data_intelligence import repair
 
         # Note: repair requires length >= 20
         assert repair("a" * 20) is not None
@@ -57,7 +57,7 @@ class TestDataIntelligence:
 
     def test_is_noise(self):
         """Test noise detection."""
-        from data_intelligence import is_noise
+        from autoresearch.data.data_intelligence import is_noise
 
         assert is_noise("aaa") is True  # too few unique
         assert is_noise("123!@#") is True  # no alpha
@@ -65,7 +65,7 @@ class TestDataIntelligence:
 
     def test_clean_corpus(self):
         """Test corpus cleaning."""
-        from data_intelligence import clean_corpus
+        from autoresearch.data.data_intelligence import clean_corpus
 
         texts = [
             "hello world test data here",
@@ -84,14 +84,14 @@ class TestSyntheticData:
 
     def test_generate_synthetic(self):
         """Test synthetic generation."""
-        from synthetic_data import generate_synthetic
+        from autoresearch.data.synthetic_data import generate_synthetic
 
         result = generate_synthetic(n=10, difficulty="easy")
         assert len(result) == 10
 
     def test_synthetic_generator(self):
         """Test SyntheticGenerator."""
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator(use_llm=False)
         result = gen.generate(n=5)
@@ -100,7 +100,7 @@ class TestSyntheticData:
 
     def test_quality_filter(self):
         """Test quality filtering."""
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator()
         prompts = ["short", "a" * 100, "", "valid prompt text"]
@@ -114,14 +114,14 @@ class TestCurriculum:
 
     def test_compute_difficulty(self):
         """Test difficulty computation."""
-        from curriculum import compute_difficulty
+        from autoresearch.data.curriculum import compute_difficulty
 
         assert compute_difficulty("short") > 0
         assert compute_difficulty("much longer text here") > compute_difficulty("short")
 
     def test_build_curriculum(self):
         """Test curriculum building."""
-        from curriculum import build_curriculum
+        from autoresearch.data.curriculum import build_curriculum
 
         texts = ["a", "bb", "ccc", "dddd", "eeeee", "ffffff"]
         curriculum = build_curriculum(texts, stages=3)
@@ -131,7 +131,7 @@ class TestCurriculum:
 
     def test_scheduler(self):
         """Test Scheduler."""
-        from curriculum import Scheduler
+        from autoresearch.data.curriculum import Scheduler
 
         curriculum = {"easy": ["a"], "medium": ["b"], "hard": ["c"]}
         scheduler = Scheduler(curriculum)
@@ -146,7 +146,7 @@ class TestFeedback:
 
     def test_reward(self):
         """Test reward computation."""
-        from feedback import Feedback
+        from autoresearch.experiment.feedback import Feedback
 
         fb = Feedback()
         reward = fb.reward(1.0, 0.0)
@@ -154,7 +154,7 @@ class TestFeedback:
 
     def test_classify_failure(self):
         """Test failure classification."""
-        from feedback import FailureClassification, Feedback
+        from autoresearch.experiment.feedback import FailureClassification, Feedback
 
         fb = Feedback()
         classification = fb.classify_failure(
@@ -173,7 +173,7 @@ class TestStorage:
 
     def test_experiment_db(self, tmp_path):
         """Test SQLite storage."""
-        from storage import ExperimentDB
+        from autoresearch.experiment.storage import ExperimentDB
 
         db_path = tmp_path / "test.db"
         db = ExperimentDB(str(db_path))
@@ -204,7 +204,7 @@ class TestMemory:
 
     def test_simple_vector_store(self):
         """Test vector store."""
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
 
@@ -231,7 +231,7 @@ class TestPrioritization:
 
     def test_bandit_selector(self):
         """Test bandit selection."""
-        from prioritization import BanditSelector
+        from autoresearch.experiment.prioritization import BanditSelector
 
         selector = BanditSelector(strategy="ucb1")
 
@@ -258,7 +258,7 @@ class TestHypothesis:
 
     def test_generate_hypothesis(self):
         """Test hypothesis generation."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator(use_llm=False)
         hypotheses = gen.generate(n=3, change_type="optimization")
@@ -269,7 +269,7 @@ class TestHypothesis:
 
     def test_analysis_hypothesis(self):
         """Test analysis-based hypothesis."""
-        from hypothesis import HypothesisGenerator
+        from autoresearch.experiment.hypothesis import HypothesisGenerator
 
         gen = HypothesisGenerator()
         h = gen.generate_from_analysis(6.0, 2.0)  # High loss, high val_bpb
@@ -283,7 +283,7 @@ class TestSandbox:
 
     def test_safe_runner(self):
         """Test safe runner."""
-        from sandbox import SafeRunner
+        from autoresearch.infrastructure.sandbox import SafeRunner
 
         runner = SafeRunner()
 
@@ -303,7 +303,7 @@ class TestCheckpoint:
 
     def test_checkpoint_manager(self, tmp_path):
         """Test checkpoint saving."""
-        from checkpoint import CheckpointManager
+        from autoresearch.infrastructure.checkpoint import CheckpointManager
 
         mgr = CheckpointManager(str(tmp_path / "checkpoints"))
 
@@ -328,7 +328,7 @@ class TestMonitor:
 
     def test_monitor(self):
         """Test monitor."""
-        from monitor import Monitor
+        from autoresearch.infrastructure.monitor import Monitor
 
         m = Monitor()
 
@@ -348,7 +348,7 @@ class TestReport:
 
     def test_report_generation(self):
         """Test report generation."""
-        from report import Report
+        from autoresearch.reporting.report import Report
 
         r = Report("Test Report")
         r.add_section("Overview", "Test content")
@@ -359,7 +359,7 @@ class TestReport:
 
     def test_summary_report(self):
         """Test summary report."""
-        from report import generate_summary_report
+        from autoresearch.reporting.report import generate_summary_report
 
         experiments = [
             {
@@ -382,7 +382,7 @@ class TestMultiAgent:
 
     def test_orchestrator(self):
         """Test orchestrator."""
-        from multi_agent import OrchestratorAgent
+        from autoresearch.infrastructure.multi_agent import OrchestratorAgent
 
         orch = OrchestratorAgent()
 

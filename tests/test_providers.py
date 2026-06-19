@@ -48,7 +48,7 @@ class TestAnthropicProvider:
     """Tests for Anthropic provider."""
 
     def test_complete(self, mock_anthropic_client, sample_messages):
-        from providers import AnthropicProvider
+        from autoresearch.llm.providers import AnthropicProvider
 
         with patch.dict("os.environ", {"ANTHROPIC_API_KEY": "sk-ant-test123"}):
             provider = AnthropicProvider()
@@ -66,7 +66,7 @@ class TestAnthropicProvider:
         assert response.latency_ms > 0
 
     def test_chat(self, mock_anthropic_client, sample_messages):
-        from providers import AnthropicProvider
+        from autoresearch.llm.providers import AnthropicProvider
 
         with patch.dict("os.environ", {"ANTHROPIC_API_KEY": "sk-ant-test123"}):
             provider = AnthropicProvider()
@@ -79,7 +79,7 @@ class TestAnthropicProvider:
         assert response.content == "Hello from Claude"
 
     def test_missing_api_key(self):
-        from providers import AnthropicProvider
+        from autoresearch.llm.providers import AnthropicProvider
 
         with patch.dict("os.environ", clear=True):
             provider = AnthropicProvider()
@@ -88,7 +88,7 @@ class TestAnthropicProvider:
 
     def test_system_message_extraction(self, mock_anthropic_client):
         """Verify system message is extracted and not passed as a regular message."""
-        from providers import AnthropicProvider
+        from autoresearch.llm.providers import AnthropicProvider
 
         messages = [
             {"role": "system", "content": "You are Claude."},
@@ -109,7 +109,7 @@ class TestAnthropicProvider:
         assert call_kwargs["messages"][0]["role"] == "user"
 
     def test_api_error(self):
-        from providers import AnthropicProvider
+        from autoresearch.llm.providers import AnthropicProvider
 
         with patch.dict("os.environ", {"ANTHROPIC_API_KEY": "sk-ant-test123"}):
             provider = AnthropicProvider()
@@ -124,7 +124,7 @@ class TestAnthropicProvider:
                 )
 
     def test_get_model_info(self):
-        from providers import AnthropicProvider
+        from autoresearch.llm.providers import AnthropicProvider
 
         provider = AnthropicProvider()
         info = provider.get_model_info("claude-3-5-sonnet-20241022")
@@ -143,7 +143,7 @@ class TestOpenAIProvider:
     """Tests for OpenAI provider."""
 
     def test_complete(self, mock_openai_client, sample_messages):
-        from providers import OpenAIProvider
+        from autoresearch.llm.providers import OpenAIProvider
 
         with patch.dict("os.environ", {"OPENAI_API_KEY": "sk-test123"}):
             provider = OpenAIProvider()
@@ -157,7 +157,7 @@ class TestOpenAIProvider:
         assert response.usage["completion_tokens"] == 20
 
     def test_chat(self, mock_openai_client, sample_messages):
-        from providers import OpenAIProvider
+        from autoresearch.llm.providers import OpenAIProvider
 
         with patch.dict("os.environ", {"OPENAI_API_KEY": "sk-test123"}):
             provider = OpenAIProvider()
@@ -168,7 +168,7 @@ class TestOpenAIProvider:
         assert response.content == "Hello from GPT"
 
     def test_missing_api_key(self):
-        from providers import OpenAIProvider
+        from autoresearch.llm.providers import OpenAIProvider
 
         with patch.dict("os.environ", clear=True):
             provider = OpenAIProvider()
@@ -176,7 +176,7 @@ class TestOpenAIProvider:
                 provider._get_client()
 
     def test_api_error(self):
-        from providers import OpenAIProvider
+        from autoresearch.llm.providers import OpenAIProvider
 
         with patch.dict("os.environ", {"OPENAI_API_KEY": "sk-test123"}):
             provider = OpenAIProvider()
@@ -188,7 +188,7 @@ class TestOpenAIProvider:
                 provider.complete([{"role": "user", "content": "Hi"}], model="gpt-4o")
 
     def test_custom_base_url(self):
-        from providers import OpenAIProvider
+        from autoresearch.llm.providers import OpenAIProvider
 
         with patch.dict("os.environ", {"OPENAI_API_KEY": "sk-test123"}):
             provider = OpenAIProvider(base_url="https://custom.example.com/v1")
@@ -196,7 +196,7 @@ class TestOpenAIProvider:
 
     def test_null_content(self):
         """Test that null content is handled as empty string."""
-        from providers import OpenAIProvider
+        from autoresearch.llm.providers import OpenAIProvider
 
         mock = MagicMock()
         choice = MagicMock()
@@ -225,7 +225,7 @@ class TestOpenRouterProvider:
     """Tests for OpenRouter provider."""
 
     def test_complete(self, mock_openai_client, sample_messages):
-        from providers import OpenRouterProvider
+        from autoresearch.llm.providers import OpenRouterProvider
 
         with patch.dict("os.environ", {"OPENROUTER_API_KEY": "sk-or-test"}):
             provider = OpenRouterProvider()
@@ -237,7 +237,7 @@ class TestOpenRouterProvider:
         assert response.content == "Hello from GPT"
 
     def test_missing_api_key(self):
-        from providers import OpenRouterProvider
+        from autoresearch.llm.providers import OpenRouterProvider
 
         with patch.dict("os.environ", clear=True):
             provider = OpenRouterProvider()
@@ -246,7 +246,7 @@ class TestOpenRouterProvider:
 
     def test_model_mapping(self, mock_openai_client):
         """Verify model name translation for OpenRouter."""
-        from providers import OpenRouterProvider
+        from autoresearch.llm.providers import OpenRouterProvider
 
         messages = [{"role": "user", "content": "Hi"}]
         with patch.dict("os.environ", {"OPENROUTER_API_KEY": "sk-or-test"}):
@@ -261,7 +261,7 @@ class TestOpenRouterProvider:
         assert "X-Title" in call_kwargs["extra_headers"]
 
     def test_api_error(self):
-        from providers import OpenRouterProvider
+        from autoresearch.llm.providers import OpenRouterProvider
 
         with patch.dict("os.environ", {"OPENROUTER_API_KEY": "sk-or-test"}):
             provider = OpenRouterProvider()
@@ -280,25 +280,25 @@ class TestProviderFactory:
     """Tests for LLMProviderFactory."""
 
     def test_create_string(self):
-        from providers import LLMProviderFactory
+        from autoresearch.llm.providers import LLMProviderFactory
 
         provider = LLMProviderFactory.create("openai")
         assert provider.__class__.__name__ == "OpenAIProvider"
 
     def test_create_from_enum(self):
-        from providers import LLMProviderFactory, ProviderType
+        from autoresearch.llm.providers import LLMProviderFactory, ProviderType
 
         provider = LLMProviderFactory.create(ProviderType.ANTHROPIC)
         assert provider.__class__.__name__ == "AnthropicProvider"
 
     def test_create_invalid(self):
-        from providers import LLMProviderFactory
+        from autoresearch.llm.providers import LLMProviderFactory
 
         with pytest.raises((ValueError, KeyError)):
             LLMProviderFactory.create("nonexistent_provider")
 
     def test_from_config(self):
-        from providers import LLMProviderFactory
+        from autoresearch.llm.providers import LLMProviderFactory
 
         config = {
             "provider": "ollama",
@@ -311,7 +311,7 @@ class TestProviderFactory:
 
     def test_from_config_defaults(self):
         """Test factory with empty config uses openai default."""
-        from providers import LLMProviderFactory
+        from autoresearch.llm.providers import LLMProviderFactory
 
         provider = LLMProviderFactory.from_config({})
         assert provider.__class__.__name__ == "OpenAIProvider"
@@ -324,14 +324,14 @@ class TestLLMClient:
     """Tests for LLMClient."""
 
     def test_no_provider(self):
-        from providers import LLMClient
+        from autoresearch.llm.providers import LLMClient
 
         client = LLMClient()
         with pytest.raises(RuntimeError, match="No provider configured"):
             client.complete([{"role": "user", "content": "test"}])
 
     def test_with_provider(self, mock_openai_client, sample_messages):
-        from providers import LLMClient, OpenAIProvider
+        from autoresearch.llm.providers import LLMClient, OpenAIProvider
 
         with patch.dict("os.environ", {"OPENAI_API_KEY": "sk-test123"}):
             provider = OpenAIProvider()
@@ -343,7 +343,7 @@ class TestLLMClient:
         assert response.content == "Hello from GPT"
 
     def test_set_provider(self):
-        from providers import LLMClient, OpenAIProvider
+        from autoresearch.llm.providers import LLMClient, OpenAIProvider
 
         client = LLMClient()
         assert client.provider is None
@@ -359,14 +359,14 @@ class TestLocalProviders:
     """Tests for local inference providers."""
 
     def test_ollama_init(self):
-        from providers import OllamaProvider
+        from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider(base_url="http://custom:11434")
         assert provider.base_url == "http://custom:11434"
 
     def test_ollama_list_models(self):
         """Test list_models with mocked HTTP response."""
-        from providers import OllamaProvider
+        from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
         with patch("providers.requests.get") as mock_get:
@@ -379,7 +379,7 @@ class TestLocalProviders:
 
     def test_ollama_list_models_failure(self):
         """Test list_models handles errors gracefully."""
-        from providers import OllamaProvider
+        from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
         with patch("providers.requests.get") as mock_get:
@@ -388,7 +388,7 @@ class TestLocalProviders:
         assert models == []
 
     def test_lmstudio_init(self):
-        from providers import LMStudioProvider
+        from autoresearch.llm.providers import LMStudioProvider
 
         provider = LMStudioProvider(base_url="http://localhost:1234/v1")
         assert provider.base_url == "http://localhost:1234/v1"
@@ -401,7 +401,7 @@ class TestModelRegistry:
     """Tests for MODEL_REGISTRY."""
 
     def test_registry_complete(self):
-        from providers import MODEL_REGISTRY
+        from autoresearch.llm.providers import MODEL_REGISTRY
 
         assert len(MODEL_REGISTRY) >= 10
         assert "claude-3-5-sonnet-20241022" in MODEL_REGISTRY
@@ -409,7 +409,7 @@ class TestModelRegistry:
         assert "gemini-1.5-pro" in MODEL_REGISTRY
 
     def test_model_info_structure(self):
-        from providers import MODEL_REGISTRY, ModelInfo
+        from autoresearch.llm.providers import MODEL_REGISTRY, ModelInfo
 
         for model_id, info in MODEL_REGISTRY.items():
             assert isinstance(info, ModelInfo)
@@ -429,7 +429,7 @@ class TestLLMResponse:
     """Tests for LLMResponse dataclass."""
 
     def test_construction(self):
-        from providers import LLMResponse
+        from autoresearch.llm.providers import LLMResponse
 
         response = LLMResponse(
             content="test",
@@ -445,7 +445,7 @@ class TestLLMResponse:
         assert response.raw_response == {"id": "123"}
 
     def test_defaults(self):
-        from providers import LLMResponse
+        from autoresearch.llm.providers import LLMResponse
 
         response = LLMResponse(content="", model="test", provider="test")
         assert response.usage == {}

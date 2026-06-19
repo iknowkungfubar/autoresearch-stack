@@ -24,15 +24,15 @@ from typing import Any, Dict, List, Optional
 __version__ = "0.7.3"
 
 # Import components
-from config import get_config
-from curriculum import build_curriculum, create_scheduler
-from data_intelligence import clean_corpus
-from feedback import ExperimentStatus, Feedback
-from hypothesis import HypothesisGenerator
-from memory import MemorySystem
-from prioritization import get_prioritization
-from storage import ExperimentDB
-from synthetic_data import (
+from autoresearch.config import get_config
+from autoresearch.data.curriculum import build_curriculum, create_scheduler
+from autoresearch.data.data_intelligence import clean_corpus
+from autoresearch.experiment.feedback import ExperimentStatus, Feedback
+from autoresearch.experiment.hypothesis import HypothesisGenerator
+from autoresearch.experiment.memory import MemoryStore
+from autoresearch.experiment.prioritization import get_prioritization
+from autoresearch.experiment.storage import ExperimentDB
+from autoresearch.data.synthetic_data import (
     SyntheticGenerator,
     model_in_the_loop_generate,
 )

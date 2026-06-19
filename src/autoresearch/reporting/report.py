@@ -11,14 +11,14 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 # Optional imports for figures and statistics
 if TYPE_CHECKING:
-    from figures import FigureGenerator
-    from stats import SummaryStatistics
+    from autoresearch.reporting.figures import FigureGenerator
+    from autoresearch.reporting.stats import SummaryStatistics
 
     FIGURES_AVAILABLE = True
 else:
     try:
-        from figures import FigureGenerator  # noqa: F811
-        from stats import SummaryStatistics  # noqa: F811
+        from autoresearch.reporting.figures import FigureGenerator  # noqa: F811
+        from autoresearch.reporting.stats import SummaryStatistics  # noqa: F811
 
         FIGURES_AVAILABLE = True
     except ImportError:

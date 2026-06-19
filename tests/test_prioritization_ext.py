@@ -12,7 +12,7 @@ class TestBanditSelector:
     """Tests for bandit-based selection algorithms."""
 
     def test_ucb1_selection(self):
-        from prioritization import BanditSelector
+        from autoresearch.experiment.prioritization import BanditSelector
 
         selector = BanditSelector(strategy="ucb1")
 
@@ -28,7 +28,7 @@ class TestBanditSelector:
             selector.update(arm, reward=1.0, category="optimization")
 
     def test_epsilon_greedy_selection(self):
-        from prioritization import BanditSelector
+        from autoresearch.experiment.prioritization import BanditSelector
 
         selector = BanditSelector(strategy="epsilon_greedy", epsilon=0.5)
 
@@ -38,7 +38,7 @@ class TestBanditSelector:
             selector.update(arm, reward=1.0, category="optimization")
 
     def test_thompson_selection(self):
-        from prioritization import BanditSelector
+        from autoresearch.experiment.prioritization import BanditSelector
 
         selector = BanditSelector(strategy="thompson")
 
@@ -48,7 +48,7 @@ class TestBanditSelector:
             selector.update(arm, reward=1.0, category="optimization")
 
     def test_multiple_categories(self):
-        from prioritization import BanditSelector
+        from autoresearch.experiment.prioritization import BanditSelector
 
         selector = BanditSelector(strategy="ucb1")
 
@@ -59,7 +59,7 @@ class TestBanditSelector:
                 selector.update(arm, reward=1.0, category=cat)
 
     def test_get_statistics(self):
-        from prioritization import BanditSelector
+        from autoresearch.experiment.prioritization import BanditSelector
 
         selector = BanditSelector(strategy="ucb1")
 
@@ -74,14 +74,14 @@ class TestBanditSelector:
         assert stats["learning_rate"]["mean_reward"] == 0.9
 
     def test_statistics_empty_category(self):
-        from prioritization import BanditSelector
+        from autoresearch.experiment.prioritization import BanditSelector
 
         selector = BanditSelector(strategy="ucb1")
         stats = selector.get_statistics("nonexistent")
         assert stats == {}
 
     def test_negative_reward(self):
-        from prioritization import BanditSelector
+        from autoresearch.experiment.prioritization import BanditSelector
 
         selector = BanditSelector(strategy="ucb1")
         selector.update("learning_rate", reward=-0.5, category="optimization")
@@ -89,7 +89,7 @@ class TestBanditSelector:
         assert stats["learning_rate"]["mean_reward"] == -0.5
 
     def test_zero_reward(self):
-        from prioritization import BanditSelector
+        from autoresearch.experiment.prioritization import BanditSelector
 
         selector = BanditSelector(strategy="ucb1")
         selector.update("learning_rate", reward=0.0, category="optimization")
@@ -98,7 +98,7 @@ class TestBanditSelector:
 
     def test_random_category_selection(self):
         """When category is None, picks a random existing category."""
-        from prioritization import BanditSelector
+        from autoresearch.experiment.prioritization import BanditSelector
 
         selector = BanditSelector(strategy="ucb1")
         selector.update("learning_rate", reward=1.0, category="optimization")
@@ -111,7 +111,7 @@ class TestPrioritizationSystem:
     """Tests for the PrioritizationSystem class."""
 
     def test_suggest_next(self):
-        from prioritization import get_prioritization
+        from autoresearch.experiment.prioritization import get_prioritization
 
         system = get_prioritization(strategy="ucb1")
         suggestion = system.suggest_next(baseline_val_bpb=1.0)
@@ -120,7 +120,7 @@ class TestPrioritizationSystem:
         assert "reasoning" in suggestion
 
     def test_record_result(self):
-        from prioritization import get_prioritization
+        from autoresearch.experiment.prioritization import get_prioritization
 
         system = get_prioritization(strategy="ucb1")
 
@@ -134,7 +134,7 @@ class TestPrioritizationSystem:
         assert len(system.experiment_history) >= 1
 
     def test_record_result_improvement(self):
-        from prioritization import get_prioritization
+        from autoresearch.experiment.prioritization import get_prioritization
 
         system = get_prioritization(strategy="ucb1")
 
@@ -150,7 +150,7 @@ class TestPrioritizationSystem:
         assert "change" in suggestion
 
     def test_record_result_regression(self):
-        from prioritization import get_prioritization
+        from autoresearch.experiment.prioritization import get_prioritization
 
         system = get_prioritization(strategy="ucb1")
 
@@ -165,7 +165,7 @@ class TestPrioritizationSystem:
         assert suggestion is not None
 
     def test_experiment_history(self):
-        from prioritization import get_prioritization
+        from autoresearch.experiment.prioritization import get_prioritization
 
         system = get_prioritization(strategy="ucb1")
 
@@ -181,7 +181,7 @@ class TestPrioritizationSystem:
         assert len(system.experiment_history) >= 6
 
     def test_different_strategies(self):
-        from prioritization import get_prioritization
+        from autoresearch.experiment.prioritization import get_prioritization
 
         for strategy in ["ucb1", "epsilon_greedy", "thompson"]:
             system = get_prioritization(strategy=strategy)

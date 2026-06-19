@@ -14,7 +14,7 @@ class TestMemorySystem:
 
     def test_init_fallback_to_simple(self, tmp_path):
         """Without ChromaDB, falls back to SimpleVectorStore."""
-        from memory import MemorySystem
+        from autoresearch.experiment.memory import MemorySystem
 
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         assert memory.vector_store is not None
@@ -22,7 +22,7 @@ class TestMemorySystem:
 
     def test_init_with_memory_path(self, tmp_path):
         """Memory path is created if it doesn't exist."""
-        from memory import MemorySystem
+        from autoresearch.experiment.memory import MemorySystem
 
         mem_path = tmp_path / "test_memory"
         memory = MemorySystem(
@@ -33,7 +33,7 @@ class TestMemorySystem:
 
     def test_load_from_db_missing(self, tmp_path):
         """Loading from nonexistent DB is handled gracefully."""
-        from memory import MemorySystem
+        from autoresearch.experiment.memory import MemorySystem
 
         memory = MemorySystem(db_path=str(tmp_path / "nonexistent.db"))
         # Should not raise
@@ -42,7 +42,7 @@ class TestMemorySystem:
 
     def test_get_what_been_tried_empty(self, tmp_path):
         """Empty memory returns empty list."""
-        from memory import MemorySystem
+        from autoresearch.experiment.memory import MemorySystem
 
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         result = memory.get_what_been_tried("learning rate")
@@ -50,7 +50,7 @@ class TestMemorySystem:
 
     def test_get_patterns_empty(self, tmp_path):
         """Empty memory returns empty pattern dicts."""
-        from memory import MemorySystem
+        from autoresearch.experiment.memory import MemorySystem
 
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         patterns = memory.get_patterns()
@@ -58,7 +58,7 @@ class TestMemorySystem:
 
     def test_get_patterns_filtered(self, tmp_path):
         """Filtering by change_type works."""
-        from memory import ExperimentMemory, MemorySystem
+        from autoresearch.experiment.memory import ExperimentMemory, MemorySystem
 
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         store = memory.vector_store
@@ -92,7 +92,7 @@ class TestMemorySystem:
 
     def test_suggest_next_unknown_type(self, tmp_path):
         """suggest_next returns a fallback for unknown change types."""
-        from memory import MemorySystem
+        from autoresearch.experiment.memory import MemorySystem
 
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         suggestion = memory.suggest_next("unknown_type")
@@ -101,7 +101,7 @@ class TestMemorySystem:
 
     def test_suggest_next_all_failed(self, tmp_path):
         """When all suggestions have failed, returns first anyway."""
-        from memory import ExperimentMemory, MemorySystem
+        from autoresearch.experiment.memory import ExperimentMemory, MemorySystem
 
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         store = memory.vector_store
@@ -132,7 +132,7 @@ class TestMemorySystem:
 
     def test_query_hits_and_misses(self, tmp_path):
         """Query statistics track hits and misses."""
-        from memory import ExperimentMemory, MemorySystem
+        from autoresearch.experiment.memory import ExperimentMemory, MemorySystem
 
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         store = memory.vector_store
@@ -160,7 +160,7 @@ class TestMemorySystem:
 
     def test_get_statistics(self, tmp_path):
         """get_statistics returns structured data."""
-        from memory import ExperimentMemory, MemorySystem
+        from autoresearch.experiment.memory import ExperimentMemory, MemorySystem
 
         memory = MemorySystem(db_path=str(tmp_path / "test.db"))
         store = memory.vector_store
@@ -198,7 +198,7 @@ class TestExperimentMemory:
     """Tests for ExperimentMemory dataclass."""
 
     def test_improved_property(self):
-        from memory import ExperimentMemory
+        from autoresearch.experiment.memory import ExperimentMemory
 
         exp = ExperimentMemory(
             experiment_id=1,
@@ -212,7 +212,7 @@ class TestExperimentMemory:
         assert exp.improved is True
 
     def test_not_improved(self):
-        from memory import ExperimentMemory
+        from autoresearch.experiment.memory import ExperimentMemory
 
         exp = ExperimentMemory(
             experiment_id=1,
@@ -226,7 +226,7 @@ class TestExperimentMemory:
         assert exp.improved is False
 
     def test_to_dict(self):
-        from memory import ExperimentMemory
+        from autoresearch.experiment.memory import ExperimentMemory
 
         exp = ExperimentMemory(
             experiment_id=1,
@@ -242,7 +242,7 @@ class TestExperimentMemory:
         assert d["change_description"] == "Test"
 
     def test_tags_default(self):
-        from memory import ExperimentMemory
+        from autoresearch.experiment.memory import ExperimentMemory
 
         exp = ExperimentMemory(
             experiment_id=1,
@@ -260,7 +260,7 @@ class TestSimpleVectorStoreExtended:
     """Extended tests for SimpleVectorStore."""
 
     def test_get_by_type(self):
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         store.add(
@@ -291,7 +291,7 @@ class TestSimpleVectorStoreExtended:
         assert opts[0].change_type == "optimization"
 
     def test_get_by_status(self):
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         store.add(
@@ -322,7 +322,7 @@ class TestSimpleVectorStoreExtended:
         assert kept[0].status == "kept"
 
     def test_get_recent(self):
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         for i in range(10):
@@ -342,7 +342,7 @@ class TestSimpleVectorStoreExtended:
         assert len(recent) == 3
 
     def test_get_recent_more_than_available(self):
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         store.add(
@@ -360,7 +360,7 @@ class TestSimpleVectorStoreExtended:
         assert len(recent) == 1
 
     def test_search_no_keyword_matches(self):
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         store.add(
@@ -378,7 +378,7 @@ class TestSimpleVectorStoreExtended:
         assert len(results) == 0
 
     def test_index_updates_on_add(self):
-        from memory import ExperimentMemory, SimpleVectorStore
+        from autoresearch.experiment.memory import ExperimentMemory, SimpleVectorStore
 
         store = SimpleVectorStore()
         assert len(store.index) == 0

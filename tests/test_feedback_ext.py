@@ -7,7 +7,7 @@ class TestExperimentStatus:
     """Tests for ExperimentStatus enum."""
 
     def test_all_statuses(self):
-        from feedback import ExperimentStatus
+        from autoresearch.experiment.feedback import ExperimentStatus
 
         assert ExperimentStatus.KEPT.value == "kept"
         assert ExperimentStatus.REVERTED.value == "reverted"
@@ -19,7 +19,7 @@ class TestFailureClassification:
     """Tests for FailureClassification enum."""
 
     def test_values(self):
-        from feedback import FailureClassification
+        from autoresearch.experiment.feedback import FailureClassification
 
         assert FailureClassification.OVERFITTING.value == "overfitting"
         assert FailureClassification.UNDERFITTING.value == "underfitting"
@@ -30,19 +30,19 @@ class TestFeedback:
     """Tests for the Feedback class."""
 
     def test_reward_improvement(self):
-        from feedback import Feedback
+        from autoresearch.experiment.feedback import Feedback
 
         fb = Feedback()
         assert fb.reward(2.0, 0.0) > 0
 
     def test_reward_zero_baseline(self):
-        from feedback import Feedback
+        from autoresearch.experiment.feedback import Feedback
 
         fb = Feedback()
         assert isinstance(fb.reward(0.0, 0.0), float)
 
     def test_classify_overfitting(self):
-        from feedback import FailureClassification, Feedback
+        from autoresearch.experiment.feedback import FailureClassification, Feedback
 
         fb = Feedback()
         c = fb.classify_failure(
@@ -52,7 +52,7 @@ class TestFeedback:
         assert c == FailureClassification.OVERFITTING
 
     def test_classify_underfitting(self):
-        from feedback import FailureClassification, Feedback
+        from autoresearch.experiment.feedback import FailureClassification, Feedback
 
         fb = Feedback()
         c = fb.classify_failure(
@@ -61,7 +61,7 @@ class TestFeedback:
         assert c == FailureClassification.UNDERFITTING
 
     def test_classify_gradient_explosion(self):
-        from feedback import FailureClassification, Feedback
+        from autoresearch.experiment.feedback import FailureClassification, Feedback
 
         fb = Feedback()
         c = fb.classify_failure(
@@ -70,7 +70,7 @@ class TestFeedback:
         assert c == FailureClassification.GRADIENT_EXPLOSION
 
     def test_classify_gradient_vanishing(self):
-        from feedback import FailureClassification, Feedback
+        from autoresearch.experiment.feedback import FailureClassification, Feedback
 
         fb = Feedback()
         c = fb.classify_failure(
@@ -79,7 +79,7 @@ class TestFeedback:
         assert c == FailureClassification.GRADIENT_VANISHING
 
     def test_classify_loss_spike(self):
-        from feedback import FailureClassification, Feedback
+        from autoresearch.experiment.feedback import FailureClassification, Feedback
 
         fb = Feedback()
         c = fb.classify_failure(
@@ -88,7 +88,7 @@ class TestFeedback:
         assert c == FailureClassification.LOSS_SPIKE
 
     def test_classify_timing(self):
-        from feedback import FailureClassification, Feedback
+        from autoresearch.experiment.feedback import FailureClassification, Feedback
 
         fb = Feedback()
         c = fb.classify_failure(
@@ -97,7 +97,7 @@ class TestFeedback:
         assert c == FailureClassification.TIMING
 
     def test_classify_lr_too_high(self):
-        from feedback import FailureClassification, Feedback
+        from autoresearch.experiment.feedback import FailureClassification, Feedback
 
         fb = Feedback()
         c = fb.classify_failure(
@@ -106,7 +106,7 @@ class TestFeedback:
         assert c == FailureClassification.LR_TOO_HIGH
 
     def test_classify_lr_too_low(self):
-        from feedback import FailureClassification, Feedback
+        from autoresearch.experiment.feedback import FailureClassification, Feedback
 
         fb = Feedback()
         c = fb.classify_failure(
@@ -115,7 +115,7 @@ class TestFeedback:
         assert c == FailureClassification.LR_TOO_LOW
 
     def test_classify_unknown(self):
-        from feedback import FailureClassification, Feedback
+        from autoresearch.experiment.feedback import FailureClassification, Feedback
 
         fb = Feedback()
         c = fb.classify_failure(
@@ -124,14 +124,14 @@ class TestFeedback:
         assert c == FailureClassification.UNKNOWN
 
     def test_get_baseline_default(self):
-        from feedback import Feedback
+        from autoresearch.experiment.feedback import Feedback
 
         assert Feedback().get_baseline() == float("inf")
 
     def test_get_baseline_with_experiments(self, tmp_path):
         import json
 
-        from feedback import Feedback
+        from autoresearch.experiment.feedback import Feedback
 
         log_path = tmp_path / "experiments.jsonl"
         log_path.write_text(
@@ -150,7 +150,7 @@ class TestFeedback:
         assert baseline == 0.95 or baseline == float("inf")
 
     def test_get_baseline_no_experiments(self, tmp_path):
-        from feedback import Feedback
+        from autoresearch.experiment.feedback import Feedback
 
         log_path = tmp_path / "empty.jsonl"
         log_path.write_text("")
@@ -160,7 +160,7 @@ class TestFeedback:
     def test_experiment_log_loading(self, tmp_path):
         import json
 
-        from feedback import Feedback
+        from autoresearch.experiment.feedback import Feedback
 
         log_path = tmp_path / "experiments.jsonl"
         data = {
@@ -182,7 +182,7 @@ class TestExperiment:
     """Tests for Experiment dataclass."""
 
     def test_create(self):
-        from feedback import Experiment
+        from autoresearch.experiment.feedback import Experiment
 
         exp = Experiment(
             id=1,
@@ -196,7 +196,7 @@ class TestExperiment:
         assert exp.status == "running"
 
     def test_delta_improvement(self):
-        from feedback import Experiment
+        from autoresearch.experiment.feedback import Experiment
 
         exp = Experiment(
             id=1,
@@ -209,7 +209,7 @@ class TestExperiment:
         assert pytest.approx(exp.delta) == -0.05
 
     def test_delta_regression(self):
-        from feedback import Experiment
+        from autoresearch.experiment.feedback import Experiment
 
         exp = Experiment(
             id=1,

@@ -12,13 +12,13 @@ class TestReport:
     """Tests for the Report class."""
 
     def test_create_report(self):
-        from report import Report
+        from autoresearch.reporting.report import Report
 
         r = Report("Test Report")
         assert r.title == "Test Report"
 
     def test_add_section(self):
-        from report import Report
+        from autoresearch.reporting.report import Report
 
         r = Report("Test")
         r.add_section("Overview", "Test content")
@@ -26,7 +26,7 @@ class TestReport:
         assert "Test content" in content
 
     def test_add_header(self):
-        from report import Report
+        from autoresearch.reporting.report import Report
 
         r = Report("Test")
         r.add_header("Custom Header")
@@ -34,7 +34,7 @@ class TestReport:
         assert "Custom Header" in content
 
     def test_multiple_sections(self):
-        from report import Report
+        from autoresearch.reporting.report import Report
 
         r = Report("Multi")
         r.add_section("Section 1", "Content 1")
@@ -50,7 +50,7 @@ class TestSummaryReport:
     """Tests for summary report generation."""
 
     def test_generate_summary_report(self):
-        from report import generate_summary_report
+        from autoresearch.reporting.report import generate_summary_report
 
         experiments = [
             {
@@ -76,7 +76,7 @@ class TestSummaryReport:
         assert "reverted" in content.lower()
 
     def test_summary_report_empty(self):
-        from report import generate_summary_report
+        from autoresearch.reporting.report import generate_summary_report
 
         report = generate_summary_report([])
         assert report is not None
@@ -84,7 +84,7 @@ class TestSummaryReport:
         assert "Summary" in content or "Experiment" in content
 
     def test_summary_report_single(self):
-        from report import generate_summary_report
+        from autoresearch.reporting.report import generate_summary_report
 
         experiments = [
             {
@@ -105,7 +105,7 @@ class TestComparisonReport:
     """Tests for comparison report generation."""
 
     def test_comparison_report(self):
-        from report import generate_comparison_report
+        from autoresearch.reporting.report import generate_comparison_report
 
         experiment_sets = {
             "Set A": [
@@ -144,7 +144,7 @@ class TestComparisonReport:
         assert "Second Run" in content
 
     def test_comparison_report_single_set(self):
-        from report import generate_comparison_report
+        from autoresearch.reporting.report import generate_comparison_report
 
         experiment_sets = {
             "Only Set": [
@@ -167,7 +167,7 @@ class TestFullReport:
     """Tests for full report generation."""
 
     def test_full_report_without_figures(self):
-        from report import generate_full_report
+        from autoresearch.reporting.report import generate_full_report
 
         experiments = [
             {
@@ -196,7 +196,7 @@ class TestFullReport:
     def test_full_report_empty(self):
         import tempfile
 
-        from report import generate_full_report
+        from autoresearch.reporting.report import generate_full_report
 
         with tempfile.TemporaryDirectory() as tmpdir:
             result = generate_full_report(
@@ -208,7 +208,7 @@ class TestFullReport:
             assert "report" in result
 
     def test_full_report_with_baseline(self):
-        from report import generate_full_report
+        from autoresearch.reporting.report import generate_full_report
 
         experiments = [
             {

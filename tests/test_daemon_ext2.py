@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 class TestDaemonPid:
     def test_write_pid(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         c = DaemonConfig(
             pid_file=str(tmp_path / "p.pid"), log_file=str(tmp_path / "t.log")
@@ -16,7 +16,7 @@ class TestDaemonPid:
         assert (tmp_path / "p.pid").read_text().strip() == str(os.getpid())
 
     def test_remove_pid(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         (tmp_path / "p.pid").write_text("12345")
         c = DaemonConfig(
@@ -26,7 +26,7 @@ class TestDaemonPid:
         assert not (tmp_path / "p.pid").exists()
 
     def test_get_pid(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         (tmp_path / "p.pid").write_text("99999")
         assert (
@@ -39,7 +39,7 @@ class TestDaemonPid:
         )
 
     def test_get_pid_none(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         assert (
             Daemon(
@@ -53,7 +53,7 @@ class TestDaemonPid:
 
 class TestDaemonRunning:
     def test_not_running_no_pid(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         assert (
             Daemon(
@@ -65,7 +65,7 @@ class TestDaemonRunning:
         )
 
     def test_is_running(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         (tmp_path / "p.pid").write_text(str(os.getpid()))
         assert (
@@ -78,7 +78,7 @@ class TestDaemonRunning:
         )
 
     def test_stale_pid(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         (tmp_path / "p.pid").write_text("999999999")
         assert (
@@ -93,7 +93,7 @@ class TestDaemonRunning:
 
 class TestDaemonStats:
     def test_save_and_load(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         sf = tmp_path / "stats.json"
         d = Daemon(
@@ -107,7 +107,7 @@ class TestDaemonStats:
         assert json.loads(sf.read_text())["experiments_run"] == 5
 
     def test_load_missing(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         d = Daemon(
             DaemonConfig(
@@ -121,7 +121,7 @@ class TestDaemonStats:
 
 class TestDaemonSignals:
     def test_handle_shutdown(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         d = Daemon(
             DaemonConfig(
@@ -133,7 +133,7 @@ class TestDaemonSignals:
         assert d._running is False
 
     def test_handle_restart(self, tmp_path):
-        from daemon import Daemon, DaemonConfig, DaemonState
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig, DaemonState
 
         d = Daemon(
             DaemonConfig(
@@ -147,7 +147,7 @@ class TestDaemonSignals:
 
 class TestHealthChecker:
     def test_init(self, tmp_path):
-        from daemon import DaemonConfig, HealthChecker
+        from autoresearch.infrastructure.daemon import DaemonConfig, HealthChecker
 
         c = HealthChecker(
             DaemonConfig(
@@ -157,7 +157,7 @@ class TestHealthChecker:
         assert c.checks == []
 
     def test_register_check(self, tmp_path):
-        from daemon import DaemonConfig, HealthChecker
+        from autoresearch.infrastructure.daemon import DaemonConfig, HealthChecker
 
         c = HealthChecker(
             DaemonConfig(
@@ -168,7 +168,7 @@ class TestHealthChecker:
         assert len(c.checks) == 1
 
     def test_check_all_healthy(self, tmp_path):
-        from daemon import DaemonConfig, DaemonState, HealthChecker
+        from autoresearch.infrastructure.daemon import DaemonConfig, DaemonState, HealthChecker
 
         c = HealthChecker(
             DaemonConfig(
@@ -179,7 +179,7 @@ class TestHealthChecker:
         assert c.check_all().state == DaemonState.HEALTHY
 
     def test_check_all_unhealthy(self, tmp_path):
-        from daemon import DaemonConfig, DaemonState, HealthChecker
+        from autoresearch.infrastructure.daemon import DaemonConfig, DaemonState, HealthChecker
 
         c = HealthChecker(
             DaemonConfig(
@@ -190,7 +190,7 @@ class TestHealthChecker:
         assert c.check_all().state == DaemonState.UNHEALTHY
 
     def test_check_all_exception(self, tmp_path):
-        from daemon import DaemonConfig, DaemonState, HealthChecker
+        from autoresearch.infrastructure.daemon import DaemonConfig, DaemonState, HealthChecker
 
         def _fail():
             raise RuntimeError("fail")
@@ -208,7 +208,7 @@ class TestDaemonStart:
     def test_start_when_running(self, tmp_path):
         import os
 
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         (tmp_path / "p.pid").write_text(str(os.getpid()))
         d = Daemon(
@@ -219,7 +219,7 @@ class TestDaemonStart:
         assert d.start(daemonize=False) is False
 
     def test_start_with_mocked_loop(self, tmp_path):
-        from daemon import Daemon, DaemonConfig, DaemonState
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig, DaemonState
 
         d = Daemon(
             DaemonConfig(
@@ -232,7 +232,7 @@ class TestDaemonStart:
         assert d.state == DaemonState.RUNNING
 
     def test_start_fork_fail(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         d = Daemon(
             DaemonConfig(
@@ -243,7 +243,7 @@ class TestDaemonStart:
             assert d.start(daemonize=True) is False
 
     def test_signal_handlers(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         d = Daemon(
             DaemonConfig(
@@ -260,7 +260,7 @@ class TestDaemonStart:
             assert ms.called
 
     def test_run_on_start_called(self, tmp_path):
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         cb = MagicMock()
         d = Daemon(

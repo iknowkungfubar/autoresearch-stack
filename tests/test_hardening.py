@@ -15,7 +15,7 @@ class TestProvidersExtended:
 
     def test_all_provider_types(self):
         """Test all provider type enum values exist."""
-        from providers import ProviderType
+        from autoresearch.llm.providers import ProviderType
 
         cloud_types = [
             ProviderType.ANTHROPIC,
@@ -47,7 +47,7 @@ class TestProvidersExtended:
 
     def test_model_registry_complete(self):
         """Test model registry has expected models."""
-        from providers import MODEL_REGISTRY
+        from autoresearch.llm.providers import MODEL_REGISTRY
 
         assert len(MODEL_REGISTRY) >= 10
         # Check specific models
@@ -62,7 +62,7 @@ class TestProvidersExtended:
 
     def test_llm_response_dataclass(self):
         """Test LLMResponse construction."""
-        from providers import LLMResponse
+        from autoresearch.llm.providers import LLMResponse
 
         response = LLMResponse(
             content="test response",
@@ -78,7 +78,7 @@ class TestProvidersExtended:
 
     def test_model_info_dataclass(self):
         """Test ModelInfo construction."""
-        from providers import ModelInfo
+        from autoresearch.llm.providers import ModelInfo
 
         info = ModelInfo(
             id="test-model",
@@ -96,7 +96,7 @@ class TestProvidersExtended:
 
     def test_provider_factory_string(self):
         """Test factory creates from string."""
-        from providers import LLMProviderFactory
+        from autoresearch.llm.providers import LLMProviderFactory
 
         provider = LLMProviderFactory.create("openai")
         assert provider is not None
@@ -104,14 +104,14 @@ class TestProvidersExtended:
 
     def test_provider_factory_invalid(self):
         """Test factory rejects invalid provider."""
-        from providers import LLMProviderFactory
+        from autoresearch.llm.providers import LLMProviderFactory
 
         with pytest.raises(ValueError):
             LLMProviderFactory.create("nonexistent_provider")
 
     def test_provider_factory_from_config(self):
         """Test factory from config dict."""
-        from providers import LLMProviderFactory
+        from autoresearch.llm.providers import LLMProviderFactory
 
         config = {
             "provider": "openai",
@@ -124,7 +124,7 @@ class TestProvidersExtended:
 
     def test_llm_client_no_provider(self):
         """Test LLMClient raises without provider."""
-        from providers import LLMClient
+        from autoresearch.llm.providers import LLMClient
 
         client = LLMClient()
         with pytest.raises(RuntimeError, match="No provider configured"):
@@ -132,7 +132,7 @@ class TestProvidersExtended:
 
     def test_provider_get_model_info(self):
         """Test provider get_model_info method."""
-        from providers import OpenAIProvider
+        from autoresearch.llm.providers import OpenAIProvider
 
         provider = OpenAIProvider()
         info = provider.get_model_info("gpt-4o")
@@ -145,14 +145,14 @@ class TestProvidersExtended:
 
     def test_ollama_provider_init(self):
         """Test Ollama provider initialization."""
-        from providers import OllamaProvider
+        from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider(base_url="http://localhost:11434")
         assert provider.base_url == "http://localhost:11434"
 
     def test_lmstudio_provider_init(self):
         """Test LMStudio provider initialization."""
-        from providers import LMStudioProvider
+        from autoresearch.llm.providers import LMStudioProvider
 
         provider = LMStudioProvider(base_url="http://localhost:1234/v1")
         assert provider.base_url == "http://localhost:1234/v1"
@@ -166,14 +166,14 @@ class TestOrchestratorsExtended:
 
     def test_all_orchestrator_types(self):
         """Test all orchestrator type enum values."""
-        from orchestrators import OrchestratorType
+        from autoresearch.llm.orchestrators import OrchestratorType
 
         types = list(OrchestratorType)
         assert len(types) >= 6
 
     def test_agent_task_defaults(self):
         """Test AgentTask default values."""
-        from orchestrators import AgentTask
+        from autoresearch.llm.orchestrators import AgentTask
 
         task = AgentTask(description="Do something")
         assert task.description == "Do something"
@@ -182,7 +182,7 @@ class TestOrchestratorsExtended:
 
     def test_agent_task_full(self):
         """Test AgentTask with all fields."""
-        from orchestrators import AgentTask
+        from autoresearch.llm.orchestrators import AgentTask
 
         task = AgentTask(
             description="Research topic",
@@ -195,7 +195,7 @@ class TestOrchestratorsExtended:
 
     def test_agent_result_defaults(self):
         """Test AgentResult default values."""
-        from orchestrators import AgentResult
+        from autoresearch.llm.orchestrators import AgentResult
 
         result = AgentResult(content="Done")
         assert result.content == "Done"
@@ -204,21 +204,21 @@ class TestOrchestratorsExtended:
 
     def test_orchestrator_factory_string(self):
         """Test factory creates from string."""
-        from orchestrators import OrchestratorFactory
+        from autoresearch.llm.orchestrators import OrchestratorFactory
 
         orch = OrchestratorFactory.create("langchain")
         assert orch is not None
 
     def test_orchestrator_factory_invalid(self):
         """Test factory rejects invalid type."""
-        from orchestrators import OrchestratorFactory
+        from autoresearch.llm.orchestrators import OrchestratorFactory
 
         with pytest.raises(ValueError):
             OrchestratorFactory.create("nonexistent")
 
     def test_orchestrator_factory_from_config(self):
         """Test factory from config dict."""
-        from orchestrators import OrchestratorFactory
+        from autoresearch.llm.orchestrators import OrchestratorFactory
 
         config = {"orchestrator": "langchain", "config": {"model": "gpt-4o"}}
         orch = OrchestratorFactory.from_config(config)
@@ -226,7 +226,7 @@ class TestOrchestratorsExtended:
 
     def test_opencrew_not_available(self):
         """Test OpenCrew fallback when not installed."""
-        from orchestrators import AgentTask, OpenCrewIntegrator
+        from autoresearch.llm.orchestrators import AgentTask, OpenCrewIntegrator
 
         orch = OpenCrewIntegrator()
         result = orch.run(AgentTask(description="test"))
@@ -235,7 +235,7 @@ class TestOrchestratorsExtended:
 
     def test_agentforge_not_available(self):
         """Test AgentForge fallback when not installed."""
-        from orchestrators import AgentForgeIntegrator, AgentTask
+        from autoresearch.llm.orchestrators import AgentForgeIntegrator, AgentTask
 
         orch = AgentForgeIntegrator()
         result = orch.run(AgentTask(description="test"))
@@ -243,7 +243,7 @@ class TestOrchestratorsExtended:
 
     def test_autogen_not_available(self):
         """Test AutoGen fallback when not installed."""
-        from orchestrators import AgentTask, AutoGenIntegrator
+        from autoresearch.llm.orchestrators import AgentTask, AutoGenIntegrator
 
         orch = AutoGenIntegrator()
         result = orch.run(AgentTask(description="test"))
@@ -251,7 +251,7 @@ class TestOrchestratorsExtended:
 
     def test_langchain_not_available(self):
         """Test LangChain fallback when not installed."""
-        from orchestrators import AgentTask, LangChainIntegrator
+        from autoresearch.llm.orchestrators import AgentTask, LangChainIntegrator
 
         orch = LangChainIntegrator()
         result = orch.run(AgentTask(description="test"))
@@ -259,7 +259,7 @@ class TestOrchestratorsExtended:
 
     def test_llamaindex_not_available(self):
         """Test LlamaIndex fallback when not installed."""
-        from orchestrators import AgentTask, LlamaIndexIntegrator
+        from autoresearch.llm.orchestrators import AgentTask, LlamaIndexIntegrator
 
         orch = LlamaIndexIntegrator()
         result = orch.run(AgentTask(description="test"))
@@ -267,7 +267,7 @@ class TestOrchestratorsExtended:
 
     def test_orchestrator_client_no_orch(self):
         """Test OrchestratorClient raises without orchestrator."""
-        from orchestrators import OrchestratorClient
+        from autoresearch.llm.orchestrators import OrchestratorClient
 
         client = OrchestratorClient()
         with pytest.raises(RuntimeError, match="No orchestrator configured"):
@@ -275,7 +275,7 @@ class TestOrchestratorsExtended:
 
     def test_orchestrator_run_multi(self):
         """Test orchestrator run_multi."""
-        from orchestrators import AgentTask, LangChainIntegrator
+        from autoresearch.llm.orchestrators import AgentTask, LangChainIntegrator
 
         orch = LangChainIntegrator()
         tasks = [
@@ -294,7 +294,7 @@ class TestDaemonExtended:
 
     def test_daemon_state_enum(self):
         """Test all daemon states."""
-        from daemon import DaemonState
+        from autoresearch.infrastructure.daemon import DaemonState
 
         states = list(DaemonState)
         assert len(states) == 8
@@ -304,7 +304,7 @@ class TestDaemonExtended:
 
     def test_health_status_defaults(self):
         """Test HealthStatus defaults."""
-        from daemon import DaemonState, HealthStatus
+        from autoresearch.infrastructure.daemon import DaemonState, HealthStatus
 
         status = HealthStatus()
         assert status.state == DaemonState.HEALTHY
@@ -315,7 +315,7 @@ class TestDaemonExtended:
 
     def test_health_status_custom(self):
         """Test HealthStatus with custom values."""
-        from daemon import DaemonState, HealthStatus
+        from autoresearch.infrastructure.daemon import DaemonState, HealthStatus
 
         status = HealthStatus(
             state=DaemonState.RUNNING,
@@ -331,7 +331,7 @@ class TestDaemonExtended:
 
     def test_daemon_config_defaults(self):
         """Test DaemonConfig defaults."""
-        from daemon import DaemonConfig
+        from autoresearch.infrastructure.daemon import DaemonConfig
 
         config = DaemonConfig()
         assert config.health_check_interval == 60
@@ -342,7 +342,7 @@ class TestDaemonExtended:
 
     def test_daemon_config_custom(self):
         """Test DaemonConfig custom values."""
-        from daemon import DaemonConfig
+        from autoresearch.infrastructure.daemon import DaemonConfig
 
         config = DaemonConfig(
             log_file="/tmp/test.log",
@@ -363,7 +363,7 @@ class TestDistribute:
 
     def test_node_role_enum(self):
         """Test NodeRole enum."""
-        from distribute import NodeRole
+        from autoresearch.infrastructure.distribute import NodeRole
 
         assert NodeRole.MASTER.value == "master"
         assert NodeRole.WORKER.value == "worker"
@@ -371,7 +371,7 @@ class TestDistribute:
 
     def test_cloud_provider_enum(self):
         """Test CloudProvider enum."""
-        from distribute import CloudProvider
+        from autoresearch.infrastructure.distribute import CloudProvider
 
         assert CloudProvider.AWS.value == "aws"
         assert CloudProvider.GCP.value == "gcp"
@@ -380,7 +380,7 @@ class TestDistribute:
 
     def test_node_config_defaults(self):
         """Test NodeConfig defaults."""
-        from distribute import NodeConfig, NodeRole
+        from autoresearch.infrastructure.distribute import NodeConfig, NodeRole
 
         config = NodeConfig()
         assert config.role == NodeRole.WORKER
@@ -392,7 +392,7 @@ class TestDistribute:
 
     def test_node_config_custom(self):
         """Test NodeConfig custom values."""
-        from distribute import NodeConfig, NodeRole
+        from autoresearch.infrastructure.distribute import NodeConfig, NodeRole
 
         config = NodeConfig(
             role=NodeRole.MASTER,
@@ -408,7 +408,7 @@ class TestDistribute:
 
     def test_node_creation(self):
         """Test Node creation."""
-        from distribute import Node, NodeConfig, NodeRole
+        from autoresearch.infrastructure.distribute import Node, NodeConfig, NodeRole
 
         config = NodeConfig(role=NodeRole.WORKER, name="test-worker")
         node = Node(config)
@@ -418,7 +418,7 @@ class TestDistribute:
 
     def test_node_health(self):
         """Test Node health check."""
-        from distribute import Node, NodeConfig
+        from autoresearch.infrastructure.distribute import Node, NodeConfig
 
         config = NodeConfig()
         node = Node(config)
@@ -438,7 +438,7 @@ class TestDistribute:
 
     def test_node_to_dict(self):
         """Test Node serialization."""
-        from distribute import Node, NodeConfig, NodeRole
+        from autoresearch.infrastructure.distribute import Node, NodeConfig, NodeRole
 
         config = NodeConfig(role=NodeRole.WORKER, name="test")
         node = Node(config)
@@ -450,7 +450,7 @@ class TestDistribute:
 
     def test_resource_metrics_defaults(self):
         """Test ResourceMetrics defaults."""
-        from distribute import ResourceMetrics
+        from autoresearch.infrastructure.distribute import ResourceMetrics
 
         metrics = ResourceMetrics()
         assert metrics.cpu_percent == 0
@@ -460,7 +460,7 @@ class TestDistribute:
 
     def test_cost_estimate(self):
         """Test CostEstimate."""
-        from distribute import CloudProvider, CostEstimate
+        from autoresearch.infrastructure.distribute import CloudProvider, CostEstimate
 
         estimate = CostEstimate(
             provider=CloudProvider.AWS,
@@ -482,7 +482,7 @@ class TestMetaLoopExtended:
 
     def test_prompt_template(self):
         """Test PromptTemplate versioning."""
-        from metaloop import PromptTemplate
+        from autoresearch.infrastructure.metaloop import PromptTemplate
 
         template = PromptTemplate(name="test", version=1, content="Initial content")
         assert template.version == 1
@@ -493,7 +493,7 @@ class TestMetaLoopExtended:
 
     def test_metaloop_iteration_tracking(self):
         """Test MetaLoop tracks iterations."""
-        from metaloop import MetaLoop
+        from autoresearch.infrastructure.metaloop import MetaLoop
 
         meta = MetaLoop()
         assert meta.iteration == 0
@@ -506,7 +506,7 @@ class TestMetaLoopExtended:
 
     def test_metaloop_modification_tracking(self):
         """Test MetaLoop tracks modifications."""
-        from metaloop import MetaLoop
+        from autoresearch.infrastructure.metaloop import MetaLoop
 
         meta = MetaLoop()
         meta.register_prompt("test", "content")
@@ -523,7 +523,7 @@ class TestSyntheticDataExtended:
 
     def test_evol_instruct_templates(self):
         """Test Evol-Instruct difficulty templates."""
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator(use_llm=False)
 
@@ -537,7 +537,7 @@ class TestSyntheticDataExtended:
 
     def test_generate_result_structure(self):
         """Test GenerationResult structure."""
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator(use_llm=False)
         result = gen.generate(n=5, difficulty="mixed")
@@ -557,7 +557,7 @@ class TestConfigExtended:
 
     def test_config_sections_exist(self):
         """Test all config sections."""
-        from config import get_config
+        from autoresearch.config import get_config
 
         c = get_config("config.yaml")
         assert hasattr(c, "experiment")
@@ -570,7 +570,7 @@ class TestConfigExtended:
 
     def test_model_config(self):
         """Test model config values."""
-        from config import get_config
+        from autoresearch.config import get_config
 
         c = get_config("config.yaml")
         assert c.model.size == "124M"
@@ -580,7 +580,7 @@ class TestConfigExtended:
 
     def test_config_save_reload(self, tmp_path):
         """Test config save and reload."""
-        from config import Config
+        from autoresearch.config import Config
 
         c = Config()
         save_path = str(tmp_path / "test_config.yaml")
@@ -598,7 +598,7 @@ class TestDataIntelligenceExtended:
 
     def test_repair_null_bytes(self):
         """Test repair handles null bytes."""
-        from data_intelligence import repair
+        from autoresearch.data.data_intelligence import repair
 
         result = repair("hello\x00world, this is a test")
         assert result is not None
@@ -606,7 +606,7 @@ class TestDataIntelligenceExtended:
 
     def test_repair_whitespace_normalization(self):
         """Test repair normalizes whitespace."""
-        from data_intelligence import repair
+        from autoresearch.data.data_intelligence import repair
 
         result = repair("hello    world    with    spaces and more text")
         assert result is not None
@@ -614,7 +614,7 @@ class TestDataIntelligenceExtended:
 
     def test_clean_corpus_preserves_valid(self):
         """Test clean_corpus preserves valid texts."""
-        from data_intelligence import clean_corpus
+        from autoresearch.data.data_intelligence import clean_corpus
 
         valid = [
             "This is a valid text with enough content to pass all checks",
@@ -632,7 +632,7 @@ class TestStorageExtended:
 
     def test_db_statistics(self, tmp_path):
         """Test database statistics."""
-        from storage import ExperimentDB
+        from autoresearch.experiment.storage import ExperimentDB
 
         db = ExperimentDB(str(tmp_path / "test.db"))
 

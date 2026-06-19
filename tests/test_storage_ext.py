@@ -12,7 +12,7 @@ class TestExperimentDBExtended:
     """Extended tests for ExperimentDB."""
 
     def test_insert_and_retrieve(self, tmp_path):
-        from storage import ExperimentDB
+        from autoresearch.experiment.storage import ExperimentDB
 
         db = ExperimentDB(str(tmp_path / "test.db"))
         exp_id = db.insert_experiment(
@@ -31,14 +31,14 @@ class TestExperimentDBExtended:
         assert exp["status"] == "running"
 
     def test_get_nonexistent(self, tmp_path):
-        from storage import ExperimentDB
+        from autoresearch.experiment.storage import ExperimentDB
 
         db = ExperimentDB(str(tmp_path / "test.db"))
         exp = db.get_experiment(999)
         assert exp is None
 
     def test_get_experiments_filter_by_status(self, tmp_path):
-        from storage import ExperimentDB
+        from autoresearch.experiment.storage import ExperimentDB
 
         db = ExperimentDB(str(tmp_path / "test.db"))
         for i in range(5):
@@ -58,7 +58,7 @@ class TestExperimentDBExtended:
         assert len(reverted) == 2
 
     def test_get_experiments_pagination(self, tmp_path):
-        from storage import ExperimentDB
+        from autoresearch.experiment.storage import ExperimentDB
 
         db = ExperimentDB(str(tmp_path / "test.db"))
         for i in range(20):
@@ -79,7 +79,7 @@ class TestExperimentDBExtended:
         assert page1[0]["id"] != page2[0]["id"]
 
     def test_update_partial(self, tmp_path):
-        from storage import ExperimentDB
+        from autoresearch.experiment.storage import ExperimentDB
 
         db = ExperimentDB(str(tmp_path / "test.db"))
         exp_id = db.insert_experiment(
@@ -98,7 +98,7 @@ class TestExperimentDBExtended:
         assert exp["status"] == "kept"
 
     def test_update_with_all_fields(self, tmp_path):
-        from storage import ExperimentDB
+        from autoresearch.experiment.storage import ExperimentDB
 
         db = ExperimentDB(str(tmp_path / "test.db"))
         exp_id = db.insert_experiment(
@@ -130,7 +130,7 @@ class TestExperimentDBExtended:
         assert exp["training_time"] == 5.0
 
     def test_multiple_updates(self, tmp_path):
-        from storage import ExperimentDB
+        from autoresearch.experiment.storage import ExperimentDB
 
         db = ExperimentDB(str(tmp_path / "test.db"))
         exp_id = db.insert_experiment(
@@ -149,7 +149,7 @@ class TestExperimentDBExtended:
         assert exp["val_bpb_after"] == 0.90
 
     def test_get_statistics_structure(self, tmp_path):
-        from storage import ExperimentDB
+        from autoresearch.experiment.storage import ExperimentDB
 
         db = ExperimentDB(str(tmp_path / "test.db"))
         for i in range(5):
@@ -174,7 +174,7 @@ class TestExperimentJSONL:
     """Tests for ExperimentJSONL fallback storage."""
 
     def test_init_and_append(self, tmp_path):
-        from storage import ExperimentJSONL
+        from autoresearch.experiment.storage import ExperimentJSONL
 
         log_path = str(tmp_path / "experiments.jsonl")
         store = ExperimentJSONL(log_path=log_path)
@@ -186,7 +186,7 @@ class TestExperimentJSONL:
         assert len(store.experiments) == 2
 
     def test_persistence(self, tmp_path):
-        from storage import ExperimentJSONL
+        from autoresearch.experiment.storage import ExperimentJSONL
 
         log_path = str(tmp_path / "experiments.jsonl")
 
@@ -199,7 +199,7 @@ class TestExperimentJSONL:
         assert store2.experiments[0]["id"] == 1
 
     def test_append_multiple(self, tmp_path):
-        from storage import ExperimentJSONL
+        from autoresearch.experiment.storage import ExperimentJSONL
 
         log_path = str(tmp_path / "experiments.jsonl")
         store = ExperimentJSONL(log_path=log_path)
@@ -210,14 +210,14 @@ class TestExperimentJSONL:
         assert len(store.experiments) == 10
 
     def test_load_empty_file(self, tmp_path):
-        from storage import ExperimentJSONL
+        from autoresearch.experiment.storage import ExperimentJSONL
 
         log_path = str(tmp_path / "nonexistent.jsonl")
         store = ExperimentJSONL(log_path=log_path)
         assert len(store.experiments) == 0
 
     def test_corrupted_line_skipped(self, tmp_path):
-        from storage import ExperimentJSONL
+        from autoresearch.experiment.storage import ExperimentJSONL
 
         log_path = tmp_path / "experiments.jsonl"
         log_path.parent.mkdir(parents=True, exist_ok=True)

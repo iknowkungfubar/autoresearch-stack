@@ -9,7 +9,7 @@ class TestAutoLoopTraining:
     """Test run_training and model-in-the-loop paths."""
 
     def test_run_training_with_scheduler(self):
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         p = AutonomousPipeline("config.yaml")
         model = MagicMock()
@@ -26,7 +26,7 @@ class TestAutoLoopTraining:
         assert "val_bpb" in result
 
     def test_prepare_data_model_loop(self):
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         p = AutonomousPipeline("config.yaml")
         model = MagicMock()
@@ -41,14 +41,14 @@ class TestAutoLoopTraining:
         assert isinstance(result, list)
 
     def test_run_experiment_with_change(self):
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         p = AutonomousPipeline("config.yaml")
         result = p.run_experiment("test change", "code here", "optimization", 1.0)
         assert result["id"] == 1
 
     def test_get_status(self):
-        from autonomous_loop import AutonomousPipeline
+        from autoresearch.experiment.autonomous_loop import AutonomousPipeline
 
         p = AutonomousPipeline("config.yaml")
         p.experiment_count = 5
@@ -57,7 +57,7 @@ class TestAutoLoopTraining:
         assert s["experiment_count"] == 5
 
     def test_main_entry(self):
-        from autonomous_loop import main
+        from autoresearch.experiment.autonomous_loop import main
 
         with patch("sys.argv", ["autoresearch", "--help"]):
             try:
@@ -70,7 +70,7 @@ class TestDaemonCLI:
     """Test daemon CLI commands and edge cases."""
 
     def test_run_daemon_start(self, tmp_path):
-        from daemon import Daemon, run_daemon
+        from autoresearch.infrastructure.daemon import Daemon, run_daemon
 
         with patch.object(Daemon, "start", return_value=None) as mock_start:
             run_daemon(
@@ -81,7 +81,7 @@ class TestDaemonCLI:
             mock_start.assert_called_once()
 
     def test_run_daemon_stop(self, tmp_path):
-        from daemon import run_daemon
+        from autoresearch.infrastructure.daemon import run_daemon
 
         with patch("daemon.Daemon") as MockDaemon:
             inst = MockDaemon.return_value
@@ -94,7 +94,7 @@ class TestDaemonCLI:
             inst.stop.assert_called_once()
 
     def test_run_daemon_status(self, tmp_path):
-        from daemon import run_daemon
+        from autoresearch.infrastructure.daemon import run_daemon
 
         with patch("daemon.Daemon") as MockDaemon:
             inst = MockDaemon.return_value
@@ -107,7 +107,7 @@ class TestDaemonCLI:
             )
 
     def test_run_daemon_restart(self, tmp_path):
-        from daemon import run_daemon
+        from autoresearch.infrastructure.daemon import run_daemon
 
         with patch("daemon.Daemon") as MockDaemon:
             inst = MockDaemon.return_value
@@ -121,7 +121,7 @@ class TestDaemonCLI:
     def test_daemon_save_stats_with_run_on_start(self, tmp_path):
         from unittest.mock import patch
 
-        from daemon import Daemon, DaemonConfig
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig
 
         cb = MagicMock(side_effect=Exception("callback failed"))
         d = Daemon(
@@ -135,7 +135,7 @@ class TestDaemonCLI:
             d.start(daemonize=False)
 
     def test_daemon_check_health(self, tmp_path):
-        from daemon import Daemon, DaemonConfig, DaemonState
+        from autoresearch.infrastructure.daemon import Daemon, DaemonConfig, DaemonState
 
         d = Daemon(
             DaemonConfig(
@@ -152,7 +152,7 @@ class TestSyntheticLLM:
     """Test synthetic data LLM generation paths."""
 
     def test_call_openai_mocked(self):
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator(use_llm=True, provider="openai")
         gen.api_key = "sk-test"
@@ -162,7 +162,7 @@ class TestSyntheticLLM:
         assert len(result.prompts) == 2
 
     def test_generate_with_llm_mocked(self):
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator(use_llm=True, provider="anthropic")
         gen.api_key = "sk-test"
@@ -172,7 +172,7 @@ class TestSyntheticLLM:
         assert len(result.prompts) == 3
 
     def test_quality_filter_threshold(self):
-        from synthetic_data import SyntheticGenerator
+        from autoresearch.data.synthetic_data import SyntheticGenerator
 
         gen = SyntheticGenerator()
         prompts = ["good prompt text here", "bad", "", "also good text"]
@@ -185,7 +185,7 @@ class TestProvidersExtended:
     """Test additional provider paths."""
 
     def test_anthropic_init_no_key(self):
-        from providers import AnthropicProvider
+        from autoresearch.llm.providers import AnthropicProvider
 
         with patch.dict("os.environ", clear=True):
             p = AnthropicProvider()
@@ -193,7 +193,7 @@ class TestProvidersExtended:
                 p._get_client()
 
     def test_openai_init_no_key(self):
-        from providers import OpenAIProvider
+        from autoresearch.llm.providers import OpenAIProvider
 
         with patch.dict("os.environ", clear=True):
             p = OpenAIProvider()
@@ -201,19 +201,19 @@ class TestProvidersExtended:
                 p._get_client()
 
     def test_mistral_init(self):
-        from providers import MistralProvider
+        from autoresearch.llm.providers import MistralProvider
 
         p = MistralProvider(api_key="test-key")
         assert p.base_url == "https://api.mistral.ai/v1"
 
     def test_google_vertex_init(self):
-        from providers import GoogleVertexProvider
+        from autoresearch.llm.providers import GoogleVertexProvider
 
         p = GoogleVertexProvider()
         assert p is not None
 
     def test_lmstudio_provider_type(self):
-        from providers import LMStudioProvider
+        from autoresearch.llm.providers import LMStudioProvider
 
         p = LMStudioProvider()
         assert p.__class__.__name__ == "LMStudioProvider"

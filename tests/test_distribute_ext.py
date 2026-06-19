@@ -5,7 +5,7 @@ class TestNodeRole:
     """Tests for NodeRole enum."""
 
     def test_values(self):
-        from distribute import NodeRole
+        from autoresearch.infrastructure.distribute import NodeRole
 
         assert NodeRole.MASTER.value == "master"
         assert NodeRole.WORKER.value == "worker"
@@ -16,7 +16,7 @@ class TestCloudProvider:
     """Tests for CloudProvider enum."""
 
     def test_values(self):
-        from distribute import CloudProvider
+        from autoresearch.infrastructure.distribute import CloudProvider
 
         assert CloudProvider.AWS.value == "aws"
         assert CloudProvider.GCP.value == "gcp"
@@ -28,7 +28,7 @@ class TestNodeConfig:
     """Tests for NodeConfig dataclass."""
 
     def test_defaults(self):
-        from distribute import NodeConfig, NodeRole
+        from autoresearch.infrastructure.distribute import NodeConfig, NodeRole
 
         config = NodeConfig()
         assert config.role == NodeRole.WORKER
@@ -38,7 +38,7 @@ class TestNodeConfig:
         assert config.gpu_count == 0
 
     def test_custom(self):
-        from distribute import NodeConfig, NodeRole
+        from autoresearch.infrastructure.distribute import NodeConfig, NodeRole
 
         config = NodeConfig(
             role=NodeRole.MASTER,
@@ -56,7 +56,7 @@ class TestResourceMetrics:
     """Tests for ResourceMetrics dataclass."""
 
     def test_defaults(self):
-        from distribute import ResourceMetrics
+        from autoresearch.infrastructure.distribute import ResourceMetrics
 
         m = ResourceMetrics()
         assert m.cpu_percent == 0
@@ -69,7 +69,7 @@ class TestCostEstimate:
     """Tests for CostEstimate dataclass."""
 
     def test_defaults(self):
-        from distribute import CloudProvider, CostEstimate
+        from autoresearch.infrastructure.distribute import CloudProvider, CostEstimate
 
         est = CostEstimate(
             provider=CloudProvider.AWS,
@@ -87,7 +87,7 @@ class TestNode:
     """Tests for the Node class."""
 
     def test_create(self):
-        from distribute import Node, NodeConfig, NodeRole
+        from autoresearch.infrastructure.distribute import Node, NodeConfig, NodeRole
 
         config = NodeConfig(role=NodeRole.WORKER, name="test-node")
         node = Node(config)
@@ -95,7 +95,7 @@ class TestNode:
         assert node.status == "pending"
 
     def test_healthy_when_running(self):
-        from distribute import Node, NodeConfig
+        from autoresearch.infrastructure.distribute import Node, NodeConfig
 
         node = Node(NodeConfig())
         node.status = "running"
@@ -104,7 +104,7 @@ class TestNode:
         assert node.is_healthy() is True
 
     def test_unhealthy_high_cpu(self):
-        from distribute import Node, NodeConfig
+        from autoresearch.infrastructure.distribute import Node, NodeConfig
 
         node = Node(NodeConfig())
         node.status = "running"
@@ -112,13 +112,13 @@ class TestNode:
         assert node.is_healthy() is False
 
     def test_unhealthy_pending(self):
-        from distribute import Node, NodeConfig
+        from autoresearch.infrastructure.distribute import Node, NodeConfig
 
         node = Node(NodeConfig())
         assert node.is_healthy() is False
 
     def test_to_dict(self):
-        from distribute import Node, NodeConfig
+        from autoresearch.infrastructure.distribute import Node, NodeConfig
 
         node = Node(NodeConfig())
         d = node.to_dict()
@@ -128,7 +128,7 @@ class TestNode:
         assert "metrics" in d
 
     def test_experiments_completed(self):
-        from distribute import Node, NodeConfig
+        from autoresearch.infrastructure.distribute import Node, NodeConfig
 
         node = Node(NodeConfig())
         assert node.experiments_completed == 0

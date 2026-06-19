@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 class TestAutoLoopMain:
     def test_main_prepare_only(self):
-        from autonomous_loop import main
+        from autoresearch.experiment.autonomous_loop import main
 
         with patch("sys.argv", ["autoresearch", "--prepare-only"]):
             main()
@@ -14,7 +14,7 @@ class TestAutoLoopMain:
         import os
         import tempfile
 
-        from autonomous_loop import main
+        from autoresearch.experiment.autonomous_loop import main
 
         f = tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False)
         f.write("test text\n")
