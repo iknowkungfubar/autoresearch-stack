@@ -1,6 +1,6 @@
 # Development dependencies for Autonomous Research Stack
 # Install with: pip install -r requirements-dev.txt
-pytest>=7.4.0
+pytest>=9.1.0
 pytest-cov>=4.0.0
 mypy>=1.7.0
 ruff>=0.15.18
