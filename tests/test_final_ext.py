@@ -20,9 +20,7 @@ class TestAutoLoopTraining:
         scheduler = MagicMock()
         scheduler.get_stage.return_value = "easy"
         scheduler.sample.return_value = "test text"
-        result = p.run_training(
-            model, trainer, scheduler, steps=10, val_bpb_target=0.95
-        )
+        result = p.run_training(steps=10, val_bpb_target=0.95)
         assert "val_bpb" in result
 
     def test_prepare_data_model_loop(self):

@@ -14,6 +14,8 @@ import random
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, cast
 
+import requests
+
 # Default topics for template generation
 DEFAULT_TOPICS = [
     "machine learning",
@@ -382,21 +384,64 @@ def model_in_the_loop_generate(
 ) -> List[str]:
     """Generate data with model in the loop.
 
-    This is a stub for now - actual implementation would:
-    1. Take prompts
-    2. Generate completions with the model
-    3. Filter and quality-check
-    4. Return as training data
+    Calls an OpenAI-compatible LLM API (configured via environment
+    variables) to produce real completions for each prompt.
+
+    Environment variables:
+        LLM_API_BASE  – OpenAI-compatible endpoint URL
+                        (default: https://api.openai.com/v1)
+        LLM_API_KEY   – API key (default: OPENAI_API_KEY env var)
+        LLM_MODEL     – Model name (default: gpt-4o-mini)
+
+    Falls back to the original stub behaviour when no API key is set.
     """
     if prompts is None:
         prompts = ["Continue: The key to machine learning is"] * n_samples
 
-    # Stub implementation - returns prompts as-is with stub output
-    # Real implementation would use model.generate()
-    outputs = []
+    api_base = os.getenv("LLM_API_BASE") or "https://api.openai.com/v1"
+    api_key = os.getenv("LLM_API_KEY") or os.getenv("OPENAI_API_KEY")
+    model_name = os.getenv("LLM_MODEL", "gpt-4o-mini")
+
+    if not api_key:
+        # No LLM available – return stub output (idempotent fallback)
+        outputs = []
+        for p in prompts:
+            outputs.append(p + " [model output placeholder]")
+        return outputs
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+    outputs: List[str] = []
     for p in prompts:
-        # Simulate model generation
-        outputs.append(p + " [model output placeholder]")
+        payload = {
+            "model": model_name,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": p,
+                }
+            ],
+            "max_tokens": 256,
+            "temperature": 0.8,
+        }
+
+        try:
+            resp = requests.post(
+                f"{api_base.rstrip('/')}/chat/completions",
+                headers=headers,
+                json=payload,
+                timeout=60,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            content = data["choices"][0]["message"]["content"] or ""
+            outputs.append(content.strip())
+        except Exception as exc:
+            print(f"  model_in_the_loop API call failed for prompt '{p[:50]}...': {exc}")
+            outputs.append(p + " [generation failed]")
 
     return outputs
 

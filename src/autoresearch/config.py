@@ -129,7 +129,61 @@ class Config:
         # Apply environment variable overrides
         cls._apply_env(config)
 
+        # Validate the final config
+        config.validate()
+
         return config
+
+    def validate(self) -> None:
+        """Validate configuration bounds.
+
+        Raises:
+            ValueError: If any config value is out of allowed range.
+        """
+        errors: list[str] = []
+
+        # Experiment bounds
+        if self.experiment.budget < 1:
+            errors.append(
+                f"experiment.budget must be >= 1, got {self.experiment.budget}"
+            )
+        if self.experiment.time_per_experiment < 1:
+            errors.append(
+                f"experiment.time_per_experiment must be >= 1, "
+                f"got {self.experiment.time_per_experiment}"
+            )
+
+        # Model bounds
+        if self.model.learning_rate <= 0:
+            errors.append(
+                f"model.learning_rate must be > 0, got {self.model.learning_rate}"
+            )
+        if self.model.batch_size < 1:
+            errors.append(
+                f"model.batch_size must be >= 1, got {self.model.batch_size}"
+            )
+
+        # Synthetic bounds
+        temp = self.synthetic.temperature
+        if temp < 0.0 or temp > 2.0:
+            errors.append(
+                f"synthetic.temperature must be between 0 and 2, got {temp}"
+            )
+        if self.synthetic.n_samples < 1:
+            errors.append(
+                f"synthetic.n_samples must be >= 1, got {self.synthetic.n_samples}"
+            )
+
+        # Curriculum bounds
+        if self.curriculum.stages < 1:
+            errors.append(
+                f"curriculum.stages must be >= 1, got {self.curriculum.stages}"
+            )
+
+        if errors:
+            raise ValueError(
+                "Configuration validation failed:\n  - " + "\n  - ".join(errors)
+            )
 
     @classmethod
     def _apply_yaml(cls, config: "Config", yaml_dict: dict):
