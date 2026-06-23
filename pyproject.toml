@@ -37,6 +37,11 @@ turintech-autoresearch = "autoresearch.__main__:main"
 # Backwards compat alias — deprecated, use turintech-autoresearch
 turintech-research = "autoresearch.__main__:main"
 
+[project.optional-dependencies]
+llm = ["anthropic>=0.30", "openai>=1.0"]
+memory = ["chromadb>=0.4"]
+reporting = ["matplotlib>=3.7", "seaborn>=0.12"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["autoresearch", "autoresearch.*"]

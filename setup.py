@@ -65,7 +65,8 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "autoresearch=autonomous_loop:main",
+            "autoresearch=autoresearch.__main__:main",
+            "turintech-autoresearch=autoresearch.__main__:main",
         ],
     },
     include_package_data=True,
