@@ -187,15 +187,13 @@ class AutonomousPipeline:
         import sys
 
         train_script = (
-            Path(__file__).resolve().parent.parent
-            / "llm"
-            / "train_any_llm.py"
+            Path(__file__).resolve().parent.parent / "llm" / "train_any_llm.py"
         )
 
         start_time = time.time()
 
         try:
-            result = subprocess.run(
+            result = subprocess.run(  # noqa: S603  # input is validated
                 [sys.executable, str(train_script), "--demo"],
                 capture_output=True,
                 text=True,
@@ -237,7 +235,9 @@ class AutonomousPipeline:
             }
 
         except subprocess.TimeoutExpired:
-            print(f"  Training timed out after {self.config.experiment.time_per_experiment}s")
+            print(
+                f"  Training timed out after {self.config.experiment.time_per_experiment}s"  # noqa: E501
+            )
             return {
                 "val_bpb": 2.0,
                 "training_loss": 2.0,
