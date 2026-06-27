@@ -159,16 +159,12 @@ class Config:
                 f"model.learning_rate must be > 0, got {self.model.learning_rate}"
             )
         if self.model.batch_size < 1:
-            errors.append(
-                f"model.batch_size must be >= 1, got {self.model.batch_size}"
-            )
+            errors.append(f"model.batch_size must be >= 1, got {self.model.batch_size}")
 
         # Synthetic bounds
         temp = self.synthetic.temperature
         if temp < 0.0 or temp > 2.0:
-            errors.append(
-                f"synthetic.temperature must be between 0 and 2, got {temp}"
-            )
+            errors.append(f"synthetic.temperature must be between 0 and 2, got {temp}")
         if self.synthetic.n_samples < 1:
             errors.append(
                 f"synthetic.n_samples must be >= 1, got {self.synthetic.n_samples}"
