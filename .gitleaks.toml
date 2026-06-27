@@ -1,0 +1,10 @@
+# gitleaks.toml — suppress false positives in test/docs files
+title = "Autoresearch Stack gitleaks config"
+
+[allowlist]
+description = "Known safe patterns and paths"
+paths = [
+    "tests/",
+    "docs/",
+    "*.md",
+]
