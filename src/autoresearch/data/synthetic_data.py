@@ -414,7 +414,7 @@ def model_in_the_loop_generate(
         "Content-Type": "application/json",
     }
 
-    outputs: List[str] = []
+    outputs = []
     for p in prompts:
         payload = {
             "model": model_name,
@@ -432,7 +432,7 @@ def model_in_the_loop_generate(
             resp = requests.post(
                 f"{api_base.rstrip('/')}/chat/completions",
                 headers=headers,
-                json=payload,
+                json=payload,  # type: ignore[arg-type]
                 timeout=60,
             )
             resp.raise_for_status()
