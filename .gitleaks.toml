@@ -6,5 +6,7 @@ description = "Known safe patterns and paths"
 paths = [
     "tests/",
     "docs/",
-    "*.md",
+]
+regexes = [
+    ".*\\.md$",
 ]

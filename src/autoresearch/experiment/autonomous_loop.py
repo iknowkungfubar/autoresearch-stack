@@ -195,7 +195,7 @@ class AutonomousPipeline:
         start_time = time.time()
 
         try:
-            result = subprocess.run(
+            result = subprocess.run(  # noqa: S603 — using known script path, not untrusted input
                 [sys.executable, str(train_script), "--demo"],
                 capture_output=True,
                 text=True,
@@ -237,7 +237,11 @@ class AutonomousPipeline:
             }
 
         except subprocess.TimeoutExpired:
-            print(f"  Training timed out after {self.config.experiment.time_per_experiment}s")
+            timeout_msg = (
+                f"  Training timed out after"
+                f" {self.config.experiment.time_per_experiment}s"
+            )
+            print(timeout_msg)
             return {
                 "val_bpb": 2.0,
                 "training_loss": 2.0,

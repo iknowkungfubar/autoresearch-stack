@@ -440,7 +440,8 @@ def model_in_the_loop_generate(
             content = data["choices"][0]["message"]["content"] or ""
             outputs.append(content.strip())
         except Exception as exc:
-            print(f"  model_in_the_loop API call failed for prompt '{p[:50]}...': {exc}")
+            msg = f"  model_in_the_loop API call failed for prompt '{p[:50]}...': {exc}"
+            print(msg)
             outputs.append(p + " [generation failed]")
 
     return outputs
