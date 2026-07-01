@@ -23,6 +23,13 @@ dist/
 build/
 daemon_stats.json
 .coverage
+# AI Agent Artifacts — security: do not commit
+AGENTS.md
+CLAUDE.md
+.cursorrules
+CONTEXT.md
+SKILL.md
+MEMORY.md
 .hermes/
 
 # AI agent artifacts (local context — never committed)
