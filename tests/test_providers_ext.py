@@ -20,7 +20,7 @@ class TestZenProvider:
 
         provider = ZenProvider(api_key="test-zen-key-12345")  # gitleaks:allow
 
-        with patch("autoresearch.llm.providers.requests.post") as mock_post:
+        with patch("autoresearch.llm.providers._cloud.requests.post") as mock_post:
             mock_response = MagicMock()
             mock_response.json.return_value = {
                 "choices": [{"message": {"content": "Zen response"}}]
@@ -44,28 +44,42 @@ class TestZenProvider:
                 provider.complete([{"role": "user", "content": "Hi"}], model="gpt-4o")
 
 
-class TestMistralProvider:
-    """Tests for Mistral AI provider."""
+class TestVLLMProvider:
+    """Tests for vLLM inference provider."""
 
     def test_init(self):
-        from autoresearch.llm.providers import MistralProvider
+        from autoresearch.llm.providers import VLLMProvider
 
-        provider = MistralProvider()
-        assert provider.base_url == "https://api.mistral.ai/v1"
+        p = VLLMProvider(api_key="sk-test")
+        assert p is not None
 
-    def test_missing_api_key(self):
-        from autoresearch.llm.providers import MistralProvider
+    def test_provider_type(self):
+        from autoresearch.llm.providers import VLLMProvider
 
-        with patch.dict("os.environ", clear=True):
-            provider = MistralProvider()
-            with pytest.raises(ValueError, match="MISTRAL_API_KEY"):
-                provider._get_client()
+        p = VLLMProvider(api_key="sk-test")
+        assert p.__class__.__name__ == "VLLMProvider"
+
+
+class TestLiteLLMProvider:
+    """Tests for LiteLLM proxy provider."""
+
+    def test_init(self):
+        from autoresearch.llm.providers import LiteLLMProvider
+
+        p = LiteLLMProvider(api_key="sk-test")
+        assert p is not None
+
+    def test_provider_type(self):
+        from autoresearch.llm.providers import LiteLLMProvider
+
+        p = LiteLLMProvider(api_key="sk-test")
+        assert p.__class__.__name__ == "LiteLLMProvider"
 
 
 class TestOllamaProvider:
-    """Tests for Ollama local provider."""
+    """Tests for Ollama provider."""
 
-    def test_custom_base_url(self):
+    def test_init(self):
         from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider(base_url="http://custom:11434")
@@ -75,7 +89,7 @@ class TestOllamaProvider:
         from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
-        with patch("autoresearch.llm.providers.requests.get") as mock_get:
+        with patch("autoresearch.llm.providers._local.requests.get") as mock_get:
             mock_get.return_value.json.return_value = {
                 "models": [{"name": "llama3"}, {"name": "mistral"}]
             }
@@ -87,7 +101,7 @@ class TestOllamaProvider:
         from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
-        with patch("autoresearch.llm.providers.requests.get") as mock_get:
+        with patch("autoresearch.llm.providers._local.requests.get") as mock_get:
             mock_get.side_effect = Exception("refused")
             models = provider.list_models()
         assert models == []
@@ -96,7 +110,7 @@ class TestOllamaProvider:
         from autoresearch.llm.providers import OllamaProvider
 
         provider = OllamaProvider()
-        with patch("autoresearch.llm.providers.requests.post") as mock_post:
+        with patch("autoresearch.llm.providers._local.requests.post") as mock_post:
             mock_response = MagicMock()
             mock_response.json.return_value = {
                 "message": {"content": "ollama reply"},
