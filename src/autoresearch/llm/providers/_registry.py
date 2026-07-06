@@ -1,0 +1,148 @@
+"""Model registry for supported LLM models."""
+
+from ._types import ModelInfo
+
+
+MODEL_REGISTRY = {
+    # Anthropic models
+    "claude-3-5-sonnet-20241022": ModelInfo(
+        id="claude-3-5-sonnet-20241022",
+        name="Claude 3.5 Sonnet",
+        provider="anthropic",
+        context_length=200000,
+        max_output_tokens=8192,
+        pricing_input=0.003,
+        pricing_output=0.015,
+    ),
+    "claude-3-opus-20240229": ModelInfo(
+        id="claude-3-opus-20240229",
+        name="Claude 3 Opus",
+        provider="anthropic",
+        context_length=200000,
+        max_output_tokens=4096,
+        pricing_input=0.015,
+        pricing_output=0.075,
+    ),
+    "claude-3-haiku-20240307": ModelInfo(
+        id="claude-3-haiku-20240307",
+        name="Claude 3 Haiku",
+        provider="anthropic",
+        context_length=128000,
+        max_output_tokens=4096,
+        pricing_input=0.00025,
+        pricing_output=0.00125,
+    ),
+    # OpenAI models
+    "gpt-4o": ModelInfo(
+        id="gpt-4o",
+        name="GPT-4o",
+        provider="openai",
+        context_length=128000,
+        max_output_tokens=16384,
+        supports_vision=True,
+        pricing_input=0.005,
+        pricing_output=0.015,
+    ),
+    "gpt-4o-mini": ModelInfo(
+        id="gpt-4o-mini",
+        name="GPT-4o Mini",
+        provider="openai",
+        context_length=128000,
+        max_output_tokens=16384,
+        pricing_input=0.00015,
+        pricing_output=0.0006,
+    ),
+    "gpt-4-turbo": ModelInfo(
+        id="gpt-4-turbo",
+        name="GPT-4 Turbo",
+        provider="openai",
+        context_length=128000,
+        max_output_tokens=4096,
+        pricing_input=0.01,
+        pricing_output=0.03,
+    ),
+    "gpt-3.5-turbo": ModelInfo(
+        id="gpt-3.5-turbo",
+        name="GPT-3.5 Turbo",
+        provider="openai",
+        context_length=16385,
+        max_output_tokens=4096,
+        pricing_input=0.0005,
+        pricing_output=0.0015,
+    ),
+    # OpenRouter models
+    "anthropic/claude-3.5-sonnet": ModelInfo(
+        id="anthropic/claude-3.5-sonnet",
+        name="Claude 3.5 Sonnet (OR)",
+        provider="openrouter",
+        context_length=200000,
+        max_output_tokens=8192,
+        pricing_input=0.003,
+        pricing_output=0.015,
+    ),
+    # Google models
+    "gemini-1.5-pro": ModelInfo(
+        id="gemini-1.5-pro",
+        name="Gemini 1.5 Pro",
+        provider="google_vertex",
+        context_length=2000000,
+        max_output_tokens=8192,
+        supports_vision=True,
+        pricing_input=0.00125,
+        pricing_output=0.005,
+    ),
+    "gemini-1.5-flash": ModelInfo(
+        id="gemini-1.5-flash",
+        name="Gemini 1.5 Flash",
+        provider="google_vertex",
+        context_length=1000000,
+        max_output_tokens=8192,
+        supports_vision=True,
+        pricing_input=0.0,
+        pricing_output=0.0,
+    ),
+    # Mistral models
+    "mistral-large-latest": ModelInfo(
+        id="mistral-large-latest",
+        name="Mistral Large",
+        provider="mistral",
+        context_length=128000,
+        max_output_tokens=8192,
+        pricing_input=0.002,
+        pricing_output=0.006,
+    ),
+    "mistral-small-latest": ModelInfo(
+        id="mistral-small-latest",
+        name="Mistral Small",
+        provider="mistral",
+        context_length=128000,
+        max_output_tokens=4096,
+        pricing_input=0.0002,
+        pricing_output=0.0006,
+    ),
+    # Local models (representative)
+    "llama-3.1-70b": ModelInfo(
+        id="llama-3.1-70b",
+        name="Llama 3.1 70B",
+        provider="ollama",
+        context_length=128000,
+        max_output_tokens=4096,
+        is_local=True,
+    ),
+    "mistral-7b": ModelInfo(
+        id="mistral-7b",
+        name="Mistral 7B",
+        provider="ollama",
+        context_length=8192,
+        max_output_tokens=4096,
+        is_local=True,
+    ),
+    "phi-3": ModelInfo(
+        id="phi-3-mini-4k",
+        name="Phi-3 Mini",
+        provider="ollama",
+        context_length=4096,
+        max_output_tokens=4096,
+        is_local=True,
+    ),
+}

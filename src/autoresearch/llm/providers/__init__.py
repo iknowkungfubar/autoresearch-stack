@@ -2,8 +2,48 @@
 
 Each provider implementation lives in its own module under providers/.
 The base class and abstract interface are in providers/base.py.
-
-Currently a scaffold — provider extraction deferred due to cross-module
-import dependencies. All providers are exported from providers.py for now.
 """
-from autoresearch.llm.providers import *  # noqa: F401, F403
+
+from ._cloud import (
+    AnthropicProvider,
+    AzureOpenAIProvider,
+    GoogleVertexProvider,
+    MistralProvider,
+    OpenAIProvider,
+    OpenRouterProvider,
+    ZenProvider,
+)
+from ._factory import LLMClient, LLMProviderFactory
+from ._local import (
+    LiteLLMProvider,
+    LlamaCppProvider,
+    LMStudioProvider,
+    OllamaProvider,
+    TextGenWebUIProvider,
+    VLLMProvider,
+)
+from ._registry import MODEL_REGISTRY
+from ._types import BaseLLMProvider, LLMResponse, ModelInfo, ProviderType
+
+__all__ = [
+    "AnthropicProvider",
+    "AzureOpenAIProvider",
+    "BaseLLMProvider",
+    "GoogleVertexProvider",
+    "LiteLLMProvider",
+    "LlamaCppProvider",
+    "LLMClient",
+    "LLMProviderFactory",
+    "LLMResponse",
+    "LMStudioProvider",
+    "MistralProvider",
+    "ModelInfo",
+    "MODEL_REGISTRY",
+    "OllamaProvider",
+    "OpenAIProvider",
+    "OpenRouterProvider",
+    "ProviderType",
+    "TextGenWebUIProvider",
+    "VLLMProvider",
+    "ZenProvider",
+]
