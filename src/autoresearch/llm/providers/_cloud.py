@@ -6,12 +6,11 @@ Anthropic, OpenAI, OpenRouter, Zen, Azure OpenAI, Google Vertex, Mistral.
 import logging
 import os
 import time
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 import requests
 
 from ._types import BaseLLMProvider, LLMResponse
-
 
 logger = logging.getLogger(__name__)
 
@@ -427,10 +426,6 @@ class GoogleVertexProvider(BaseLLMProvider):
 
         try:
             import vertexai
-            from google.auth import (
-                default,
-                load_credentials_from_file,
-            )
             from vertexai.generative_models import GenerativeModel
 
             project_id = self.extra_params.get("project_id") or os.getenv(

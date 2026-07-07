@@ -23,7 +23,6 @@ from ._local import (
 )
 from ._types import BaseLLMProvider, LLMResponse, ProviderType
 
-
 logger = logging.getLogger(__name__)
 
 

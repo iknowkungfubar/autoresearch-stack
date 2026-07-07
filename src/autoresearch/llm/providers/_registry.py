@@ -2,7 +2,6 @@
 
 from ._types import ModelInfo
 
-
 MODEL_REGISTRY = {
     # Anthropic models
     "claude-3-5-sonnet-20241022": ModelInfo(

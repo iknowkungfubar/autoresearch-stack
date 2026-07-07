@@ -206,7 +206,6 @@ class TestMetaLoopEvolveHeuristic:
     EVOLVE_PATCH = "autoresearch.infrastructure.metaloop.ANTHROPIC_AVAILABLE"
 
     def test_evolve_requires_existing_prompt(self, tmp_path):
-        from unittest.mock import patch
 
         from autoresearch.infrastructure.metaloop import MetaConfig, MetaLoop
 
