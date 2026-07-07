@@ -119,16 +119,22 @@ class TestMetaLoopInit:
         from autoresearch.infrastructure.metaloop import MetaConfig, MetaLoop
 
         prompts_file = tmp_path / "prompts.json"
-        prompts_file.write_text(json.dumps({
-            "hypothesis": [{
-                "name": "hypothesis",
-                "version": 1,
-                "content": "test content",
-                "created_at": "2025-01-01T00:00:00",
-                "performance": None,
-                "notes": "",
-            }],
-        }))
+        prompts_file.write_text(
+            json.dumps(
+                {
+                    "hypothesis": [
+                        {
+                            "name": "hypothesis",
+                            "version": 1,
+                            "content": "test content",
+                            "created_at": "2025-01-01T00:00:00",
+                            "performance": None,
+                            "notes": "",
+                        }
+                    ],
+                }
+            )
+        )
         cfg = MetaConfig(prompt_template_file=str(prompts_file))
         meta = MetaLoop(config=cfg)
         assert len(meta.prompts) == 1
@@ -138,17 +144,23 @@ class TestMetaLoopInit:
         from autoresearch.infrastructure.metaloop import MetaConfig, MetaLoop
 
         mods_file = tmp_path / "mods.json"
-        mods_file.write_text(json.dumps([{
-            "id": "mod_1",
-            "type": "prompt",
-            "description": "test",
-            "old_value": "old",
-            "new_value": "new",
-            "expected_impact": 0.05,
-            "actual_impact": None,
-            "status": "pending",
-            "timestamp": "2025-01-01T00:00:00",
-        }]))
+        mods_file.write_text(
+            json.dumps(
+                [
+                    {
+                        "id": "mod_1",
+                        "type": "prompt",
+                        "description": "test",
+                        "old_value": "old",
+                        "new_value": "new",
+                        "expected_impact": 0.05,
+                        "actual_impact": None,
+                        "status": "pending",
+                        "timestamp": "2025-01-01T00:00:00",
+                    }
+                ]
+            )
+        )
         cfg = MetaConfig(modifications_file=str(mods_file))
         meta = MetaLoop(config=cfg)
         assert len(meta.modifications) == 1
@@ -266,8 +278,10 @@ class TestMetaLoopEvolveHeuristic:
             meta.evolve_prompt("hypothesis", "vague feedback", 0.3)
         assert len(meta.modifications) >= 1
         assert meta.modifications[0].type.value == "prompt"
-        assert "modified" in meta.modifications[0].description.lower() or \
-               "evolved" in meta.modifications[0].description.lower()
+        assert (
+            "modified" in meta.modifications[0].description.lower()
+            or "evolved" in meta.modifications[0].description.lower()
+        )
 
 
 class TestMetaLoopHyperparameter:
@@ -306,9 +320,7 @@ class TestMetaLoopHyperparameter:
             modifications_file=str(tmp_path / "mods.json"),
         )
         meta = MetaLoop(config=cfg)
-        mod = meta.propose_hyperparameter_change(
-            "optimizer", "adam", "increase"
-        )
+        mod = meta.propose_hyperparameter_change("optimizer", "adam", "increase")
         assert mod.new_value == "adam"
 
 
@@ -408,24 +420,35 @@ class TestMetaLoopAnalysis:
         # Positive impact
         meta.modifications.append(
             Modification(
-                id="mod_1", type=ModificationType.PROMPT,
-                description="good", old_value="a", new_value="b",
-                expected_impact=0.1, actual_impact=0.2,
+                id="mod_1",
+                type=ModificationType.PROMPT,
+                description="good",
+                old_value="a",
+                new_value="b",
+                expected_impact=0.1,
+                actual_impact=0.2,
             )
         )
         # Negative impact
         meta.modifications.append(
             Modification(
-                id="mod_2", type=ModificationType.HYPERPARAMETER,
-                description="bad", old_value="c", new_value="d",
-                expected_impact=0.1, actual_impact=-0.05,
+                id="mod_2",
+                type=ModificationType.HYPERPARAMETER,
+                description="bad",
+                old_value="c",
+                new_value="d",
+                expected_impact=0.1,
+                actual_impact=-0.05,
             )
         )
         # No impact
         meta.modifications.append(
             Modification(
-                id="mod_3", type=ModificationType.STRATEGY,
-                description="unknown", old_value="e", new_value="f",
+                id="mod_3",
+                type=ModificationType.STRATEGY,
+                description="unknown",
+                old_value="e",
+                new_value="f",
                 expected_impact=0.1,
             )
         )
@@ -459,14 +482,22 @@ class TestMetaLoopAnalysis:
         meta = MetaLoop(config=cfg)
         meta.modifications = [
             Modification(
-                id="mod_1", type=ModificationType.PROMPT,
-                description="good", old_value="a", new_value="b",
-                expected_impact=0.1, actual_impact=0.2,
+                id="mod_1",
+                type=ModificationType.PROMPT,
+                description="good",
+                old_value="a",
+                new_value="b",
+                expected_impact=0.1,
+                actual_impact=0.2,
             ),
             Modification(
-                id="mod_2", type=ModificationType.PROMPT,
-                description="great", old_value="c", new_value="d",
-                expected_impact=0.1, actual_impact=0.3,
+                id="mod_2",
+                type=ModificationType.PROMPT,
+                description="great",
+                old_value="c",
+                new_value="d",
+                expected_impact=0.1,
+                actual_impact=0.3,
             ),
         ]
         result = meta.analyze_patterns()
@@ -530,9 +561,13 @@ class TestMetaLoopRunIteration:
         # Add a modification with impact below threshold
         meta.modifications = [
             Modification(
-                id="mod_1", type=ModificationType.PROMPT,
-                description="test", old_value="a", new_value="b",
-                expected_impact=0.05, actual_impact=0.02,
+                id="mod_1",
+                type=ModificationType.PROMPT,
+                description="test",
+                old_value="a",
+                new_value="b",
+                expected_impact=0.05,
+                actual_impact=0.02,
             ),
         ]
         result = meta.run_iteration(feedback="test", performance=0.5)

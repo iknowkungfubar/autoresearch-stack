@@ -108,4 +108,5 @@ class BaseLLMProvider(ABC):
     def get_model_info(self, model: str) -> Optional[ModelInfo]:
         """Get model information."""
         from ._registry import MODEL_REGISTRY
+
         return MODEL_REGISTRY.get(model)
