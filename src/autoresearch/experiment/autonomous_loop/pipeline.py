@@ -182,9 +182,7 @@ class AutonomousPipeline:
         import sys
 
         train_script = (
-            Path(__file__).resolve().parent.parent.parent
-            / "llm"
-            / "train_any_llm.py"
+            Path(__file__).resolve().parent.parent.parent / "llm" / "train_any_llm.py"
         )
 
         start_time = time.time()
