@@ -1,5 +1,5 @@
 """
-Autonomous Research Loop - Main Pipeline
+Autonomous Research Loop - Pipeline Orchestration
 
 This is the main orchestration for the autonomous research system.
 It combines:
@@ -13,16 +13,11 @@ Training is executed by running train_any_llm.py as a subprocess;
 hypothesis code diffs are applied to the live config before each run.
 """
 
-import argparse
 import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-# Version
-__version__ = "0.7.3"
-
-# Import components
 from autoresearch.config import get_config
 from autoresearch.data.curriculum import build_curriculum, create_scheduler
 from autoresearch.data.data_intelligence import clean_corpus
@@ -132,7 +127,7 @@ class AutonomousPipeline:
         print("Step 4: Quality filtering...")
         original_count = len(data)
         data = self.synthetic_generator.quality_filter(data)
-        print(f"  Filtered: {original_count} → {len(data)}")
+        print(f"  Filtered: {original_count} \u2192 {len(data)}")
 
         return data
 
@@ -187,7 +182,9 @@ class AutonomousPipeline:
         import sys
 
         train_script = (
-            Path(__file__).resolve().parent.parent / "llm" / "train_any_llm.py"
+            Path(__file__).resolve().parent.parent.parent
+            / "llm"
+            / "train_any_llm.py"
         )
 
         start_time = time.time()
@@ -261,7 +258,7 @@ class AutonomousPipeline:
         """Apply a code_diff string to the live config object.
 
         The code_diff is a Python expression/statement that mutates
-        ``self.config`` — e.g. ``config.model.learning_rate *= 1.1``.
+        ``self.config`` - e.g. ``config.model.learning_rate *= 1.1``.
 
         The string is evaluated with ``config`` bound to ``self.config``
         so expressions like ``config.model.batch_size *= 2`` work.
@@ -272,7 +269,7 @@ class AutonomousPipeline:
         # Build a safe namespace with only the config reference
         namespace: dict[str, object] = {"config": self.config}
         try:
-            exec(code_diff, namespace)  # noqa: S102 – controlled input
+            exec(code_diff, namespace)  # noqa: S102 - controlled input
             print(f"  Applied code_diff: {code_diff}")
         except Exception as e:
             print(f"  Failed to apply code_diff '{code_diff}': {e}")
@@ -336,7 +333,7 @@ class AutonomousPipeline:
         if val_bpb_after < baseline_val_bpb:
             status = ExperimentStatus.KEPT
             print(
-                f"Result: val_bpb improved {baseline_val_bpb:.6f} → {val_bpb_after:.6f}"
+                f"Result: val_bpb improved {baseline_val_bpb:.6f} \u2192 {val_bpb_after:.6f}"
             )
             print("Status: KEPT")
 
@@ -346,7 +343,7 @@ class AutonomousPipeline:
             status = ExperimentStatus.REVERTED
             print(
                 f"Result: val_bpb did not improve "
-                f"{baseline_val_bpb:.6f} → {val_bpb_after:.6f}"
+                f"{baseline_val_bpb:.6f} \u2192 {val_bpb_after:.6f}"
             )
             print("Status: REVERTED")
 
@@ -476,120 +473,3 @@ class AutonomousPipeline:
             else None,
             "statistics": stats,
         }
-
-
-def autonomous_pipeline(
-    raw,
-    model=None,
-    tokenizer=None,
-    config_path: str = "config.yaml",
-):
-    """Convenience function for backward compatibility.
-
-    Args:
-        raw: Raw texts or path to text file
-        model: Model for model-in-the-loop (optional)
-        tokenizer: Tokenizer (optional)
-        config_path: Path to config
-
-    Returns:
-        Prepared dataset
-    """
-    # Handle raw as path or list
-    if isinstance(raw, str):
-        with open(raw, "r") as f:
-            raw_texts = [line.strip() for line in f if line.strip()]
-    else:
-        raw_texts = raw
-
-    # Create pipeline
-    pipeline = AutonomousPipeline(config_path)
-
-    # Prepare data
-    data = pipeline.prepare_data(
-        raw_texts,
-        use_synthetic=True,
-        use_model_loop=model is not None,
-        model=model,
-        tokenizer=tokenizer,
-    )
-
-    return data
-
-
-def main():
-    """Main entry point."""
-    parser = argparse.ArgumentParser(description="Autonomous Research Loop")
-    parser.add_argument(
-        "--version",
-        "-v",
-        action="version",
-        version=f"autoresearch-stack v{__version__}",
-        help="Show version and exit",
-    )
-    parser.add_argument(
-        "--config",
-        "-c",
-        default="config.yaml",
-        help="Path to config file",
-    )
-    parser.add_argument(
-        "--input",
-        "-i",
-        help="Input text file (one text per line)",
-    )
-    parser.add_argument(
-        "--experiments",
-        "-n",
-        type=int,
-        default=None,
-        help="Number of experiments to run",
-    )
-    parser.add_argument(
-        "--prepare-only",
-        action="store_true",
-        help="Only prepare data, don't run experiments",
-    )
-
-    args = parser.parse_args()
-
-    # Load texts
-    if args.input:
-        with open(args.input, "r") as f:
-            texts = [line.strip() for line in f if line.strip()]
-    else:
-        # Default sample texts
-        texts = [
-            "Machine learning is a method of data analysis.",
-            "Neural networks are inspired by biological neurons.",
-            "Transformers use attention mechanisms.",
-            "Backpropagation trains neural networks.",
-            "Gradient descent optimizes model parameters.",
-        ]
-
-    # Create pipeline
-    pipeline = AutonomousPipeline(args.config)
-
-    # Prepare data
-    data = pipeline.prepare_data(texts)
-    print(f"\nPrepared {len(data)} training examples")
-
-    # Show config
-    print("\nConfiguration:")
-    print(f"  Experiments: {args.experiments or pipeline.config.experiment.budget}")
-    print(f"  Time per exp: {pipeline.config.experiment.time_per_experiment}s")
-    print(f"  Target val_bpb: {pipeline.config.experiment.val_target}")
-
-    if args.prepare_only:
-        print("\nData preparation complete (--prepare-only)")
-        return
-
-    # Prepare curriculum
-    _scheduler = pipeline.prepare_curriculum(data)
-
-    # Run autonomous loop with prepared data (not raw texts)
-    pipeline.run_autonomous_loop(data, args.experiments)
-
-
-if __name__ == "__main__":
-    main()
