@@ -6,7 +6,7 @@ compatibility, and the ``main()`` CLI entry point.
 """
 
 import argparse
-from typing import Any, Dict, List, Optional
+from typing import List
 
 from autoresearch.experiment.autonomous_loop.pipeline import (
     AutonomousPipeline,
