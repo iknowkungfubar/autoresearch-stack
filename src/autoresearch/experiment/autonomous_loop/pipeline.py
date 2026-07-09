@@ -332,7 +332,7 @@ class AutonomousPipeline:
         # Determine if improved
         if val_bpb_after < baseline_val_bpb:
             status = ExperimentStatus.KEPT
-            msg = f"Result: val_bpb improved {baseline_val_bpb:.6f} \u2192 {val_bpb_after:.6f}"
+            msg = f"Result: val_bpb improved {baseline_val_bpb:.6f} \u2192 {val_bpb_after:.6f}"  # noqa: E501
             print(msg)
             print("Status: KEPT")
 
