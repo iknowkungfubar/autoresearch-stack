@@ -375,7 +375,8 @@ class TextGenWebUIProvider(BaseLLMProvider):
             response.raise_for_status()
             data = response.json()
 
-            content = data.get("choices", [{}])[0].get("text", "")
+            choices = data.get("choices") or [{}]
+            content = choices[0].get("text", "")
 
             return LLMResponse(
                 content=content,
