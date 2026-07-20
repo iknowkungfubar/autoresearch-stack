@@ -20,7 +20,7 @@ class TestZenProvider:
 
         provider = ZenProvider(api_key="test-zen-key-12345")  # gitleaks:allow
 
-        with patch("autoresearch.llm.providers._cloud.requests.post") as mock_post:
+        with patch("autoresearch.llm.providers.cloud.zen.requests.post") as mock_post:
             mock_response = MagicMock()
             mock_response.json.return_value = {
                 "choices": [{"message": {"content": "Zen response"}}]
