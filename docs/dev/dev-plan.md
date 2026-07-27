@@ -277,10 +277,12 @@ def generate_synthetic(n=200, model="claude-sonnet-4-20250514"):
         response = client.messages.create(
             model=model,
             max_tokens=1024,
-            messages=[{
-                "role": "user",
-                "content": "Generate a diverse training prompt about ML systems optimization."
-            }]
+            messages=[
+                {
+                    "role": "user",
+                    "content": "Generate a diverse training prompt about ML systems optimization.",
+                }
+            ],
         )
         prompts.append(response.content[0].text)
     return quality_filter(prompts)

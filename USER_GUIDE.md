@@ -226,10 +226,12 @@ from providers import LLMProviderFactory
 provider = LLMProviderFactory.create("anthropic")
 
 # Or from config
-provider = LLMProviderFactory.from_config({
-    "provider": "openai",
-    "api_key": "sk-...",
-})
+provider = LLMProviderFactory.from_config(
+    {
+        "provider": "openai",
+        "api_key": "sk-...",
+    }
+)
 
 # Generate completion
 response = provider.complete(
