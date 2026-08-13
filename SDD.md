@@ -119,7 +119,7 @@ autoresearch-stack/
 ├── docker-compose.yml        # Local multi-node cluster
 ├── k8s/deployment.yaml       # Kubernetes deployment
 ├── requirements.txt          # Python dependencies
-├── pyproject.toml             # Package config (PEP 621)
+├── pyproject.toml            # Package config (PEP 621)
 │
 └── tests/
     ├── test_core.py          # Core module tests

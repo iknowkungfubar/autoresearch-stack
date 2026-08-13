@@ -405,7 +405,7 @@ autoresearch-stack/
 ├── docs/                  # Development documentation
 ├── Dockerfile             # Docker build
 ├── docker-compose.yml     # Multi-node cluster
-└── pyproject.toml        # pip installable (PEP 621)
+└── pyproject.toml         # pip installable (PEP 621)
 ```
 
 ---
