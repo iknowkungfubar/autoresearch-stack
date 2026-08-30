@@ -1,11 +1,11 @@
-# Pi token-policy extension
+# OMP token-policy extension
 
 This adapter targets Pi `0.84.4` and uses only the public extension surface.
 
 ## Install
 
-Copy this `token-policy` directory to `<project-root>/.pi/extensions/token-policy/`.
-Copy `configs/token-efficiency.example.yaml` to `<project-root>/.pi/token-policy.yaml` when configuration is needed. The default with no config is `observe`.
+Copy this `token-policy` directory to `<project-root>/.omp/extensions/token-policy/`.
+Copy `configs/token-efficiency.example.yaml` to `<project-root>/.omp/token-policy.yaml` when configuration is needed. The default with no config is `observe`.
 
 Ensure the target repository ignores:
 
